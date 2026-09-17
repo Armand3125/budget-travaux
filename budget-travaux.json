@@ -1,0 +1,489 @@
+{
+  "version": 2,
+  "categories": [
+    {
+      "id": "cat-destruction",
+      "name": "Destruction",
+      "budget": 300
+    },
+    {
+      "id": "cat-peinture",
+      "name": "Murs",
+      "budget": 1200
+    },
+    {
+      "id": "cat-plomberie",
+      "name": "Plomberie",
+      "budget": 700
+    },
+    {
+      "id": "cat-electricite",
+      "name": "Électricité",
+      "budget": 1300
+    },
+    {
+      "id": "cat-cuisine",
+      "name": "Cuisine",
+      "budget": 5000
+    },
+    {
+      "id": "cat-sdb",
+      "name": "Salle de bain",
+      "budget": 2000
+    },
+    {
+      "id": "cat-sol",
+      "name": "Sol",
+      "budget": 1000
+    },
+    {
+      "id": "cat-autre",
+      "name": "Meuble",
+      "budget": 1500
+    }
+  ],
+  "expenses": [
+    {
+      "id": "legacy-01",
+      "description": "Aide Brice",
+      "price": 20,
+      "paidBy": "Moi",
+      "store": "Espèce",
+      "categoryId": "cat-destruction",
+      "legacyUnitPrice": 10,
+      "legacyQuantity": 2,
+      "receipt": true
+    },
+    {
+      "id": "legacy-02",
+      "description": "Aide Jimi",
+      "price": 100,
+      "paidBy": "Moi",
+      "store": "Espèce",
+      "categoryId": "cat-destruction",
+      "legacyUnitPrice": 10,
+      "legacyQuantity": 10,
+      "receipt": true
+    },
+    {
+      "id": "legacy-03",
+      "description": "Aide Alex + C",
+      "price": 80,
+      "paidBy": "Moi",
+      "store": "Espèce",
+      "categoryId": "cat-destruction",
+      "legacyUnitPrice": 10,
+      "legacyQuantity": 6,
+      "receipt": true
+    },
+    {
+      "id": "legacy-05",
+      "description": "Boulangerie",
+      "price": 40,
+      "paidBy": "Moi",
+      "store": "Espèce",
+      "categoryId": "cat-destruction",
+      "legacyUnitPrice": 10,
+      "legacyQuantity": 4,
+      "receipt": true
+    },
+    {
+      "id": "legacy-06",
+      "description": "Tuyaux PVC",
+      "price": 51.37,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-plomberie",
+      "legacyUnitPrice": 51.4,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-07",
+      "description": "Casto elec",
+      "price": 349.68,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-electricite",
+      "legacyUnitPrice": 349.7,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-08",
+      "description": "Sac de gravat",
+      "price": 19.99,
+      "paidBy": "Moi",
+      "store": "Amazon",
+      "categoryId": "cat-destruction",
+      "legacyUnitPrice": 20,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-09",
+      "description": "Sac de gravat",
+      "price": 42.5,
+      "paidBy": "Moi",
+      "store": "Amazon",
+      "categoryId": "cat-destruction",
+      "legacyUnitPrice": 42.5,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-10",
+      "description": "Ciment",
+      "price": 26.57,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-sol",
+      "legacyUnitPrice": 26.6,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-11",
+      "description": "Nettoyant",
+      "price": 120.11,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-peinture",
+      "legacyUnitPrice": 120.1,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-12",
+      "description": "Travertin",
+      "price": 305.84,
+      "paidBy": "Parents",
+      "store": "Castorama",
+      "categoryId": "cat-sol",
+      "legacyUnitPrice": 252,
+      "legacyQuantity": 0,
+      "receipt": true
+    },
+    {
+      "id": "legacy-14",
+      "description": "Cables et plaintes",
+      "price": 217.98,
+      "paidBy": "Parents",
+      "store": "Castorama",
+      "categoryId": "cat-electricite",
+      "legacyUnitPrice": 218,
+      "legacyQuantity": 0,
+      "receipt": true
+    },
+    {
+      "id": "legacy-15",
+      "description": "Enduits et autres",
+      "price": 98.73,
+      "paidBy": "Parents",
+      "store": "Castorama",
+      "categoryId": "cat-peinture",
+      "legacyUnitPrice": 98.7,
+      "legacyQuantity": 0,
+      "receipt": true
+    },
+    {
+      "id": "legacy-16",
+      "description": "Ciment Placo",
+      "price": 31.17,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-sol",
+      "legacyUnitPrice": 31.2,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-17",
+      "description": "Peinture crème",
+      "price": 46.89,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-peinture",
+      "legacyUnitPrice": 46.9,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-18",
+      "description": "Peinture Ponceuse",
+      "price": 161.63,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-peinture",
+      "legacyUnitPrice": 161,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-19",
+      "description": "Plan de travail",
+      "price": 500.4,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-cuisine",
+      "legacyUnitPrice": 125.1,
+      "legacyQuantity": 4,
+      "receipt": true
+    },
+    {
+      "id": "legacy-20",
+      "description": "Bouchon Papier verre",
+      "price": 18.03,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-plomberie",
+      "legacyUnitPrice": 18,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-22",
+      "description": "Enduit / Après",
+      "price": 163.92,
+      "paidBy": "Parents",
+      "store": "Castorama",
+      "categoryId": "cat-peinture",
+      "legacyUnitPrice": 163.8,
+      "legacyQuantity": 0,
+      "receipt": true
+    },
+    {
+      "id": "legacy-23",
+      "description": "Electroménager",
+      "price": 969.6,
+      "paidBy": "Parents",
+      "store": "Brico Dépôt",
+      "categoryId": "cat-cuisine",
+      "legacyUnitPrice": 969.9,
+      "legacyQuantity": 0,
+      "receipt": true
+    },
+    {
+      "id": "legacy-24",
+      "description": "Disjoncteur général",
+      "price": 72.52,
+      "paidBy": "Moi",
+      "store": "Amazon",
+      "categoryId": "cat-electricite",
+      "legacyUnitPrice": 72.5,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-25",
+      "description": "Cire bois",
+      "price": 27.48,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-cuisine",
+      "legacyUnitPrice": 27.5,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "legacy-26",
+      "description": "Bois pieds meubles",
+      "price": 59.6,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-cuisine",
+      "legacyUnitPrice": 59.6,
+      "legacyQuantity": 1,
+      "receipt": true
+    },
+    {
+      "id": "a5380c7a-ad2d-4067-af0b-4ec8e7edfe3a",
+      "description": "Coude PVC",
+      "price": 20.76,
+      "paidBy": "Parents",
+      "store": "Castorama",
+      "categoryId": "cat-plomberie",
+      "receipt": true
+    },
+    {
+      "id": "33903f67-0bfb-4c71-8fe6-fc8e98878f65",
+      "description": "Meuble Ikea",
+      "price": 2600,
+      "paidBy": "Moi",
+      "store": "Ikea",
+      "categoryId": "cat-cuisine",
+      "receipt": false
+    },
+    {
+      "id": "d68b5e31-110d-4e9a-8833-74e9bdb8a8dc",
+      "description": "Chauffe eau",
+      "price": 370,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-plomberie",
+      "receipt": false
+    },
+    {
+      "id": "7a0df9ef-63ea-4fd3-b0e0-777107c17a55",
+      "description": "Tube cuivre et raccords",
+      "price": 300,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-plomberie",
+      "receipt": false
+    },
+    {
+      "id": "49c80d64-5814-45bd-b5c3-640981695024",
+      "description": "Luminaires",
+      "price": 200,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-electricite",
+      "receipt": false
+    },
+    {
+      "id": "2b7092a6-a16c-4d36-8569-8a123171a6f8",
+      "description": "Prise / Interrupteur",
+      "price": 350,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-electricite",
+      "receipt": false
+    },
+    {
+      "id": "ae6d9fe2-dca4-4dc5-8abf-1d80699d8c0f",
+      "description": "Mur entrée",
+      "price": 300,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-peinture",
+      "receipt": false
+    },
+    {
+      "id": "c5a621ad-5e61-4824-ba35-2d149da84793",
+      "description": "Télé",
+      "price": 200,
+      "paidBy": "Moi",
+      "store": "Brico Dépôt",
+      "categoryId": "cat-autre",
+      "receipt": false
+    },
+    {
+      "id": "356db4dc-7360-4b91-ab44-3bf479ab3615",
+      "description": "Elements cuisines",
+      "price": 250,
+      "paidBy": "Moi",
+      "store": "Amazon",
+      "categoryId": "cat-autre",
+      "receipt": false
+    },
+    {
+      "id": "8f6694e4-3302-4bbb-84fe-c28dcea3824b",
+      "description": "Poncer / Vitrifier",
+      "price": 500,
+      "paidBy": "Moi",
+      "store": "Kiloutou",
+      "categoryId": "cat-sol",
+      "receipt": false
+    },
+    {
+      "id": "05fcf066-3ddf-4315-a09d-eacb345144b3",
+      "description": "Peinture murs",
+      "price": 80,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-peinture",
+      "receipt": false
+    },
+    {
+      "id": "b4a09612-6a51-4ce2-9e57-03098e575858",
+      "description": "Miroir lumineux",
+      "price": 200,
+      "paidBy": "Moi",
+      "store": "Castorama",
+      "categoryId": "cat-sdb",
+      "receipt": false
+    },
+    {
+      "id": "a6a1a496-6c8e-442d-b753-573444d052dc",
+      "description": "meuble vasque",
+      "price": 250,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-sdb",
+      "receipt": false
+    },
+    {
+      "id": "7e7c7150-3da9-4760-80d4-7a0ace0871fa",
+      "description": "Meuble Colonne",
+      "price": 100,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-sdb",
+      "receipt": false
+    },
+    {
+      "id": "0efdd5c9-53ce-4a75-8c22-2a9d2e779d98",
+      "description": "Muret + vitre",
+      "price": 300,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-sdb",
+      "receipt": false
+    },
+    {
+      "id": "7a33602c-c12b-4e23-baa7-60e1dbeafb2f",
+      "description": "Bac de douche",
+      "price": 180,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-sdb",
+      "receipt": false
+    },
+    {
+      "id": "4b7f5785-100d-40ab-a8ce-b4fccdcee30a",
+      "description": "Colonne de douche",
+      "price": 200,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-sdb",
+      "receipt": false
+    },
+    {
+      "id": "071ed27e-5f99-4d69-84da-bf8699e68d1f",
+      "description": "Girafe",
+      "price": 99,
+      "paidBy": "Parents",
+      "store": "Castorama",
+      "categoryId": "cat-peinture",
+      "receipt": true
+    },
+    {
+      "id": "ebb1100d-7fd5-463c-86b4-c926646395b1",
+      "description": "Livraison électroménager",
+      "price": 75,
+      "paidBy": "Moi",
+      "store": "Brico Dépôt",
+      "categoryId": "cat-cuisine",
+      "receipt": false
+    },
+    {
+      "id": "8913d26e-b9d4-4270-b13d-4c4a5a5537af",
+      "description": "Sable",
+      "price": 10.77,
+      "paidBy": "Parents",
+      "store": "Castorama",
+      "categoryId": "cat-destruction",
+      "receipt": true
+    },
+    {
+      "id": "387bc7f3-4903-4d25-b04c-c652303a35d1",
+      "description": "Etanchéité Travertin",
+      "price": 54.72,
+      "paidBy": "Parents",
+      "store": "Castorama",
+      "categoryId": "cat-sol",
+      "receipt": true
+    }
+  ]
+}

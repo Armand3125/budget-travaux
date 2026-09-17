@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budget travaux</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏠%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#6b7280; --line:#dfe4ec;
+  --accent:#0f766e; --accent2:#14b8a6; --danger:#dc2626; --shadow:0 10px 30px rgba(20,31,55,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1600px;margin:0 auto;padding:24px 28px 28px}
+.pageHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:18px}
+.pageTitle h1{margin:0 0 5px;font-size:28px}
+.subtitle{color:var(--muted);margin:0}
+.topActions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.topActions button,.topActions .filelabel{min-width:84px;text-align:center}
+.syncStatus{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:12px;font-weight:700}
+.syncStatus::before{content:"";width:8px;height:8px;border-radius:50%;background:#94a3b8}
+.syncStatus.syncing::before{background:#f59e0b}
+.syncStatus.synced::before{background:#16a34a}
+.syncStatus.error::before{background:#dc2626}
+.modalBackdrop{position:fixed;inset:0;z-index:50;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:18px}
+.modalBackdrop.open{display:flex}
+.modal{width:min(560px,100%);background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(15,23,42,.28);padding:22px}
+.modal h2{margin:0 0 7px;font-size:21px}
+.modal p{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.5}
+.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.formField{display:flex;flex-direction:column;gap:6px}
+.formField.full{grid-column:1/-1}
+.formField label{font-size:12px;font-weight:750;color:#475569}
+.checkLine{display:flex;align-items:center;gap:8px;color:#475569;font-size:12px;margin-top:12px}
+.checkLine input{width:auto}
+.modalActions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.modalHelp{margin-top:12px!important;font-size:12px!important}
+.stats{display:grid;grid-template-columns:minmax(210px,.75fr) minmax(210px,.75fr) minmax(360px,1.8fr);gap:14px;margin-bottom:20px}
+.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.stat{padding:16px 18px}
+.stat .label{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.stat .value{font-size:24px;font-weight:750;margin-top:7px}
+.progressStat{padding:15px 18px}
+.progressStatTop{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.progressStat .bigPct{font-size:24px;font-weight:800;color:var(--accent);white-space:nowrap}
+.progressStat .bigPct.over{color:var(--danger)}
+.topBudgetTrack{height:11px;background:#e7edf1;border-radius:999px;overflow:hidden;margin-top:12px}
+.topBudgetFill{height:100%;width:0;background:linear-gradient(90deg,#14b8a6,#0f766e);border-radius:999px;transition:width .2s ease}
+.topBudgetFill.over{background:#e5484d}
+.progressNote{display:flex;justify-content:space-between;gap:12px;margin-top:7px;font-size:11px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(0,2.15fr) minmax(340px,.95fr);gap:20px;align-items:start}
+.card{overflow:hidden}
+.cardhead{padding:17px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cardhead h2{font-size:17px;margin:0}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px}
+button,.filelabel{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:9px;padding:9px 12px;font-weight:650;cursor:pointer;font-size:13px}
+button:hover,.filelabel:hover{background:#f8fafc}
+.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.primary:hover{background:#0b635d}
+.danger{color:var(--danger)}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+.expenseTable col.col-desc{width:25%}
+.expenseTable col.col-price{width:13%}
+.expenseTable col.col-payer{width:15%}
+.expenseTable col.col-store{width:18%}
+.expenseTable col.col-cat{width:17%}
+.expenseTable col.col-ticket{width:82px}
+.expenseTable col.col-actions{width:84px}
+th{background:#f8fafc;text-align:left;font-size:12px;color:#526071;padding:11px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px;border-bottom:1px solid #edf0f4;vertical-align:middle}
+tbody tr:hover{background:#fbfcfe}
+input,select{width:100%;border:1px solid #ced5df;border-radius:8px;padding:8px 9px;font:inherit;background:#fff;color:var(--text)}
+input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var(--accent2)}
+.desc{min-width:220px}.money{min-width:110px}.who{min-width:125px}.store{min-width:135px}.cat{min-width:145px}
+.smallbtn{padding:7px 9px;border-radius:8px}
+.ticketCell{text-align:center;min-width:72px}
+.ticketCheck{
+  width:18px;height:18px;
+  accent-color:var(--accent);
+  cursor:pointer
+}
+.empty{padding:34px;color:var(--muted);text-align:center}
+.footerNote{padding:14px 18px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+.sidebody{padding:14px}
+.catrow{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.catgrid{display:grid;grid-template-columns:1.25fr .8fr auto;gap:8px;align-items:center}
+.catname{font-weight:700}
+.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.mini{background:#f8fafc;border-radius:9px;padding:8px}
+.mini .k{font-size:10px;text-transform:uppercase;color:var(--muted)}
+.mini .v{font-size:13px;font-weight:750;margin-top:3px}
+.bar{height:8px;background:#e8edf2;border-radius:999px;overflow:hidden;margin-top:9px}
+.bar>div{height:100%;background:var(--accent2);width:0}
+.bar.over>div{background:#e5484d}
+.addcat{display:grid;grid-template-columns:1fr 120px auto;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.summaryLine{display:flex;justify-content:space-between;gap:12px;padding:7px 2px;font-size:13px}
+.summaryLine strong{font-size:14px}
+
+.filterRow th{padding:8px 8px 10px;background:#fbfcfe;vertical-align:bottom}
+.filterRow input,.filterRow select{height:36px;padding:7px 8px;font-size:13px}
+.addExpenseWide{width:100%;height:36px;padding:7px 12px;font-size:13px}
+.columnHead th{padding-top:10px;padding-bottom:8px}
+
+.analytics{margin-top:20px}
+.chartsWrap{padding:18px}
+.chartTop{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-bottom:18px;
+}
+
+.chartbox{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px;
+  min-height:390px;
+}
+.chartbox h3{margin:0 0 14px;font-size:17px}
+.chartbox.full{min-height:unset}
+.chartFull{border:1px solid var(--line);border-radius:16px;padding:18px}
+.chartBottom{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.chartBottom .chartFull{min-width:0}
+.chartBottom .chartbox{min-height:390px}
+.payerCard .donutWrap{
+  grid-template-columns:minmax(260px,1.15fr) minmax(170px,.85fr);
+  min-height:330px;
+  gap:18px;
+}
+.payerCard .bigDonut svg{max-width:310px}
+.payerCard .legend{font-size:15px}
+.payerCard .legendRow{padding:10px 0}
+.payerCard .legendVal{font-size:15px}
+.chartFull h3{margin:0 0 14px;font-size:17px}
+.donutWrap{
+  display:grid;
+  grid-template-columns:minmax(260px,1.2fr) minmax(240px,1fr);
+  gap:10px;
+  align-items:center;
+  min-height:340px;
+}
+.bigDonut{
+  width:100%;display:flex;justify-content:center;align-items:center;
+}
+.legend{
+  font-size:14px;align-self:center;min-width:0
+}
+.legendRow{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:7px 0;border-bottom:1px dashed #edf0f4
+}
+.legendRow:last-child{border-bottom:none}
+.legendLeft{display:flex;align-items:center;gap:8px;min-width:0}
+.legendLeft span:last-child{white-space:normal;overflow:visible;text-overflow:clip;font-weight:650}
+.swatch{width:12px;height:12px;border-radius:4px;flex:none}
+.legendVal{font-weight:700;white-space:nowrap}
+
+.budgetGrid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:8px
+}
+.budgetItem{
+  border:1px solid #e3e8ef;
+  border-radius:11px;
+  padding:10px 12px;
+  background:#fbfcfe;
+}
+.budgetHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:7px
+}
+.budgetTitle{font-size:14px;font-weight:750}
+.budgetPlanned{font-size:11px;color:var(--muted);margin-top:2px}
+.budgetPct{
+  min-width:54px;
+  text-align:right;
+  font-size:17px;
+  line-height:1;
+  font-weight:800;
+  color:var(--accent)
+}
+.budgetPct.over{color:var(--danger)}
+.budgetPct.empty{color:#94a3b8}
+.budgetTrack{
+  height:8px;
+  border-radius:999px;
+  background:#e8edf2;
+  overflow:hidden
+}
+.budgetFill{
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#14b8a6,#0f766e)
+}
+.budgetFill.over{background:#e5484d}
+
+.compareChart{display:flex;flex-direction:column;gap:13px;margin-top:10px}
+.compareRow{display:grid;grid-template-columns:130px 1fr 150px;gap:12px;align-items:center}
+.compareName{font-size:13px;font-weight:700}
+.compareTrack{height:22px;border-radius:999px;background:#edf1f5;position:relative;overflow:hidden}
+.compareBudget{position:absolute;inset:0;background:#d9e1e8}
+.compareSpent{position:absolute;left:0;top:0;bottom:0;background:#0f766e;border-radius:999px}
+.compareSpent.over{background:#e5484d}
+.compareValue{text-align:right;font-size:12px;color:var(--muted)}
+.compareValue strong{color:var(--text)}
+.statusChart{display:flex;flex-direction:column;gap:12px}
+.statusRow{
+  display:grid;
+  grid-template-columns:150px 1fr 260px;
+  gap:12px;align-items:center
+}
+.statusName{font-size:13px;font-weight:700}
+.statusTrack{
+  height:22px;background:#edf1f5;border-radius:999px;overflow:hidden;position:relative
+}
+.statusBudgetMarker{
+  position:absolute;top:0;bottom:0;width:4px;background:#ffffff;z-index:2
+}
+.statusBar{
+  height:100%;display:flex;border-radius:999px;overflow:hidden;position:relative;z-index:1
+}
+.statusPaid{height:100%;background:#0f766e}
+.statusPlanned{height:100%;background:#86efac}
+.statusPaidOver{height:100%;background:#dc2626}
+.statusPlannedOver{height:100%;background:#fca5a5}
+.statusValue{text-align:right;font-size:12px;color:var(--muted)}
+.statusValue strong{color:var(--text)}
+
+
+@media(max-width:1350px){
+  .stats{grid-template-columns:1fr 1fr 1.6fr}
+}
+@media(max-width:1200px){
+  .chartTop{grid-template-columns:1fr 1fr}
+  .budgetGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pageHeader{align-items:center}
+  .expenseTable{min-width:900px}
+}
+@media(max-width:1050px){
+  .layout{grid-template-columns:1fr}
+  .chartBottom{grid-template-columns:1fr}
+  .payerCard .donutWrap{grid-template-columns:minmax(260px,1fr) minmax(220px,.8fr)}
+  .budgetGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .chartTop{grid-template-columns:1fr}
+  .donutWrap{grid-template-columns:1fr}
+  .payerCard .donutWrap{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .progressStat{grid-column:1/-1}
+  .pageHeader{align-items:flex-start;flex-direction:column}
+  .topActions{width:100%;justify-content:flex-start}
+}
+@media(max-width:700px){
+  .wrap{padding:14px}
+  .stats{grid-template-columns:1fr}
+  .progressStat{grid-column:auto}
+  .addcat{grid-template-columns:1fr}
+  .catgrid{grid-template-columns:1fr 1fr auto}
+  .numbers{grid-template-columns:1fr}
+  .budgetGrid{grid-template-columns:1fr}
+  .statusRow{grid-template-columns:1fr}
+  .statusValue{text-align:left}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="pageHeader">
+    <div class="pageTitle">
+      <h1>🏠 Budget_V17</h1>
+      <div class="subtitle">Dépenses, budgets cibles et suivi des justificatifs.</div>
+    </div>
+    <div class="topActions">
+      <span id="syncStatus" class="syncStatus" title="État de la sauvegarde">Enregistré localement</span>
+      <button id="githubBtn" title="Configurer la sauvegarde GitHub">GitHub</button>
+      <button id="syncNowBtn" title="Enregistrer maintenant sur GitHub" disabled>Synchroniser</button>
+      <label class="filelabel" title="Charger un fichier JSON">Charger JSON<input id="importJson" type="file" accept=".json,application/json" hidden></label>
+      <button id="exportJsonBtn" title="Télécharger les données au format JSON">JSON</button>
+      <button id="pdfBtn" title="Exporter le rapport en PDF">PDF</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="label">Dépenses totales</div>
+      <div class="value" id="totalSpent">0,00 €</div>
+    </div>
+    <div class="stat">
+      <div class="label">Budget restant</div>
+      <div class="value" id="remainingBudget">0,00 €</div>
+    </div>
+    <div class="stat progressStat">
+      <div class="progressStatTop">
+        <div>
+          <div class="label">Part du budget restant</div>
+          <div class="progressNote" style="margin-top:5px"><span id="topBudgetText">Budget total : 0,00 €</span></div>
+        </div>
+        <div class="bigPct" id="remainingPct">0 %</div>
+      </div>
+      <div class="topBudgetTrack"><div class="topBudgetFill" id="remainingBudgetBar"></div></div>
+      <div class="progressNote">
+        <span id="spentPctText">0 % consommé</span>
+        <span id="remainingAmountText">0,00 € disponibles</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <section class="card">
+      <div class="cardhead">
+        <h2>Dépenses</h2>
+      </div>
+
+      <div class="tablewrap">
+        <table class="expenseTable">
+          <colgroup>
+            <col class="col-desc">
+            <col class="col-price">
+            <col class="col-payer">
+            <col class="col-store">
+            <col class="col-cat">
+            <col class="col-ticket">
+            <col class="col-actions">
+          </colgroup>
+          <thead>
+            <tr class="columnHead">
+              <th>Descriptif</th>
+              <th>Prix</th>
+              <th>Payé par</th>
+              <th>Acheté chez</th>
+              <th>Catégorie</th>
+              <th style="text-align:center">Ticket</th>
+              <th></th>
+            </tr>
+            <tr class="filterRow">
+              <th><input id="filterSearch" placeholder="Rechercher…"></th>
+              <th><input id="filterPrice" placeholder="Ex. 15 - 50"></th>
+              <th>
+                <select id="filterPayer">
+                  <option value="">Tous</option>
+                  <option value="Moi">Moi</option>
+                  <option value="Parents">Parents</option>
+                  <option value="À renseigner">À renseigner</option>
+                </select>
+              </th>
+              <th><input id="filterStore" placeholder="Magasin…"></th>
+              <th><select id="filterCategory"></select></th>
+              <th colspan="2"><button class="primary addExpenseWide" id="addExpenseBtn">+ Ajouter</button></th>
+            </tr>
+          </thead>
+          <tbody id="expenseBody"></tbody>
+        </table>
+        <div id="emptyExpenses" class="empty">Aucune dépense pour ce filtre.</div>
+      </div>
+      <div class="footerNote">Les données sont enregistrées automatiquement dans ce navigateur et, une fois connecté, dans le fichier JSON du dépôt GitHub.</div>
+    </section>
+
+    <aside class="card">
+      <div class="cardhead"><h2>Budget par catégorie</h2></div>
+      <div class="sidebody">
+        <div id="categoryList"></div>
+        <div class="addcat">
+          <input id="newCatName" placeholder="Nouvelle catégorie">
+          <input id="newCatBudget" type="number" min="0" step="0.01" placeholder="Budget €">
+          <button class="primary" id="addCategoryBtn">Ajouter</button>
+        </div>
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
+          <div class="summaryLine"><span>Budget cible total</span><strong id="totalBudget">0,00 €</strong></div>
+          <div class="summaryLine"><span>Dépensé</span><strong id="sideSpent">0,00 €</strong></div>
+          <div class="summaryLine"><span>Reste</span><strong id="sideRemaining">0,00 €</strong></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="card analytics">
+    <div class="cardhead"><h2>Graphiques</h2></div>
+    <div class="chartsWrap">
+      <div class="chartTop">
+        <div class="chartbox">
+          <h3>Dépenses payées</h3>
+          <div id="paidExpensesDonut" class="donutWrap"></div>
+        </div>
+        <div class="chartbox">
+          <h3>Dépenses payées + prévues</h3>
+          <div id="allExpensesDonut" class="donutWrap"></div>
+        </div>
+      </div>
+
+      <div class="chartBottom">
+        <div class="chartbox">
+          <h3>Budget prévisionnel</h3>
+          <div id="plannedBudgetDonut" class="donutWrap"></div>
+        </div>
+        <div class="chartbox payerCard">
+          <h3>Répartition par payeur (payé)</h3>
+          <div id="payerDonut" class="donutWrap"></div>
+        </div>
+      </div>
+
+      <div class="chartFull" style="margin-top:18px">
+        <h3>Dépense par catégorie</h3>
+        <div id="categoryStatusBars" class="statusChart"></div>
+      </div>
+    </div>
+</section>
+</div>
+
+<div id="githubModal" class="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="githubModalTitle">
+  <div class="modal">
+    <h2 id="githubModalTitle">Sauvegarde GitHub</h2>
+    <p>Utilise un jeton GitHub limité à ce dépôt avec l’autorisation <strong>Contents: Read and write</strong>. Il reste uniquement dans ce navigateur et n’est jamais ajouté au code.</p>
+    <div class="formGrid">
+      <div class="formField"><label for="ghOwner">Compte GitHub</label><input id="ghOwner" autocomplete="off" placeholder="ex. armandjulien"></div>
+      <div class="formField"><label for="ghRepo">Dépôt</label><input id="ghRepo" autocomplete="off" value="budget-travaux"></div>
+      <div class="formField"><label for="ghBranch">Branche</label><input id="ghBranch" autocomplete="off" value="main"></div>
+      <div class="formField"><label for="ghPath">Fichier de données</label><input id="ghPath" autocomplete="off" value="budget-travaux.json"></div>
+      <div class="formField full"><label for="ghToken">Jeton d’accès GitHub</label><input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…"></div>
+    </div>
+    <label class="checkLine"><input id="ghRemember" type="checkbox" checked> Mémoriser la connexion sur cet appareil personnel</label>
+    <p class="modalHelp">Le bouton « Déconnecter » efface le jeton enregistré de ce navigateur.</p>
+    <div class="modalActions">
+      <button id="ghDisconnectBtn" class="danger">Déconnecter</button>
+      <button id="ghCancelBtn">Annuler</button>
+      <button id="ghConnectBtn" class="primary">Connecter et charger</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_CATEGORIES = [
+  {id:"cat-destruction",name:"Destruction",budget:0},
+  {id:"cat-peinture",name:"Peinture",budget:0},
+  {id:"cat-plomberie",name:"Plomberie",budget:0},
+  {id:"cat-electricite",name:"Électricité",budget:0},
+  {id:"cat-cuisine",name:"Cuisine",budget:0},
+  {id:"cat-sdb",name:"Salle de bain",budget:0},
+  {id:"cat-sol",name:"Sol",budget:0},
+  {id:"cat-meuble",name:"Meuble",budget:0},
+  {id:"cat-autre",name:"Autre",budget:0}
+];
+const PALETTE = ["#0f766e","#2563eb","#7c3aed","#db2777","#ea580c","#ca8a04","#16a34a","#0891b2","#64748b","#dc2626","#9333ea","#4f46e5"];
+const DATA_STORAGE_KEY = "travauxBudgetV17";
+const GITHUB_CONFIG_KEY = "travauxGitHubV1";
+const GITHUB_TOKEN_KEY = "travauxGitHubTokenV1";
+let data = loadData();
+let syncTimer = null;
+let syncInProgress = false;
+
+function loadData(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(DATA_STORAGE_KEY) || localStorage.getItem("travauxBudgetV16") || localStorage.getItem("travauxBudgetV15") || localStorage.getItem("travauxBudgetV13") || localStorage.getItem("travauxBudgetV12") || localStorage.getItem("travauxBudgetV11") || localStorage.getItem("travauxBudgetV10") || localStorage.getItem("travauxBudgetV9") || localStorage.getItem("travauxBudgetV8") || localStorage.getItem("travauxBudgetV7") || localStorage.getItem("travauxBudgetV6") || localStorage.getItem("travauxBudgetV5") || localStorage.getItem("travauxBudgetV4") || localStorage.getItem("travauxBudgetV3") || localStorage.getItem("travauxBudgetV2") || localStorage.getItem("travauxBudgetV1"));
+    if(saved && Array.isArray(saved.categories) && Array.isArray(saved.expenses)) return saved;
+  }catch(e){}
+  return {version:17, categories: DEFAULT_CATEGORIES.map(x=>({...x})), expenses: []};
+}
+function save(){
+  data.version = 17;
+  data.updatedAt = new Date().toISOString();
+  localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
+  scheduleGitHubSync();
+}
+
+function getGitHubConfig(){
+  try{return JSON.parse(localStorage.getItem(GITHUB_CONFIG_KEY) || "null");}catch(e){return null;}
+}
+function getGitHubToken(){
+  return sessionStorage.getItem(GITHUB_TOKEN_KEY) || localStorage.getItem(GITHUB_TOKEN_KEY) || "";
+}
+function setSyncStatus(message,state=""){
+  const el = document.getElementById("syncStatus");
+  if(!el) return;
+  el.textContent = message;
+  el.className = `syncStatus ${state}`.trim();
+}
+function githubApiUrl(cfg){
+  const path = String(cfg.path || "budget-travaux.json").split("/").map(encodeURIComponent).join("/");
+  return `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path}?ref=${encodeURIComponent(cfg.branch || "main")}`;
+}
+function utf8ToBase64(value){
+  const bytes = new TextEncoder().encode(value);
+  let binary = "";
+  bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+  return btoa(binary);
+}
+function base64ToUtf8(value){
+  const binary = atob(String(value).replace(/\s/g,""));
+  const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+async function githubRequest(url,options={}){
+  const token = getGitHubToken();
+  if(!token) throw new Error("Connexion GitHub requise.");
+  const response = await fetch(url,{
+    ...options,
+    headers:{
+      "Accept":"application/vnd.github+json",
+      "Authorization":`Bearer ${token}`,
+      "X-GitHub-Api-Version":"2022-11-28",
+      ...(options.headers || {})
+    }
+  });
+  const body = await response.json().catch(() => ({}));
+  if(!response.ok) throw new Error(body.message || `Erreur GitHub ${response.status}`);
+  return body;
+}
+async function loadFromGitHub({replace=true}={}){
+  const cfg = getGitHubConfig();
+  if(!cfg || !getGitHubToken()) throw new Error("Connexion GitHub requise.");
+  setSyncStatus("Chargement GitHub…","syncing");
+  const remote = await githubRequest(githubApiUrl(cfg));
+  const incoming = JSON.parse(base64ToUtf8(remote.content));
+  if(!Array.isArray(incoming.categories) || !Array.isArray(incoming.expenses)) throw new Error("Le fichier GitHub n’est pas un budget valide.");
+  if(replace){
+    data = incoming;
+    localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
+    render();
+  }
+  setSyncStatus("Synchronisé avec GitHub","synced");
+  return remote;
+}
+async function syncToGitHub(){
+  const cfg = getGitHubConfig();
+  if(!cfg || !getGitHubToken()){
+    setSyncStatus("Enregistré localement");
+    return;
+  }
+  if(syncInProgress){ scheduleGitHubSync(); return; }
+  syncInProgress = true;
+  clearTimeout(syncTimer);
+  setSyncStatus("Enregistrement GitHub…","syncing");
+  try{
+    const current = await githubRequest(githubApiUrl(cfg));
+    const url = githubApiUrl(cfg).replace(/\?ref=.*$/,"");
+    await githubRequest(url,{
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        message:`Mise à jour du budget — ${new Intl.DateTimeFormat("fr-FR",{dateStyle:"short",timeStyle:"short"}).format(new Date())}`,
+        content:utf8ToBase64(JSON.stringify(data,null,2)+"\n"),
+        sha:current.sha,
+        branch:cfg.branch || "main"
+      })
+    });
+    setSyncStatus("Synchronisé avec GitHub","synced");
+  }catch(error){
+    console.error(error);
+    setSyncStatus("Échec de la sauvegarde","error");
+  }finally{
+    syncInProgress = false;
+  }
+}
+function scheduleGitHubSync(){
+  if(!getGitHubConfig() || !getGitHubToken()){
+    setSyncStatus("Enregistré localement");
+    return;
+  }
+  clearTimeout(syncTimer);
+  setSyncStatus("Modification en attente…","syncing");
+  syncTimer = setTimeout(syncToGitHub,1200);
+}
+function inferGitHubConfig(){
+  const host = location.hostname;
+  if(!host.endsWith(".github.io")) return null;
+  const owner = host.split(".")[0];
+  const firstPath = location.pathname.split("/").filter(Boolean)[0];
+  return {owner,repo:firstPath || `${owner}.github.io`,branch:"main",path:"budget-travaux.json"};
+}
+function openGitHubModal(){
+  const cfg = getGitHubConfig() || inferGitHubConfig() || {owner:"",repo:"budget-travaux",branch:"main",path:"budget-travaux.json"};
+  document.getElementById("ghOwner").value = cfg.owner || "";
+  document.getElementById("ghRepo").value = cfg.repo || "budget-travaux";
+  document.getElementById("ghBranch").value = cfg.branch || "main";
+  document.getElementById("ghPath").value = cfg.path || "budget-travaux.json";
+  document.getElementById("ghToken").value = getGitHubToken();
+  document.getElementById("githubModal").classList.add("open");
+}
+function closeGitHubModal(){ document.getElementById("githubModal").classList.remove("open"); }
+async function connectGitHub(){
+  const cfg = {
+    owner:document.getElementById("ghOwner").value.trim(),
+    repo:document.getElementById("ghRepo").value.trim(),
+    branch:document.getElementById("ghBranch").value.trim() || "main",
+    path:document.getElementById("ghPath").value.trim() || "budget-travaux.json"
+  };
+  const token = document.getElementById("ghToken").value.trim();
+  if(!cfg.owner || !cfg.repo || !token){ alert("Renseigne le compte, le dépôt et le jeton GitHub."); return; }
+  localStorage.setItem(GITHUB_CONFIG_KEY,JSON.stringify(cfg));
+  sessionStorage.setItem(GITHUB_TOKEN_KEY,token);
+  localStorage.removeItem(GITHUB_TOKEN_KEY);
+  if(document.getElementById("ghRemember").checked) localStorage.setItem(GITHUB_TOKEN_KEY,token);
+  document.getElementById("ghConnectBtn").disabled = true;
+  try{
+    await loadFromGitHub({replace:true});
+    document.getElementById("syncNowBtn").disabled = false;
+    closeGitHubModal();
+  }catch(error){
+    setSyncStatus("Connexion GitHub impossible","error");
+    alert(`Connexion impossible : ${error.message}`);
+  }finally{
+    document.getElementById("ghConnectBtn").disabled = false;
+  }
+}
+function disconnectGitHub(){
+  localStorage.removeItem(GITHUB_CONFIG_KEY);
+  localStorage.removeItem(GITHUB_TOKEN_KEY);
+  sessionStorage.removeItem(GITHUB_TOKEN_KEY);
+  document.getElementById("syncNowBtn").disabled = true;
+  setSyncStatus("Enregistré localement");
+  closeGitHubModal();
+}
+async function loadBundledDataIfNeeded(){
+  if(localStorage.getItem(DATA_STORAGE_KEY)) return;
+  try{
+    const response = await fetch(`budget-travaux.json?v=${Date.now()}`,{cache:"no-store"});
+    if(!response.ok) return;
+    const incoming = await response.json();
+    if(Array.isArray(incoming.categories) && Array.isArray(incoming.expenses)){
+      data = incoming;
+      localStorage.setItem(DATA_STORAGE_KEY,JSON.stringify(data));
+      render();
+    }
+  }catch(error){ console.warn("Chargement initial impossible",error); }
+}
+
+const euro = n => new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(Number(n)||0);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+
+function allExpenses(){
+  return Array.isArray(data.expenses) ? data.expenses : [];
+}
+function getCategoryName(id){
+  return data.categories.find(c => c.id === id)?.name || "";
+}
+function addExpense(prefill={}){
+  data.expenses.push({
+    id: crypto.randomUUID(),
+    description: prefill.description || "",
+    price: Number(prefill.price) || 0,
+    paidBy: prefill.paidBy || "Moi",
+    store: prefill.store || "",
+    categoryId: prefill.categoryId || data.categories[0]?.id || "",
+    receipt: Boolean(prefill.receipt)
+  });
+  save(); render();
+}
+function deleteExpense(id){
+  data.expenses = data.expenses.filter(x => x.id !== id);
+  save(); render();
+}
+function updateExpense(id,key,value){
+  const x = data.expenses.find(e => e.id === id);
+  if(!x) return;
+  if(key === "price") x[key] = Number(value) || 0;
+  else if(key === "receipt") x[key] = Boolean(value);
+  else x[key] = value;
+  save();
+  render();
+}
+function updateCategory(id,key,value){
+  const c = data.categories.find(c => c.id === id);
+  if(!c) return;
+  c[key] = key === "budget" ? Number(value) || 0 : value;
+  save(); render();
+}
+function deleteCategory(id){
+  if(data.categories.length <= 1){ alert("Il faut conserver au moins une catégorie."); return; }
+  const used = data.expenses.some(e => e.categoryId === id);
+  if(used && !confirm("Cette catégorie est utilisée. Les dépenses seront déplacées vers « Autre » ou la première catégorie disponible. Continuer ?")) return;
+  const fallback = data.categories.find(c => c.id !== id && c.name === "Autre") || data.categories.find(c => c.id !== id);
+  data.expenses.forEach(e => { if(e.categoryId === id) e.categoryId = fallback.id; });
+  data.categories = data.categories.filter(c => c.id !== id);
+  save(); render();
+}
+function addCategory(){
+  const name = document.getElementById("newCatName").value.trim();
+  const budget = Number(document.getElementById("newCatBudget").value) || 0;
+  if(!name) return;
+  data.categories.push({id: crypto.randomUUID(), name, budget});
+  document.getElementById("newCatName").value = "";
+  document.getElementById("newCatBudget").value = "";
+  save(); render();
+}
+
+function spentByCategory(id){
+  return allExpenses().filter(e => e.categoryId === id).reduce((s,e) => s + (Number(e.price)||0), 0);
+}
+
+function amountByCategory(id, onlyPaid = null){
+  return allExpenses()
+    .filter(e => e.categoryId === id && (onlyPaid === null || Boolean(e.receipt) === onlyPaid))
+    .reduce((s,e) => s + (Number(e.price)||0), 0);
+}
+function amountByPayer(payer, onlyPaid = null){
+  return allExpenses()
+    .filter(e => e.paidBy === payer && (onlyPaid === null || Boolean(e.receipt) === onlyPaid))
+    .reduce((s,e) => s + (Number(e.price)||0), 0);
+}
+
+function splitBudgetSegments(paid, planned, budget){
+  const safeBudget = Math.max(0, Number(budget) || 0);
+  const safePaid = Math.max(0, Number(paid) || 0);
+  const safePlanned = Math.max(0, Number(planned) || 0);
+  const total = safePaid + safePlanned;
+  const over = safeBudget > 0 && total > safeBudget;
+
+  const scaleBase = Math.max(safeBudget, total, 1);
+  const totalPct = (total / scaleBase) * 100;
+  const paidPct = total > 0 ? totalPct * (safePaid / total) : 0;
+  const plannedPct = total > 0 ? totalPct * (safePlanned / total) : 0;
+  const budgetPct = (safeBudget / scaleBase) * 100;
+
+  return {
+    paid: safePaid,
+    planned: safePlanned,
+    total,
+    budget: safeBudget,
+    over,
+    paidPct,
+    plannedPct,
+    budgetPct
+  };
+}
+
+function totals(){
+  const spent = allExpenses().reduce((s,e) => s + (Number(e.price)||0), 0);
+  const mine = allExpenses().filter(e => e.paidBy === "Moi").reduce((s,e) => s + (Number(e.price)||0), 0);
+  const parents = allExpenses().filter(e => e.paidBy === "Parents").reduce((s,e) => s + (Number(e.price)||0), 0);
+  const unassigned = allExpenses().filter(e => !["Moi","Parents"].includes(e.paidBy)).reduce((s,e) => s + (Number(e.price)||0), 0);
+  const budget = data.categories.reduce((s,c) => s + (Number(c.budget)||0), 0);
+  return {spent,mine,parents,unassigned,budget,remaining:budget-spent};
+}
+
+function parsePriceFilter(value){
+  const s = (value || "").trim().replace(",", ".");
+  if(!s) return {min:null,max:null};
+  const range = s.match(/^\s*(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)\s*$/);
+  if(range){
+    const a = Number(range[1]), b = Number(range[2]);
+    return {min:Math.min(a,b), max:Math.max(a,b)};
+  }
+  const minOnly = s.match(/^\s*(?:>=?|min\s*)\s*(\d+(?:\.\d+)?)\s*$/i);
+  if(minOnly) return {min:Number(minOnly[1]),max:null};
+  const maxOnly = s.match(/^\s*(?:<=?|max\s*)\s*(\d+(?:\.\d+)?)\s*$/i);
+  if(maxOnly) return {min:null,max:Number(maxOnly[1])};
+  const single = s.match(/^\s*(\d+(?:\.\d+)?)\s*$/);
+  if(single){
+    const v = Number(single[1]);
+    return {min:v,max:v};
+  }
+  return {min:null,max:null};
+}
+
+function filteredExpenses(){
+  const search = document.getElementById("filterSearch").value.trim().toLowerCase();
+  const category = document.getElementById("filterCategory").value;
+  const payer = document.getElementById("filterPayer").value;
+  const store = document.getElementById("filterStore").value.trim().toLowerCase();
+  const {min,max} = parsePriceFilter(document.getElementById("filterPrice").value);
+
+  return allExpenses().filter(e => {
+    const price = Number(e.price) || 0;
+    const matchesSearch = !search || [e.description, e.store, getCategoryName(e.categoryId)].join(" ").toLowerCase().includes(search);
+    const matchesCategory = !category || e.categoryId === category;
+    const matchesPayer = !payer || e.paidBy === payer;
+    const matchesStore = !store || (e.store || "").toLowerCase().includes(store);
+    const matchesMin = min === null || price >= min;
+    const matchesMax = max === null || price <= max;
+    return matchesSearch && matchesCategory && matchesPayer && matchesStore && matchesMin && matchesMax;
+  });
+}
+
+function renderFilterCategoryOptions(){
+  const sel = document.getElementById("filterCategory");
+  const current = sel.value;
+  sel.innerHTML = `<option value="">Toutes</option>` + data.categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
+  if([...sel.options].some(o => o.value === current)) sel.value = current;
+}
+
+function renderExpenses(){
+  const rows = filteredExpenses();
+  const body = document.getElementById("expenseBody");
+  const empty = document.getElementById("emptyExpenses");
+  empty.style.display = rows.length ? "none" : "block";
+  body.innerHTML = rows.map(e => `
+    <tr>
+      <td><input class="desc" value="${esc(e.description)}" placeholder="Ex. Peinture salon" onchange="updateExpense('${e.id}','description',this.value)"></td>
+      <td><input class="money" type="number" min="0" step="0.01" value="${Number(e.price)||0}" onchange="updateExpense('${e.id}','price',this.value)"></td>
+      <td>
+        <select class="who" onchange="updateExpense('${e.id}','paidBy',this.value)">
+          <option ${e.paidBy==="Moi"?"selected":""}>Moi</option>
+          <option ${e.paidBy==="Parents"?"selected":""}>Parents</option>
+          <option ${e.paidBy==="À renseigner"?"selected":""}>À renseigner</option>
+        </select>
+      </td>
+      <td><input class="store" value="${esc(e.store)}" placeholder="Leroy Merlin…" onchange="updateExpense('${e.id}','store',this.value)"></td>
+      <td>
+        <select class="cat" onchange="updateExpense('${e.id}','categoryId',this.value)">
+          ${data.categories.map(c => `<option value="${c.id}" ${e.categoryId===c.id?"selected":""}>${esc(c.name)}</option>`).join("")}
+        </select>
+      </td>
+      <td class="ticketCell">
+        <input class="ticketCheck" type="checkbox" ${e.receipt ? "checked" : ""} onchange="updateExpense('${e.id}','receipt',this.checked)" title="Ticket de caisse disponible">
+      </td>
+      <td><button class="smallbtn danger" onclick="deleteExpense('${e.id}')" title="Supprimer">✕</button></td>
+    </tr>
+  `).join("");
+
+}
+
+function renderCategories(){
+  document.getElementById("categoryList").innerHTML = data.categories.map(c => {
+    const spent = spentByCategory(c.id);
+    const budget = Number(c.budget) || 0;
+    const remaining = budget - spent;
+    const pct = budget > 0 ? Math.min(100, (spent / budget) * 100) : (spent > 0 ? 100 : 0);
+    const over = (budget > 0 && spent > budget) || (budget === 0 && spent > 0);
+    return `
+      <div class="catrow">
+        <div class="catgrid">
+          <input class="catname" value="${esc(c.name)}" onchange="updateCategory('${c.id}','name',this.value)">
+          <input type="number" min="0" step="0.01" value="${budget}" onchange="updateCategory('${c.id}','budget',this.value)">
+          <button class="smallbtn danger" onclick="deleteCategory('${c.id}')">✕</button>
+        </div>
+        <div class="numbers">
+          <div class="mini"><div class="k">Budget</div><div class="v">${euro(budget)}</div></div>
+          <div class="mini"><div class="k">Dépensé</div><div class="v">${euro(spent)}</div></div>
+          <div class="mini"><div class="k">${remaining>=0?"Reste":"Dépassement"}</div><div class="v" style="${remaining<0?'color:var(--danger)':''}">${euro(Math.abs(remaining))}</div></div>
+        </div>
+        <div class="bar ${over?"over":""}"><div style="width:${pct}%"></div></div>
+      </div>
+    `;
+  }).join("");
+}
+
+function pieSvg(entries, title="Total"){
+  const clean = entries.filter(x => Number(x.value) > 0);
+  const total = clean.reduce((s,x) => s + Number(x.value), 0);
+  if(!total){
+    return `<div style="color:#6b7280;font-size:14px">Aucune donnée à afficher.</div>`;
+  }
+  const r = 80, center = 110, stroke = 38, circ = 2 * Math.PI * r;
+  let acc = 0;
+  const arcs = clean.map((x) => {
+    const frac = x.value / total;
+    const dash = frac * circ;
+    const off = -acc * circ;
+    acc += frac;
+    return `<circle cx="${center}" cy="${center}" r="${r}" fill="none" stroke="${x.color}" stroke-width="${stroke}" stroke-linecap="butt"
+      stroke-dasharray="${dash} ${circ-dash}" stroke-dashoffset="${off}" transform="rotate(-90 ${center} ${center})"/>`;
+  }).join("");
+  const legend = clean.map(x => `
+    <div class="legendRow">
+      <div class="legendLeft">
+        <span class="swatch" style="background:${x.color}"></span>
+        <span>${esc(x.label)}</span>
+      </div>
+      <span class="legendVal">${euro(x.value)}</span>
+    </div>
+  `).join("");
+  return `
+    <div class="bigDonut">
+      <svg width="100%" viewBox="0 0 220 220" style="max-width:340px">
+        ${arcs}
+        <circle cx="${center}" cy="${center}" r="53" fill="#fff"/>
+        <text x="${center}" y="103" text-anchor="middle" font-size="14" fill="#6b7280">${esc(title)}</text>
+        <text x="${center}" y="124" text-anchor="middle" font-size="15" font-weight="700" fill="#172033">${esc(euro(total))}</text>
+      </svg>
+    </div>
+    <div class="legend">${legend}</div>
+  `;
+}
+
+function renderCharts(){
+  const paidCategoryEntries = data.categories.map((c,i) => ({
+    label: c.name,
+    value: amountByCategory(c.id, true),
+    color: PALETTE[i % PALETTE.length]
+  }));
+  document.getElementById("paidExpensesDonut").innerHTML = pieSvg(paidCategoryEntries, "Payé");
+
+  const allCategoryEntries = data.categories.map((c,i) => ({
+    label: c.name,
+    value: amountByCategory(c.id, null),
+    color: PALETTE[i % PALETTE.length]
+  }));
+  document.getElementById("allExpensesDonut").innerHTML = pieSvg(allCategoryEntries, "Total");
+
+  const plannedBudgetEntries = data.categories.map((c,i) => ({
+    label: c.name,
+    value: Number(c.budget) || 0,
+    color: PALETTE[i % PALETTE.length]
+  }));
+  document.getElementById("plannedBudgetDonut").innerHTML = pieSvg(plannedBudgetEntries, "Budget");
+
+  const paidPayerEntries = [
+    {label:"Moi", value:amountByPayer("Moi", true), color:"#0f766e"},
+    {label:"Parents", value:amountByPayer("Parents", true), color:"#4f46e5"},
+    {label:"À renseigner", value:amountByPayer("À renseigner", true), color:"#94a3b8"}
+  ];
+  document.getElementById("payerDonut").innerHTML = pieSvg(paidPayerEntries, "Payé");
+
+  document.getElementById("categoryStatusBars").innerHTML = data.categories.map(c => {
+    const paid = amountByCategory(c.id, true);
+    const planned = amountByCategory(c.id, false);
+    const budget = Number(c.budget) || 0;
+    const s = splitBudgetSegments(paid, planned, budget);
+
+    const paidClass = s.over ? "statusPaidOver" : "statusPaid";
+    const plannedClass = s.over ? "statusPlannedOver" : "statusPlanned";
+
+    return `
+      <div class="statusRow">
+        <div class="statusName">${esc(c.name)}</div>
+        <div class="statusTrack" title="Budget : ${euro(s.budget)} — Total : ${euro(s.total)}">
+          <div class="statusBudgetMarker" style="left:${s.budgetPct}%"></div>
+          <div class="statusBar">
+            <div class="${paidClass}" style="width:${s.paidPct}%"></div>
+            <div class="${plannedClass}" style="width:${s.plannedPct}%"></div>
+          </div>
+        </div>
+        <div class="statusValue"><strong>${euro(s.total)} / ${euro(s.budget)}</strong></div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderSummaries(){
+  const t = totals();
+  document.getElementById("totalSpent").textContent = euro(t.spent);
+  document.getElementById("remainingBudget").textContent = euro(t.remaining);
+  document.getElementById("remainingBudget").style.color = t.remaining < 0 ? "var(--danger)" : "";
+
+  const remainingRawPct = t.budget > 0 ? (t.remaining / t.budget) * 100 : 0;
+  const remainingPct = Math.max(0, Math.min(100, remainingRawPct));
+  const spentPct = t.budget > 0 ? (t.spent / t.budget) * 100 : 0;
+  const over = t.remaining < 0;
+
+  const pctEl = document.getElementById("remainingPct");
+  pctEl.textContent = t.budget > 0 ? `${Math.round(remainingRawPct)} %` : "—";
+  pctEl.classList.toggle("over", over);
+
+  const bar = document.getElementById("remainingBudgetBar");
+  bar.style.width = `${remainingPct}%`;
+  bar.classList.toggle("over", over);
+
+  document.getElementById("topBudgetText").textContent = `Budget total : ${euro(t.budget)}`;
+  document.getElementById("spentPctText").textContent = t.budget > 0 ? `${Math.round(spentPct)} % consommé` : "Budget non renseigné";
+  document.getElementById("remainingAmountText").textContent = over
+    ? `${euro(Math.abs(t.remaining))} de dépassement`
+    : `${euro(t.remaining)} disponibles`;
+
+  document.getElementById("totalBudget").textContent = euro(t.budget);
+  document.getElementById("sideSpent").textContent = euro(t.spent);
+  document.getElementById("sideRemaining").textContent = euro(t.remaining);
+}
+
+function render(){
+  renderFilterCategoryOptions();
+  renderExpenses();
+  renderCategories();
+  renderSummaries();
+  renderCharts();
+}
+
+function exportJSON(){
+  download(new Blob([JSON.stringify(data,null,2)], {type:"application/json"}), "budget-travaux.json");
+}
+function exportCSV(){
+  const rows = [["Descriptif","Prix","Payé par","Acheté chez","Catégorie","Ticket de caisse"]];
+  allExpenses().forEach(e => rows.push([e.description, e.price, e.paidBy, e.store, getCategoryName(e.categoryId), e.receipt ? "Oui" : "Non"]));
+  const csv = "\uFEFF" + rows.map(r => r.map(v => `"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n");
+  download(new Blob([csv], {type:"text/csv;charset=utf-8"}), "depenses-travaux.csv");
+}
+function download(blob,name){
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 500);
+}
+function resetFilters(){
+  document.getElementById("filterSearch").value = "";
+  document.getElementById("filterCategory").value = "";
+  document.getElementById("filterPayer").value = "";
+  document.getElementById("filterStore").value = "";
+  document.getElementById("filterPrice").value = "";
+  render();
+}
+
+function printReport(){
+  const t = totals();
+  const today = new Intl.DateTimeFormat("fr-FR").format(new Date());
+
+  const paidCategoryEntries = data.categories.map((c,i) => ({label:c.name, value:amountByCategory(c.id, true), color:PALETTE[i%PALETTE.length]}));
+  const allCategoryEntries = data.categories.map((c,i) => ({label:c.name, value:amountByCategory(c.id, null), color:PALETTE[i%PALETTE.length]}));
+  const plannedBudgetEntries = data.categories.map((c,i) => ({label:c.name, value:Number(c.budget)||0, color:PALETTE[i%PALETTE.length]}));
+  const paidPayerEntries = [
+    {label:"Moi", value:amountByPayer("Moi", true), color:"#0f766e"},
+    {label:"Parents", value:amountByPayer("Parents", true), color:"#4f46e5"},
+    {label:"À renseigner", value:amountByPayer("À renseigner", true), color:"#94a3b8"}
+  ];
+
+  const catRows = data.categories.map(c => {
+    const spent = amountByCategory(c.id, null), budget = Number(c.budget)||0, remaining = budget - spent;
+    return `<tr><td>${esc(c.name)}</td><td>${euro(budget)}</td><td>${euro(spent)}</td><td class="${remaining<0?'neg':''}">${euro(remaining)}</td></tr>`;
+  }).join("");
+
+  const expRows = allExpenses().map(e => `<tr><td>${esc(e.description)}</td><td>${euro(e.price)}</td><td>${esc(e.paidBy)}</td><td>${esc(e.store)}</td><td>${esc(getCategoryName(e.categoryId))}</td><td>${e.receipt ? "Oui" : "Non"}</td></tr>`).join("");
+
+  const statusBars = data.categories.map(c => {
+    const paid = amountByCategory(c.id, true);
+    const planned = amountByCategory(c.id, false);
+    const budget = Number(c.budget) || 0;
+    const s = splitBudgetSegments(paid, planned, budget);
+
+    const paidClass = s.over ? "spaidover" : "spaid";
+    const plannedClass = s.over ? "splannedover" : "splanned";
+
+    return `<div class="srow">
+      <div class="sname">${esc(c.name)}</div>
+      <div class="strack">
+        <div class="smarker" style="left:${s.budgetPct}%"></div>
+        <div class="sbar">
+          <div class="${paidClass}" style="width:${s.paidPct}%"></div>
+          <div class="${plannedClass}" style="width:${s.plannedPct}%"></div>
+        </div>
+      </div>
+      <div class="sval"><b>${euro(s.total)} / ${euro(s.budget)}</b></div>
+    </div>`;
+  }).join("");
+
+  const w = window.open("", "_blank");
+  if(!w){ alert("Le navigateur a bloqué la fenêtre d'impression."); return; }
+
+  w.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Rapport Budget_V17</title>
+  <style>
+  @page{size:A4;margin:12mm}
+  *{box-sizing:border-box}
+  body{font-family:Arial,sans-serif;color:#172033;margin:0;font-size:11px}
+  h1{font-size:22px;margin:0 0 3px}
+  .date{color:#6b7280;margin-bottom:14px}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+  .k{border:1px solid #dfe4ec;border-radius:8px;padding:8px}
+  .k span{display:block;color:#6b7280;font-size:9px;text-transform:uppercase}
+  .k b{font-size:14px;display:block;margin-top:4px}
+  .charts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;align-items:stretch}
+  .box{border:1px solid #dfe4ec;border-radius:9px;padding:10px;break-inside:avoid;page-break-inside:avoid}
+  .box h2{font-size:13px;margin:0 0 8px}
+  .donutWrap{display:flex;align-items:center;gap:10px}
+  .legend{font-size:9px}
+  .legendRow{display:flex;align-items:center;justify-content:space-between;gap:5px;margin:4px 0}
+  .legendLeft{display:flex;align-items:center;gap:5px}
+  .swatch{width:8px;height:8px;border-radius:2px}
+  .fullrow{grid-column:1/-1}
+  .legendLine{display:flex;gap:14px;align-items:center;font-size:9px;color:#6b7280;margin-bottom:7px}
+  .dot{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:4px}
+  .dot.paid{background:#0f766e}
+  .dot.planned{background:#86efac}
+  .dot.overpaid{background:#dc2626}
+  .dot.overplanned{background:#fca5a5}
+  .srow{display:grid;grid-template-columns:80px 1fr 125px;gap:7px;align-items:center;margin:6px 0;font-size:9px}
+  .sname{font-weight:700}
+  .strack{height:12px;background:#edf1f5;border-radius:999px;overflow:hidden;position:relative}
+  .smarker{position:absolute;top:0;bottom:0;width:3px;background:#ffffff;z-index:2}
+  .sbar{height:100%;display:flex;border-radius:999px;overflow:hidden;position:relative;z-index:1}
+  .spaid{height:100%;background:#0f766e}
+  .splanned{height:100%;background:#86efac}
+  .spaidover{height:100%;background:#dc2626}
+  .splannedover{height:100%;background:#fca5a5}
+  .sval{text-align:right;display:flex;flex-direction:column}
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  th,td{border-bottom:1px solid #e5e7eb;padding:5px 6px;text-align:left}
+  th{background:#f8fafc;font-size:9px}
+  .neg{color:#b42318}
+  h2.section{font-size:15px;margin:15px 0 4px}
+  .pagebreak{page-break-before:always}
+  </style></head><body>
+  <h1>🏠 Rapport Budget_V17</h1><div class="date">Édité le ${today}</div>
+
+  <div class="kpis">
+    <div class="k"><span>Budget cible</span><b>${euro(t.budget)}</b></div>
+    <div class="k"><span>Dépenses totales</span><b>${euro(t.spent)}</b></div>
+    <div class="k"><span>Budget restant</span><b>${euro(t.remaining)}</b></div>
+  </div>
+
+  <div class="charts">
+    <div class="box"><h2>Dépenses payées</h2><div class="donutWrap">${pieSvg(paidCategoryEntries, "Payé")}</div></div>
+    <div class="box"><h2>Dépenses payées + prévues</h2><div class="donutWrap">${pieSvg(allCategoryEntries, "Total")}</div></div>
+    <div class="box"><h2>Budget prévisionnel</h2><div class="donutWrap">${pieSvg(plannedBudgetEntries, "Budget")}</div></div>
+    <div class="box"><h2>Répartition par payeur (payé)</h2><div class="donutWrap">${pieSvg(paidPayerEntries, "Payé")}</div></div>
+    <div class="box fullrow">
+      <h2>Dépense par catégorie</h2>
+      ${statusBars}
+    </div>
+  </div>
+
+  <h2 class="section">Synthèse par catégorie</h2>
+  <table><thead><tr><th>Catégorie</th><th>Budget</th><th>Dépensé</th><th>Reste</th></tr></thead><tbody>${catRows}</tbody></table>
+
+  <h2 class="section pagebreak">Détail des dépenses</h2>
+  <table><thead><tr><th>Descriptif</th><th>Prix</th><th>Payé par</th><th>Acheté chez</th><th>Catégorie</th><th>Ticket</th></tr></thead><tbody>${expRows}</tbody></table>
+  </body></html>`);
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 350);
+}
+
+["filterSearch","filterCategory","filterPayer","filterStore","filterPrice"].forEach(id => {
+  document.getElementById(id).addEventListener("input", renderExpenses);
+  document.getElementById(id).addEventListener("change", renderExpenses);
+});
+document.getElementById("addExpenseBtn").onclick = () => {
+  document.getElementById("filterSearch").value = "";
+  document.getElementById("filterCategory").value = "";
+  document.getElementById("filterPayer").value = "";
+  document.getElementById("filterStore").value = "";
+  document.getElementById("filterPrice").value = "";
+
+  addExpense();
+
+  requestAnimationFrame(() => {
+    const inputs = document.querySelectorAll("#expenseBody .desc");
+    const last = inputs[inputs.length - 1];
+    if(last){
+      last.focus();
+      last.scrollIntoView({behavior:"smooth", block:"center"});
+    }
+  });
+};
+document.getElementById("addCategoryBtn").onclick = addCategory;
+document.getElementById("githubBtn").onclick = openGitHubModal;
+document.getElementById("syncNowBtn").onclick = syncToGitHub;
+document.getElementById("ghCancelBtn").onclick = closeGitHubModal;
+document.getElementById("ghConnectBtn").onclick = connectGitHub;
+document.getElementById("ghDisconnectBtn").onclick = disconnectGitHub;
+document.getElementById("githubModal").addEventListener("click",ev => {
+  if(ev.target.id === "githubModal") closeGitHubModal();
+});
+document.getElementById("exportJsonBtn").onclick = exportJSON;
+document.getElementById("pdfBtn").onclick = printReport;
+document.getElementById("importJson").addEventListener("change", ev => {
+  const f = ev.target.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const incoming = JSON.parse(r.result);
+      if(!Array.isArray(incoming.categories) || !Array.isArray(incoming.expenses)) throw new Error();
+      data = incoming;
+      save();
+      render();
+    }catch(e){
+      alert("Fichier JSON invalide.");
+    }
+  };
+  r.readAsText(f);
+  ev.target.value = "";
+});
+
+render();
+loadBundledDataIfNeeded();
+if(getGitHubConfig() && getGitHubToken()){
+  document.getElementById("syncNowBtn").disabled = false;
+  loadFromGitHub({replace:true}).catch(error => {
+    console.error(error);
+    setSyncStatus("GitHub indisponible — copie locale","error");
+  });
+}else if(getGitHubConfig()){
+  setSyncStatus("GitHub à reconnecter");
+}
+</script>
+</body>
+</html>
