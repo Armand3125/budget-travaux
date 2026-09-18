@@ -61,14 +61,11 @@ button:hover,.filelabel:hover{background:#f8fafc}
 .danger{color:var(--danger)}
 .tablewrap{overflow:auto}
 table{width:100%;border-collapse:collapse;table-layout:fixed}
-.expenseTable col.col-desc{width:22%}
-.expenseTable col.col-price{width:11%}
-.expenseTable col.col-payer{width:13%}
-.expenseTable col.col-store{width:15%}
-.expenseTable col.col-cat{width:14%}
-.expenseTable col.col-link{width:17%}
-.expenseTable col.col-ticket{width:72px}
-.expenseTable col.col-actions{width:72px}
+.expenseTable col.col-desc{width:42%}
+.expenseTable col.col-price{width:18%}
+.expenseTable col.col-cat{width:28%}
+.expenseTable col.col-ticket{width:76px}
+.expenseTable col.col-actions{width:76px}
 th{background:#f8fafc;text-align:left;font-size:12px;color:#526071;padding:11px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
 td{padding:8px;border-bottom:1px solid #edf0f4;vertical-align:middle}
 tbody tr:hover{background:#fbfcfe}
@@ -82,16 +79,12 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
   accent-color:var(--accent);
   cursor:pointer
 }
-.linkCell{min-width:190px}
-.linkWrap{display:flex;align-items:center;gap:6px}
-.linkInput{min-width:135px}
-.linkOpen{
-  flex:none;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;
-  border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--accent);
-  background:#fff;font-weight:800
-}
-.linkOpen:hover{background:#f0fdfa}
-.linkOpen.disabled{color:#b8c0cc;background:#f8fafc;pointer-events:none}
+.expenseRow{cursor:pointer}
+.expenseRow:hover{background:#f7fbfb}
+.detailHint{font-size:11px;color:var(--muted);font-weight:600}
+.detailLinkLine{display:flex;gap:8px;align-items:center}
+.detailLinkLine input{flex:1}
+.detailLinkLine a{white-space:nowrap;text-decoration:none}
 .empty{padding:34px;color:var(--muted);text-align:center}
 .footerNote{padding:14px 18px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
 .sidebody{padding:14px}
@@ -256,7 +249,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
   .chartTop{grid-template-columns:1fr 1fr}
   .budgetGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .pageHeader{align-items:center}
-  .expenseTable{min-width:1080px}
+  .expenseTable{min-width:720px}
 }
 @media(max-width:1050px){
   .layout{grid-template-columns:1fr}
@@ -339,38 +332,22 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
           <colgroup>
             <col class="col-desc">
             <col class="col-price">
-            <col class="col-payer">
-            <col class="col-store">
             <col class="col-cat">
-            <col class="col-link">
             <col class="col-ticket">
             <col class="col-actions">
           </colgroup>
           <thead>
             <tr class="columnHead">
-              <th>Descriptif</th>
+              <th>Descriptif <span class="detailHint">— double-clic pour détails</span></th>
               <th>Prix</th>
-              <th>Payé par</th>
-              <th>Acheté chez</th>
               <th>Catégorie</th>
-              <th>Lien</th>
               <th style="text-align:center">Ticket</th>
               <th></th>
             </tr>
             <tr class="filterRow">
               <th><input id="filterSearch" placeholder="Rechercher…"></th>
               <th><input id="filterPrice" placeholder="Ex. 15 - 50"></th>
-              <th>
-                <select id="filterPayer">
-                  <option value="">Tous</option>
-                  <option value="Moi">Moi</option>
-                  <option value="Parents">Parents</option>
-                  <option value="À renseigner">À renseigner</option>
-                </select>
-              </th>
-              <th><input id="filterStore" placeholder="Magasin…"></th>
               <th><select id="filterCategory"></select></th>
-              <th></th>
               <th colspan="2"><button class="primary addExpenseWide" id="addExpenseBtn">+ Ajouter</button></th>
             </tr>
           </thead>
@@ -378,7 +355,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
         </table>
         <div id="emptyExpenses" class="empty">Aucune dépense pour ce filtre.</div>
       </div>
-      <div class="footerNote">Les données sont enregistrées automatiquement dans ce navigateur et, une fois connecté, dans le fichier JSON du dépôt GitHub.</div>
+      <div class="footerNote">Double-clique sur une dépense pour renseigner « Payé par », « Acheté chez » et le lien. Les données sont enregistrées automatiquement dans ce navigateur et, une fois connecté, dans le fichier JSON du dépôt GitHub.</div>
     </section>
 
     <aside class="card">
@@ -430,6 +407,38 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
       </div>
     </div>
 </section>
+</div>
+
+<div id="expenseDetailModal" class="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="expenseDetailTitle">
+  <div class="modal">
+    <h2 id="expenseDetailTitle">Détails de la dépense</h2>
+    <p id="expenseDetailSubtitle"></p>
+    <div class="formGrid">
+      <div class="formField">
+        <label for="detailPaidBy">Payé par</label>
+        <select id="detailPaidBy">
+          <option value="Moi">Moi</option>
+          <option value="Parents">Parents</option>
+          <option value="À renseigner">À renseigner</option>
+        </select>
+      </div>
+      <div class="formField">
+        <label for="detailStore">Acheté chez</label>
+        <input id="detailStore" placeholder="Leroy Merlin…">
+      </div>
+      <div class="formField full">
+        <label for="detailLink">Lien</label>
+        <div class="detailLinkLine">
+          <input id="detailLink" type="url" placeholder="https://…">
+          <a id="detailLinkOpen" class="smallbtn" href="#" target="_blank" rel="noopener noreferrer" style="display:none">Ouvrir ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="modalActions">
+      <button id="expenseDetailCancelBtn">Annuler</button>
+      <button id="expenseDetailSaveBtn" class="primary">Enregistrer</button>
+    </div>
+  </div>
 </div>
 
 <div id="githubModal" class="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="githubModalTitle">
@@ -662,14 +671,44 @@ function normalizeUrl(value){
     return "";
   }
 }
-function expenseLinkCell(e){
-  const url = normalizeUrl(e.link);
-  return `<td class="linkCell"><div class="linkWrap">
-    <input class="linkInput" type="url" value="${esc(e.link || "")}" placeholder="https://…" onchange="updateExpense('${e.id}','link',this.value)">
-    ${url
-      ? `<a class="linkOpen" href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="Ouvrir le lien">↗</a>`
-      : `<span class="linkOpen disabled" title="Ajoute un lien">↗</span>`}
-  </div></td>`;
+let currentExpenseDetailId = null;
+function refreshDetailLinkButton(){
+  const input = document.getElementById("detailLink");
+  const open = document.getElementById("detailLinkOpen");
+  if(!input || !open) return;
+  const url = normalizeUrl(input.value);
+  if(url){
+    open.href = url;
+    open.style.display = "inline-flex";
+  }else{
+    open.removeAttribute("href");
+    open.style.display = "none";
+  }
+}
+function openExpenseDetails(id){
+  const e = data.expenses.find(x => x.id === id);
+  if(!e) return;
+  currentExpenseDetailId = id;
+  document.getElementById("expenseDetailSubtitle").textContent = e.description || "Dépense sans descriptif";
+  document.getElementById("detailPaidBy").value = e.paidBy || "À renseigner";
+  document.getElementById("detailStore").value = e.store || "";
+  document.getElementById("detailLink").value = e.link || "";
+  refreshDetailLinkButton();
+  document.getElementById("expenseDetailModal").classList.add("open");
+}
+function closeExpenseDetails(){
+  currentExpenseDetailId = null;
+  document.getElementById("expenseDetailModal").classList.remove("open");
+}
+function saveExpenseDetails(){
+  const e = data.expenses.find(x => x.id === currentExpenseDetailId);
+  if(!e){ closeExpenseDetails(); return; }
+  e.paidBy = document.getElementById("detailPaidBy").value || "À renseigner";
+  e.store = document.getElementById("detailStore").value.trim();
+  e.link = document.getElementById("detailLink").value.trim();
+  save();
+  render();
+  closeExpenseDetails();
 }
 
 function allExpenses(){
@@ -683,7 +722,7 @@ function addExpense(prefill={}){
     id: crypto.randomUUID(),
     description: prefill.description || "",
     price: Number(prefill.price) || 0,
-    paidBy: prefill.paidBy || "Moi",
+    paidBy: prefill.paidBy || "À renseigner",
     store: prefill.store || "",
     categoryId: prefill.categoryId || data.categories[0]?.id || "",
     link: prefill.link || "",
@@ -801,19 +840,15 @@ function parsePriceFilter(value){
 function filteredExpenses(){
   const search = document.getElementById("filterSearch").value.trim().toLowerCase();
   const category = document.getElementById("filterCategory").value;
-  const payer = document.getElementById("filterPayer").value;
-  const store = document.getElementById("filterStore").value.trim().toLowerCase();
   const {min,max} = parsePriceFilter(document.getElementById("filterPrice").value);
 
   return allExpenses().filter(e => {
     const price = Number(e.price) || 0;
     const matchesSearch = !search || [e.description, e.store, e.link, getCategoryName(e.categoryId)].join(" ").toLowerCase().includes(search);
     const matchesCategory = !category || e.categoryId === category;
-    const matchesPayer = !payer || e.paidBy === payer;
-    const matchesStore = !store || (e.store || "").toLowerCase().includes(store);
     const matchesMin = min === null || price >= min;
     const matchesMax = max === null || price <= max;
-    return matchesSearch && matchesCategory && matchesPayer && matchesStore && matchesMin && matchesMax;
+    return matchesSearch && matchesCategory && matchesMin && matchesMax;
   });
 }
 
@@ -830,27 +865,18 @@ function renderExpenses(){
   const empty = document.getElementById("emptyExpenses");
   empty.style.display = rows.length ? "none" : "block";
   body.innerHTML = rows.map(e => `
-    <tr>
+    <tr class="expenseRow" ondblclick="openExpenseDetails('${e.id}')" title="Double-cliquer pour afficher les détails">
       <td><input class="desc" value="${esc(e.description)}" placeholder="Ex. Peinture salon" onchange="updateExpense('${e.id}','description',this.value)"></td>
       <td><input class="money" type="number" min="0" step="0.01" value="${Number(e.price)||0}" onchange="updateExpense('${e.id}','price',this.value)"></td>
-      <td>
-        <select class="who" onchange="updateExpense('${e.id}','paidBy',this.value)">
-          <option ${e.paidBy==="Moi"?"selected":""}>Moi</option>
-          <option ${e.paidBy==="Parents"?"selected":""}>Parents</option>
-          <option ${e.paidBy==="À renseigner"?"selected":""}>À renseigner</option>
-        </select>
-      </td>
-      <td><input class="store" value="${esc(e.store)}" placeholder="Leroy Merlin…" onchange="updateExpense('${e.id}','store',this.value)"></td>
       <td>
         <select class="cat" onchange="updateExpense('${e.id}','categoryId',this.value)">
           ${data.categories.map(c => `<option value="${c.id}" ${e.categoryId===c.id?"selected":""}>${esc(c.name)}</option>`).join("")}
         </select>
       </td>
-      ${expenseLinkCell(e)}
       <td class="ticketCell">
         <input class="ticketCheck" type="checkbox" ${e.receipt ? "checked" : ""} onchange="updateExpense('${e.id}','receipt',this.checked)" title="Ticket de caisse disponible">
       </td>
-      <td><button class="smallbtn danger" onclick="deleteExpense('${e.id}')" title="Supprimer">✕</button></td>
+      <td><button class="smallbtn danger" onclick="event.stopPropagation();deleteExpense('${e.id}')" title="Supprimer">✕</button></td>
     </tr>
   `).join("");
 
@@ -1030,8 +1056,6 @@ function download(blob,name){
 function resetFilters(){
   document.getElementById("filterSearch").value = "";
   document.getElementById("filterCategory").value = "";
-  document.getElementById("filterPayer").value = "";
-  document.getElementById("filterStore").value = "";
   document.getElementById("filterPrice").value = "";
   render();
 }
@@ -1158,15 +1182,13 @@ function printReport(){
   setTimeout(() => w.print(), 350);
 }
 
-["filterSearch","filterCategory","filterPayer","filterStore","filterPrice"].forEach(id => {
+["filterSearch","filterCategory","filterPrice"].forEach(id => {
   document.getElementById(id).addEventListener("input", renderExpenses);
   document.getElementById(id).addEventListener("change", renderExpenses);
 });
 document.getElementById("addExpenseBtn").onclick = () => {
   document.getElementById("filterSearch").value = "";
   document.getElementById("filterCategory").value = "";
-  document.getElementById("filterPayer").value = "";
-  document.getElementById("filterStore").value = "";
   document.getElementById("filterPrice").value = "";
 
   addExpense();
@@ -1180,6 +1202,12 @@ document.getElementById("addExpenseBtn").onclick = () => {
     }
   });
 };
+document.getElementById("expenseDetailSaveBtn").onclick = saveExpenseDetails;
+document.getElementById("expenseDetailCancelBtn").onclick = closeExpenseDetails;
+document.getElementById("detailLink").addEventListener("input", refreshDetailLinkButton);
+document.getElementById("expenseDetailModal").addEventListener("click", ev => {
+  if(ev.target.id === "expenseDetailModal") closeExpenseDetails();
+});
 document.getElementById("addCategoryBtn").onclick = addCategory;
 document.getElementById("githubBtn").onclick = openGitHubModal;
 document.getElementById("syncNowBtn").onclick = syncToGitHub;
