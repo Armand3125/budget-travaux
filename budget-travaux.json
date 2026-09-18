@@ -411,7 +411,8 @@
       "paidBy": "Moi",
       "store": "Leroy Merlin",
       "categoryId": "cat-sdb",
-      "receipt": false
+      "receipt": false,
+      "link": "https://www.leroymerlin.fr/produits/meuble-vasque-2t-l-80-x-h-67-5-x-p-47cm-chene-mystic-85304960.html"
     },
     {
       "id": "7e7c7150-3da9-4760-80d4-7a0ace0871fa",
@@ -484,17 +485,7 @@
       "store": "Castorama",
       "categoryId": "cat-sol",
       "receipt": true
-    },
-    {
-      "id": "6b34513d-0fcc-446e-9340-10fe705de546",
-      "description": "",
-      "price": 0,
-      "paidBy": "À renseigner",
-      "store": "",
-      "categoryId": "cat-destruction",
-      "link": "",
-      "receipt": false
     }
   ],
-  "updatedAt": "2026-09-18T23:33:24.332Z"
+  "updatedAt": "2026-09-18T23:35:53.031Z"
 }
