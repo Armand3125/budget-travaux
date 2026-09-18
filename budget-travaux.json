@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 17,
   "categories": [
     {
       "id": "cat-destruction",
@@ -484,6 +484,17 @@
       "store": "Castorama",
       "categoryId": "cat-sol",
       "receipt": true
+    },
+    {
+      "id": "6b34513d-0fcc-446e-9340-10fe705de546",
+      "description": "",
+      "price": 0,
+      "paidBy": "À renseigner",
+      "store": "",
+      "categoryId": "cat-destruction",
+      "link": "",
+      "receipt": false
     }
-  ]
+  ],
+  "updatedAt": "2026-09-18T23:33:24.332Z"
 }
