@@ -61,13 +61,14 @@ button:hover,.filelabel:hover{background:#f8fafc}
 .danger{color:var(--danger)}
 .tablewrap{overflow:auto}
 table{width:100%;border-collapse:collapse;table-layout:fixed}
-.expenseTable col.col-desc{width:25%}
-.expenseTable col.col-price{width:13%}
-.expenseTable col.col-payer{width:15%}
-.expenseTable col.col-store{width:18%}
-.expenseTable col.col-cat{width:17%}
-.expenseTable col.col-ticket{width:82px}
-.expenseTable col.col-actions{width:84px}
+.expenseTable col.col-desc{width:22%}
+.expenseTable col.col-price{width:11%}
+.expenseTable col.col-payer{width:13%}
+.expenseTable col.col-store{width:15%}
+.expenseTable col.col-cat{width:14%}
+.expenseTable col.col-link{width:17%}
+.expenseTable col.col-ticket{width:72px}
+.expenseTable col.col-actions{width:72px}
 th{background:#f8fafc;text-align:left;font-size:12px;color:#526071;padding:11px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
 td{padding:8px;border-bottom:1px solid #edf0f4;vertical-align:middle}
 tbody tr:hover{background:#fbfcfe}
@@ -81,6 +82,16 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
   accent-color:var(--accent);
   cursor:pointer
 }
+.linkCell{min-width:190px}
+.linkWrap{display:flex;align-items:center;gap:6px}
+.linkInput{min-width:135px}
+.linkOpen{
+  flex:none;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--accent);
+  background:#fff;font-weight:800
+}
+.linkOpen:hover{background:#f0fdfa}
+.linkOpen.disabled{color:#b8c0cc;background:#f8fafc;pointer-events:none}
 .empty{padding:34px;color:var(--muted);text-align:center}
 .footerNote{padding:14px 18px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
 .sidebody{padding:14px}
@@ -245,7 +256,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
   .chartTop{grid-template-columns:1fr 1fr}
   .budgetGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .pageHeader{align-items:center}
-  .expenseTable{min-width:900px}
+  .expenseTable{min-width:1080px}
 }
 @media(max-width:1050px){
   .layout{grid-template-columns:1fr}
@@ -331,6 +342,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
             <col class="col-payer">
             <col class="col-store">
             <col class="col-cat">
+            <col class="col-link">
             <col class="col-ticket">
             <col class="col-actions">
           </colgroup>
@@ -341,6 +353,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
               <th>Payé par</th>
               <th>Acheté chez</th>
               <th>Catégorie</th>
+              <th>Lien</th>
               <th style="text-align:center">Ticket</th>
               <th></th>
             </tr>
@@ -357,6 +370,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
               </th>
               <th><input id="filterStore" placeholder="Magasin…"></th>
               <th><select id="filterCategory"></select></th>
+              <th></th>
               <th colspan="2"><button class="primary addExpenseWide" id="addExpenseBtn">+ Ajouter</button></th>
             </tr>
           </thead>
@@ -637,6 +651,26 @@ async function loadBundledDataIfNeeded(){
 
 const euro = n => new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(Number(n)||0);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+function normalizeUrl(value){
+  const raw = String(value ?? "").trim();
+  if(!raw) return "";
+  const candidate = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(raw) ? raw : `https://${raw}`;
+  try{
+    const url = new URL(candidate);
+    return ["http:","https:"].includes(url.protocol) ? url.href : "";
+  }catch(e){
+    return "";
+  }
+}
+function expenseLinkCell(e){
+  const url = normalizeUrl(e.link);
+  return `<td class="linkCell"><div class="linkWrap">
+    <input class="linkInput" type="url" value="${esc(e.link || "")}" placeholder="https://…" onchange="updateExpense('${e.id}','link',this.value)">
+    ${url
+      ? `<a class="linkOpen" href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="Ouvrir le lien">↗</a>`
+      : `<span class="linkOpen disabled" title="Ajoute un lien">↗</span>`}
+  </div></td>`;
+}
 
 function allExpenses(){
   return Array.isArray(data.expenses) ? data.expenses : [];
@@ -652,6 +686,7 @@ function addExpense(prefill={}){
     paidBy: prefill.paidBy || "Moi",
     store: prefill.store || "",
     categoryId: prefill.categoryId || data.categories[0]?.id || "",
+    link: prefill.link || "",
     receipt: Boolean(prefill.receipt)
   });
   save(); render();
@@ -772,7 +807,7 @@ function filteredExpenses(){
 
   return allExpenses().filter(e => {
     const price = Number(e.price) || 0;
-    const matchesSearch = !search || [e.description, e.store, getCategoryName(e.categoryId)].join(" ").toLowerCase().includes(search);
+    const matchesSearch = !search || [e.description, e.store, e.link, getCategoryName(e.categoryId)].join(" ").toLowerCase().includes(search);
     const matchesCategory = !category || e.categoryId === category;
     const matchesPayer = !payer || e.paidBy === payer;
     const matchesStore = !store || (e.store || "").toLowerCase().includes(store);
@@ -811,6 +846,7 @@ function renderExpenses(){
           ${data.categories.map(c => `<option value="${c.id}" ${e.categoryId===c.id?"selected":""}>${esc(c.name)}</option>`).join("")}
         </select>
       </td>
+      ${expenseLinkCell(e)}
       <td class="ticketCell">
         <input class="ticketCheck" type="checkbox" ${e.receipt ? "checked" : ""} onchange="updateExpense('${e.id}','receipt',this.checked)" title="Ticket de caisse disponible">
       </td>
@@ -979,8 +1015,8 @@ function exportJSON(){
   download(new Blob([JSON.stringify(data,null,2)], {type:"application/json"}), "budget-travaux.json");
 }
 function exportCSV(){
-  const rows = [["Descriptif","Prix","Payé par","Acheté chez","Catégorie","Ticket de caisse"]];
-  allExpenses().forEach(e => rows.push([e.description, e.price, e.paidBy, e.store, getCategoryName(e.categoryId), e.receipt ? "Oui" : "Non"]));
+  const rows = [["Descriptif","Prix","Payé par","Acheté chez","Catégorie","Lien","Ticket de caisse"]];
+  allExpenses().forEach(e => rows.push([e.description, e.price, e.paidBy, e.store, getCategoryName(e.categoryId), e.link || "", e.receipt ? "Oui" : "Non"]));
   const csv = "\uFEFF" + rows.map(r => r.map(v => `"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n");
   download(new Blob([csv], {type:"text/csv;charset=utf-8"}), "depenses-travaux.csv");
 }
@@ -1018,7 +1054,11 @@ function printReport(){
     return `<tr><td>${esc(c.name)}</td><td>${euro(budget)}</td><td>${euro(spent)}</td><td class="${remaining<0?'neg':''}">${euro(remaining)}</td></tr>`;
   }).join("");
 
-  const expRows = allExpenses().map(e => `<tr><td>${esc(e.description)}</td><td>${euro(e.price)}</td><td>${esc(e.paidBy)}</td><td>${esc(e.store)}</td><td>${esc(getCategoryName(e.categoryId))}</td><td>${e.receipt ? "Oui" : "Non"}</td></tr>`).join("");
+  const expRows = allExpenses().map(e => {
+    const url = normalizeUrl(e.link);
+    const link = url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Lien</a>` : "";
+    return `<tr><td>${esc(e.description)}</td><td>${euro(e.price)}</td><td>${esc(e.paidBy)}</td><td>${esc(e.store)}</td><td>${esc(getCategoryName(e.categoryId))}</td><td>${link}</td><td>${e.receipt ? "Oui" : "Non"}</td></tr>`;
+  }).join("");
 
   const statusBars = data.categories.map(c => {
     const paid = amountByCategory(c.id, true);
@@ -1111,7 +1151,7 @@ function printReport(){
   <table><thead><tr><th>Catégorie</th><th>Budget</th><th>Dépensé</th><th>Reste</th></tr></thead><tbody>${catRows}</tbody></table>
 
   <h2 class="section pagebreak">Détail des dépenses</h2>
-  <table><thead><tr><th>Descriptif</th><th>Prix</th><th>Payé par</th><th>Acheté chez</th><th>Catégorie</th><th>Ticket</th></tr></thead><tbody>${expRows}</tbody></table>
+  <table><thead><tr><th>Descriptif</th><th>Prix</th><th>Payé par</th><th>Acheté chez</th><th>Catégorie</th><th>Lien</th><th>Ticket</th></tr></thead><tbody>${expRows}</tbody></table>
   </body></html>`);
   w.document.close();
   w.focus();
