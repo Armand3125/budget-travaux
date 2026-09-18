@@ -430,7 +430,8 @@
       "paidBy": "Moi",
       "store": "Leroy Merlin",
       "categoryId": "cat-sdb",
-      "receipt": false
+      "receipt": false,
+      "link": "https://www.leroymerlin.fr/produits/receveur-de-douche-resine-blanc-l-120-x-l-80-cm-easy-2-91835309.html"
     },
     {
       "id": "4b7f5785-100d-40ab-a8ce-b4fccdcee30a",
@@ -439,7 +440,8 @@
       "paidBy": "Moi",
       "store": "Leroy Merlin",
       "categoryId": "cat-sdb",
-      "receipt": false
+      "receipt": false,
+      "link": "https://www.leroymerlin.fr/produits/colonne-de-douche-mitigeur-mecanique-3-jet-s-dore-icone-sensea-99332274.html"
     },
     {
       "id": "071ed27e-5f99-4d69-84da-bf8699e68d1f",
@@ -478,5 +480,5 @@
       "receipt": true
     }
   ],
-  "updatedAt": "2026-09-18T23:41:05.812Z"
+  "updatedAt": "2026-09-18T23:52:55.322Z"
 }
