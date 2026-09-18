@@ -402,7 +402,8 @@
       "paidBy": "Moi",
       "store": "Castorama",
       "categoryId": "cat-sdb",
-      "receipt": false
+      "receipt": false,
+      "link": "https://www.leroymerlin.fr/produits/miroir-lumineux-rectangulaire-gris-l-60-x-h-80-cm-remix-anti-buee-variateur-int-et-couleur-87732008.html"
     },
     {
       "id": "a6a1a496-6c8e-442d-b753-573444d052dc",
@@ -480,5 +481,5 @@
       "receipt": true
     }
   ],
-  "updatedAt": "2026-09-18T23:52:55.322Z"
+  "updatedAt": "2026-09-18T23:58:49.214Z"
 }
