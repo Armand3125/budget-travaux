@@ -407,12 +407,21 @@
     {
       "id": "a6a1a496-6c8e-442d-b753-573444d052dc",
       "description": "meuble vasque",
-      "price": 199,
+      "price": 250,
       "paidBy": "Moi",
       "store": "Leroy Merlin",
       "categoryId": "cat-sdb",
       "receipt": false,
       "link": "https://www.leroymerlin.fr/produits/meuble-vasque-2t-l-80-x-h-67-5-x-p-47cm-chene-mystic-85304960.html"
+    },
+    {
+      "id": "7e7c7150-3da9-4760-80d4-7a0ace0871fa",
+      "description": "Meuble Colonne",
+      "price": 100,
+      "paidBy": "Moi",
+      "store": "Leroy Merlin",
+      "categoryId": "cat-sdb",
+      "receipt": false
     },
     {
       "id": "0efdd5c9-53ce-4a75-8c22-2a9d2e779d98",
@@ -453,11 +462,11 @@
     {
       "id": "ebb1100d-7fd5-463c-86b4-c926646395b1",
       "description": "Livraison électroménager",
-      "price": 75,
+      "price": 85,
       "paidBy": "Moi",
       "store": "Brico Dépôt",
       "categoryId": "cat-cuisine",
-      "receipt": false
+      "receipt": true
     },
     {
       "id": "8913d26e-b9d4-4270-b13d-4c4a5a5537af",
@@ -478,5 +487,5 @@
       "receipt": true
     }
   ],
-  "updatedAt": "2026-09-18T23:38:06.766Z"
+  "updatedAt": "2026-09-18T23:39:09.063Z"
 }
