@@ -1294,16 +1294,12 @@ function renderSummaries(){
     ? `${euro(Math.abs(t.remaining))} de dépassement`
     : `${euro(t.remaining)} disponibles`;
 
-  document.getElementById("totalBudget").textContent = euro(t.budget);
-  document.getElementById("sideSpent").textContent = euro(t.spent);
-  document.getElementById("sideRemaining").textContent = euro(t.remaining);
 }
 
 function render(){
   renderFilterCategoryOptions();
   renderExpenses();
   renderExtendedExpenses();
-  renderCategories();
   renderSummaries();
   renderCharts();
 }
@@ -1485,7 +1481,6 @@ document.getElementById("categoryEditDeleteBtn").onclick=deleteCategoryFromModal
 document.getElementById("categoryEditModal").addEventListener("click",ev=>{
   if(ev.target.id==="categoryEditModal")closeCategoryModal();
 });
-document.getElementById("addCategoryBtn").onclick = addCategory;
 document.getElementById("githubBtn").onclick = openGitHubModal;
 document.getElementById("syncNowBtn").onclick = syncToGitHub;
 document.getElementById("ghCancelBtn").onclick = closeGitHubModal;
