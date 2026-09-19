@@ -329,7 +329,13 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
 @media(max-width:700px){.evolutionOnly .statusRow{grid-template-columns:1fr}}
 .expandedLink{font-weight:700;text-decoration:none;color:var(--accent)}
 .expandedLink:hover{text-decoration:underline}
-.categoryMetrics{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.categoryMetrics{padding:14px 18px;border-bottom:1px solid var(--line)}
+.categoryBudgetRow{display:grid;grid-template-columns:minmax(105px,180px) minmax(120px,1fr) minmax(160px,230px);gap:12px;align-items:center;min-height:28px}
+.categoryBudgetRow .statusName{font-size:14px}
+.categoryBudgetRow .statusTrack{height:24px}
+.categoryBudgetRow .statusValue{font-size:13px}
+.categoryBudgetRow .statusValue strong{font-size:14px}
+@media(max-width:700px){.categoryBudgetRow{grid-template-columns:minmax(75px,95px) minmax(65px,1fr) minmax(125px,150px);gap:7px}.categoryBudgetRow .statusValue,.categoryBudgetRow .statusValue strong{font-size:11px}}
 .categoryMetric{background:#f8fafc;border-radius:10px;padding:10px 14px;min-width:140px;flex:1}
 .categoryMetric .k{font-size:11px;color:var(--muted)}
 .categoryMetric .v{font-size:19px;font-weight:750;margin-top:4px}
@@ -425,8 +431,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
       </table>
       <div id="emptyExtendedExpenses" class="empty" hidden>Aucune dépense dans cette catégorie.</div>
     </div>
-    <div class="statusLegend" aria-label="Légende des statuts"><span><i class="statusBox is-committed">✓</i> Engagée</span><span><i class="statusBox has-link">↗</i> Lien disponible</span><span><i class="statusBox is-missing">—</i> À prévoir</span></div>
-    <div class="footerNote">Clique sur la case de statut pour marquer une dépense comme engagée. Double-clique sur une ligne pour modifier le payeur, le magasin ou le lien.</div>
+    
   </section>
 </div>
 <div id="viewEvolution" class="viewPanel" role="tabpanel" hidden>
@@ -1133,9 +1138,21 @@ function renderExtendedExpenses(){
   const paid=expenses.filter(e=>e.receipt).reduce((sum,e)=>sum+(Number(e.price)||0),0);
   const total=expenses.reduce((sum,e)=>sum+(Number(e.price)||0),0);
   const budget=Number(category?.budget)||0;
-  const metrics=[["Budget prévu",euro(budget)],["Payé",euro(paid)],["Total engagé",euro(total)],["Reste",euro(budget-total)]];
-  document.getElementById("extendedCategoryMetrics").innerHTML=metrics.map(([name,value])=>
-    `<div class="categoryMetric"><div class="k">${name}</div><div class="v">${esc(value)}</div></div>`).join("");
+  const progress=splitBudgetSegments(paid,total-paid,budget);
+  const paidClass=progress.over?"statusPaidOver":"statusPaid";
+  const plannedClass=progress.over?"statusPlannedOver":"statusPlanned";
+  document.getElementById("extendedCategoryMetrics").innerHTML=`
+    <div class="categoryBudgetRow" title="Engagées : ${euro(paid)} — Prévues : ${euro(total-paid)} — Reste : ${euro(budget-total)}">
+      <div class="statusName">${esc(category?.name||"Catégorie")}</div>
+      <div class="statusTrack">
+        <div class="statusBudgetMarker" style="left:${progress.budgetPct}%"></div>
+        <div class="statusBar">
+          <div class="${paidClass}" style="width:${progress.paidPct}%"></div>
+          <div class="${plannedClass}" style="width:${progress.plannedPct}%"></div>
+        </div>
+      </div>
+      <div class="statusValue"><strong>${euro(total)} / ${euro(budget)}</strong></div>
+    </div>`;
   document.getElementById("emptyExtendedExpenses").style.display=expenses.length?"none":"block";
   document.getElementById("extendedExpenseBody").innerHTML=expenses.map(e=>{
     const url=normalizeUrl(e.link);
