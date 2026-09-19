@@ -398,7 +398,7 @@
     {
       "id": "b4a09612-6a51-4ce2-9e57-03098e575858",
       "description": "Miroir lumineux",
-      "price": 200,
+      "price": 199,
       "paidBy": "Moi",
       "store": "Castorama",
       "categoryId": "cat-sdb",
@@ -479,7 +479,17 @@
       "store": "Castorama",
       "categoryId": "cat-sol",
       "receipt": true
+    },
+    {
+      "id": "7cf1a56b-9685-43ad-bf10-75d540fc9808",
+      "description": "",
+      "price": 0,
+      "paidBy": "À renseigner",
+      "store": "",
+      "categoryId": "cat-destruction",
+      "link": "",
+      "receipt": false
     }
   ],
-  "updatedAt": "2026-09-18T23:58:49.214Z"
+  "updatedAt": "2026-09-19T00:01:27.024Z"
 }
