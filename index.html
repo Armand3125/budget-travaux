@@ -531,6 +531,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
     <div id="categoryModalNote" class="categoryModalNote">Les sommes engagées et prévues sont calculées à partir des lignes de dépenses.</div>
     <div class="modalActions">
       <button id="categoryEditDeleteBtn" class="danger" style="margin-right:auto">Supprimer</button>
+      <button id="categoryEditExpensesBtn">Modifier les dépenses</button>
       <button id="categoryEditCancelBtn">Annuler</button>
       <button id="categoryEditSaveBtn" class="primary">Enregistrer</button>
     </div>
@@ -886,6 +887,7 @@ function openCategoryModal(id=null){
   document.getElementById("categoryEditName").value=category?.name||"";
   document.getElementById("categoryEditBudget").value=category?Number(category.budget)||0:0;
   document.getElementById("categoryEditDeleteBtn").style.display=category?"":"none";
+  document.getElementById("categoryEditExpensesBtn").style.display=category?"":"none";
   const paid=category?amountByCategory(category.id,true):0;
   const planned=category?amountByCategory(category.id,false):0;
   document.getElementById("categoryModalStats").innerHTML=category
@@ -1478,6 +1480,12 @@ document.getElementById("expenseDetailModal").addEventListener("click", ev => {
 document.getElementById("categoryEditSaveBtn").onclick=saveCategoryModal;
 document.getElementById("categoryEditCancelBtn").onclick=closeCategoryModal;
 document.getElementById("categoryEditDeleteBtn").onclick=deleteCategoryFromModal;
+document.getElementById("categoryEditExpensesBtn").onclick=()=>{
+  const id=editedCategoryId;
+  if(!id)return;
+  closeCategoryModal();
+  openExtendedCategory(id);
+};
 document.getElementById("categoryEditModal").addEventListener("click",ev=>{
   if(ev.target.id==="categoryEditModal")closeCategoryModal();
 });
