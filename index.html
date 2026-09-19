@@ -970,7 +970,7 @@ let activeBudgetView = "global";
 let selectedExtendedCategoryId = "";
 function initializeBudgetViews(){
   const layout=document.querySelector(".layout");
-  const analytics=document.querySelector("section.analytics");
+  const analytics=Array.from(document.querySelectorAll("section.analytics")).find(el=>el.querySelector(".chartTop"));
   if(!layout||!analytics) return;
   const expenseCard=layout.querySelector("section.card");
   const categoryCard=layout.querySelector("aside.card");
