@@ -608,8 +608,11 @@ const DATA_STORAGE_KEY = "travauxBudgetV17";
 const GITHUB_CONFIG_KEY = "travauxGitHubV1";
 const GITHUB_TOKEN_KEY = "travauxGitHubTokenV1";
 let data = loadData();
+const GITHUB_DIRTY_KEY = "travauxBudgetPendingGitHubV1";
 let syncTimer = null;
 let syncInProgress = false;
+let syncRevision = 0;
+let syncRetryCount = 0;
 
 function loadData(){
   try{
@@ -622,6 +625,9 @@ function save(){
   data.version = 17;
   data.updatedAt = new Date().toISOString();
   localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
+  localStorage.setItem(GITHUB_DIRTY_KEY, "1");
+  syncRevision++;
+  syncRetryCount = 0;
   scheduleGitHubSync();
 }
 
@@ -635,6 +641,7 @@ function setSyncStatus(message,state=""){
   const el = document.getElementById("syncStatus");
   if(!el) return;
   el.textContent = message;
+  el.title = message;
   el.className = `syncStatus ${state}`.trim();
 }
 function githubApiUrl(cfg){
@@ -665,63 +672,125 @@ async function githubRequest(url,options={}){
     }
   });
   const body = await response.json().catch(() => ({}));
-  if(!response.ok) throw new Error(body.message || `Erreur GitHub ${response.status}`);
+  if(!response.ok){
+    const error = new Error(body.message || `Erreur GitHub ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
   return body;
 }
+function sameBudget(a,b){
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+function hasUnsyncedLocalData(incoming){
+  if(localStorage.getItem(GITHUB_DIRTY_KEY)==="1") return true;
+  const localTime=Date.parse(data.updatedAt||"")||0;
+  const remoteTime=Date.parse(incoming.updatedAt||"")||0;
+  return localTime>remoteTime && !sameBudget(data,incoming);
+}
 async function loadFromGitHub({replace=true}={}){
-  const cfg = getGitHubConfig();
-  if(!cfg || !getGitHubToken()) throw new Error("Connexion GitHub requise.");
+  const cfg=getGitHubConfig();
+  if(!cfg||!getGitHubToken()) throw new Error("Connexion GitHub requise.");
+  const initialRevision=syncRevision;
   setSyncStatus("Chargement GitHub…","syncing");
-  const remote = await githubRequest(githubApiUrl(cfg));
-  const incoming = JSON.parse(base64ToUtf8(remote.content));
-  if(!Array.isArray(incoming.categories) || !Array.isArray(incoming.expenses)) throw new Error("Le fichier GitHub n’est pas un budget valide.");
+  const remote=await githubRequest(githubApiUrl(cfg));
+  const incoming=JSON.parse(base64ToUtf8(remote.content));
+  if(!Array.isArray(incoming.categories)||!Array.isArray(incoming.expenses)) throw new Error("Le fichier GitHub n’est pas un budget valide.");
   if(replace){
-    data = incoming;
-    localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
+    if(initialRevision!==syncRevision || hasUnsyncedLocalData(incoming)){
+      if(sameBudget(data,incoming)){
+        localStorage.removeItem(GITHUB_DIRTY_KEY);
+        setSyncStatus("Synchronisé avec GitHub","synced");
+      }else{
+        localStorage.setItem(GITHUB_DIRTY_KEY,"1");
+        scheduleGitHubSync();
+      }
+      return remote;
+    }
+    data=incoming;
+    localStorage.setItem(DATA_STORAGE_KEY,JSON.stringify(data));
+    localStorage.removeItem(GITHUB_DIRTY_KEY);
     render();
   }
   setSyncStatus("Synchronisé avec GitHub","synced");
   return remote;
 }
+function syncErrorMessage(error){
+  if(error.status===401) return "Jeton GitHub invalide ou expiré — reconnecte-toi";
+  if(error.status===403) return "GitHub : jeton sans autorisation Contents (lecture et écriture)";
+  if(error.status===404) return "Fichier GitHub introuvable — vérifie le chemin";
+  if(error.status===409||error.status===422) return "Conflit GitHub — nouvelle tentative";
+  return "Échec GitHub — modifications conservées localement";
+}
 async function syncToGitHub(){
-  const cfg = getGitHubConfig();
-  if(!cfg || !getGitHubToken()){
-    setSyncStatus("Enregistré localement");
+  const cfg=getGitHubConfig();
+  if(!cfg||!getGitHubToken()){
+    setSyncStatus("Enregistré localement — connexion GitHub requise");
     return;
   }
-  if(syncInProgress){ scheduleGitHubSync(); return; }
-  syncInProgress = true;
+  if(syncInProgress) return;
+  syncInProgress=true;
   clearTimeout(syncTimer);
+  syncTimer=null;
+  const revision=syncRevision;
+  const snapshot=JSON.stringify(data,null,2)+String.fromCharCode(10);
+  const payload=JSON.parse(snapshot);
+  let retry=false;
   setSyncStatus("Enregistrement GitHub…","syncing");
   try{
-    const current = await githubRequest(githubApiUrl(cfg));
-    const url = githubApiUrl(cfg).replace(/\?ref=.*$/,"");
-    await githubRequest(url,{
-      method:"PUT",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        message:`Mise à jour du budget — ${new Intl.DateTimeFormat("fr-FR",{dateStyle:"short",timeStyle:"short"}).format(new Date())}`,
-        content:utf8ToBase64(JSON.stringify(data,null,2)+"\n"),
-        sha:current.sha,
-        branch:cfg.branch || "main"
-      })
-    });
-    setSyncStatus("Synchronisé avec GitHub","synced");
+    const fileUrl=githubApiUrl(cfg);
+    const putUrl=fileUrl.split("?ref=")[0];
+    let uploaded=false;
+    for(let attempt=0;attempt<3;attempt++){
+      const current=await githubRequest(fileUrl);
+      const remote=JSON.parse(base64ToUtf8(current.content));
+      if(sameBudget(remote,payload)){uploaded=true;break;}
+      try{
+        await githubRequest(putUrl,{
+          method:"PUT",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            message:`Mise à jour du budget — ${new Intl.DateTimeFormat("fr-FR",{dateStyle:"short",timeStyle:"short"}).format(new Date())}`,
+            content:utf8ToBase64(snapshot),
+            sha:current.sha,
+            branch:cfg.branch||"main"
+          })
+        });
+        uploaded=true;break;
+      }catch(error){
+        if((error.status===409||error.status===422)&&attempt<2)continue;
+        throw error;
+      }
+    }
+    if(!uploaded)throw new Error("Écriture GitHub non confirmée.");
+    syncRetryCount=0;
+    if(revision===syncRevision && JSON.stringify(cfg)===JSON.stringify(getGitHubConfig())){
+      localStorage.removeItem(GITHUB_DIRTY_KEY);
+      setSyncStatus("Synchronisé avec GitHub","synced");
+    }else{
+      setSyncStatus("Nouvelles modifications en attente…","syncing");
+    }
   }catch(error){
-    console.error(error);
-    setSyncStatus("Échec de la sauvegarde","error");
+    console.error("Sauvegarde GitHub :",error);
+    localStorage.setItem(GITHUB_DIRTY_KEY,"1");
+    setSyncStatus(syncErrorMessage(error),"error");
+    if(![401,403,404].includes(error.status)){retry=true;syncRetryCount++;}
   }finally{
-    syncInProgress = false;
+    syncInProgress=false;
+    if(getGitHubConfig()&&getGitHubToken()){
+      if(revision!==syncRevision)scheduleGitHubSync();
+      else if(retry)scheduleGitHubSync(Math.min(60000,5000*2**Math.min(syncRetryCount-1,4)),true);
+    }
   }
 }
-function scheduleGitHubSync(){
-  if(!getGitHubConfig() || !getGitHubToken()){
-    setSyncStatus("Enregistré localement");
+function scheduleGitHubSync(delay=1200,retry=false){
+  if(!getGitHubConfig()||!getGitHubToken()){
+    setSyncStatus("Enregistré localement — connexion GitHub requise");
     return;
   }
   clearTimeout(syncTimer);
-  setSyncStatus("Modification en attente…","syncing");
-  syncTimer = setTimeout(syncToGitHub,1200);
+  if(!retry)setSyncStatus("Modification en attente…","syncing");
+  syncTimer=setTimeout(syncToGitHub,delay);
 }
 function inferGitHubConfig(){
   const host = location.hostname;
@@ -770,6 +839,8 @@ function disconnectGitHub(){
   localStorage.removeItem(GITHUB_TOKEN_KEY);
   sessionStorage.removeItem(GITHUB_TOKEN_KEY);
   document.getElementById("syncNowBtn").disabled = true;
+  clearTimeout(syncTimer);
+  syncTimer=null;
   setSyncStatus("Enregistré localement");
   closeGitHubModal();
 }
@@ -1523,10 +1594,14 @@ render();
 loadBundledDataIfNeeded();
 if(getGitHubConfig() && getGitHubToken()){
   document.getElementById("syncNowBtn").disabled = false;
-  loadFromGitHub({replace:true}).catch(error => {
-    console.error(error);
-    setSyncStatus("GitHub indisponible — copie locale","error");
-  });
+  if(localStorage.getItem(GITHUB_DIRTY_KEY)==="1"){
+    scheduleGitHubSync();
+  }else{
+    loadFromGitHub({replace:true}).catch(error => {
+      console.error(error);
+      setSyncStatus("GitHub indisponible — données locales préservées","error");
+    });
+  }
 }else if(getGitHubConfig()){
   setSyncStatus("GitHub à reconnecter");
 }
