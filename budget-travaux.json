@@ -482,14 +482,14 @@
     },
     {
       "id": "7cf1a56b-9685-43ad-bf10-75d540fc9808",
-      "description": "",
-      "price": 0,
+      "description": "zellige",
+      "price": 300,
       "paidBy": "À renseigner",
       "store": "",
-      "categoryId": "cat-destruction",
-      "link": "",
+      "categoryId": "cat-sdb",
+      "link": "https://www.leroymerlin.fr/produits/carrelage-mur-interieur-effet-zellige-bleu-moha-l-31-6-x-l-60-cmxep-9-5mm-artens-84731824.html",
       "receipt": false
     }
   ],
-  "updatedAt": "2026-09-19T00:01:27.024Z"
+  "updatedAt": "2026-09-19T00:02:30.786Z"
 }
