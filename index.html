@@ -13,11 +13,23 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
 .wrap{max-width:1600px;margin:0 auto;padding:24px 28px 28px}
-.pageHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:18px}
-.pageTitle h1{margin:0 0 5px;font-size:28px}
-.subtitle{color:var(--muted);margin:0}
-.topActions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
-.topActions button,.topActions .filelabel{min-width:84px;text-align:center}
+.pageHeader{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px;padding:15px 18px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.pageTitle{flex:0 0 auto;min-width:0}
+.pageTitle h1{margin:0;font-size:25px;line-height:1.2}
+.topActions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:nowrap;min-width:0}
+.topActions button,.topActions .filelabel{min-width:64px;text-align:center;white-space:nowrap}
+.topActions>.filelabel,.topActions>button,.topActions>.syncStatus,.topActions>.accountMenu{flex:none}
+.accountMenu{position:relative}
+.accountMenu summary{list-style:none;cursor:pointer;border:1px solid var(--line);border-radius:9px;background:#fff;padding:9px 12px;font-weight:700;white-space:nowrap;font-size:13px}
+.accountMenu summary::-webkit-details-marker{display:none}
+.accountMenu[open] summary{border-color:var(--accent)}
+.accountPanel{position:absolute;z-index:45;right:0;top:calc(100% + 8px);width:310px;max-width:calc(100vw - 40px);border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:0 16px 38px rgba(20,31,55,.18);padding:13px;display:flex;flex-direction:column;gap:9px}
+.accountPanel button{width:100%}
+.accountPanel .accountEmail{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.pageHeader .syncStatus{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.pageHeader .syncStatus::before{display:inline-block;vertical-align:middle;margin-right:7px}
+@media(max-width:900px){.pageHeader{flex-wrap:wrap}.topActions{width:100%;justify-content:flex-start;overflow-x:auto;padding-bottom:3px}.pageHeader .syncStatus{max-width:165px}}
+
 .syncStatus{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:12px;font-weight:700}
 .syncStatus::before{content:"";width:8px;height:8px;border-radius:50%;background:#94a3b8}
 .syncStatus.syncing::before{background:#f59e0b}
@@ -264,7 +276,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
   .stats{grid-template-columns:1fr 1fr}
   .progressStat{grid-column:1/-1}
   .pageHeader{align-items:flex-start;flex-direction:column}
-  .topActions{width:100%;justify-content:flex-start}
+  .topActions{width:100%;justify-content:flex-start;flex-wrap:nowrap}
 }
 @media(max-width:700px){
   .wrap{padding:14px}
@@ -344,18 +356,21 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
 <body>
 <div class="wrap">
   <div class="pageHeader">
-    <div class="pageTitle">
-      <h1>🏠 Budget_V17</h1>
-      <div class="subtitle">Dépenses, budgets cibles et suivi des justificatifs.</div>
-    </div>
+    <div class="pageTitle"><h1>🏠 Budget_V17</h1></div>
     <div class="topActions">
-      <span id="syncStatus" class="syncStatus" title="État de la sauvegarde">Chargement de Firebase…</span>
-      <button id="googleLoginBtn" title="Connexion à ton budget avec Google" disabled>Se connecter avec Google</button>
-      <button id="googleLogoutBtn" title="Déconnecter le compte Google" style="display:none">Déconnexion</button>
-      <button id="syncNowBtn" title="Enregistrer le budget dans Firebase" disabled>Synchroniser</button>
+      <span id="syncStatus" class="syncStatus" title="État de la sauvegarde">Chargement…</span>
       <label class="filelabel" title="Charger un fichier JSON">Charger JSON<input id="importJson" type="file" accept=".json,application/json" hidden></label>
       <button id="exportJsonBtn" title="Télécharger les données au format JSON">JSON</button>
       <button id="pdfBtn" title="Exporter le rapport en PDF">PDF</button>
+      <details class="accountMenu" id="accountMenu">
+        <summary id="accountSummary" title="Compte Google et sauvegarde">Compte ▾</summary>
+        <div class="accountPanel">
+          <div id="accountEmail" class="accountEmail">Non connecté</div>
+          <button id="googleLoginBtn" title="Connexion à ton budget avec Google" disabled>Se connecter avec Google</button>
+          <button id="syncNowBtn" title="Enregistrer le budget dans Firebase" disabled>Synchroniser</button>
+          <button id="googleLogoutBtn" title="Déconnecter le compte Google" style="display:none">Déconnexion</button>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -627,11 +642,13 @@ function updateGoogleButtons(){
   const btn=document.getElementById("googleLoginBtn");
   const logout=document.getElementById("googleLogoutBtn");
   const cloud=document.getElementById("syncNowBtn");
-  btn.disabled=!window.firebaseBackend;
-  btn.textContent=firebaseUser?(firebaseUser.email||"Connecté à Google"):"Se connecter avec Google";
+  btn.disabled=!window.firebaseBackend || Boolean(firebaseUser);
+  btn.textContent=firebaseUser?"Google connecté":"Se connecter avec Google";
   btn.title=firebaseUser?"Connecté : "+(firebaseUser.email||"Compte Google"):"Se connecter avec Google";
   logout.style.display=firebaseUser?"":"none";
   cloud.disabled=!(firebaseUser&&window.firebaseBackend);
+  document.getElementById("accountSummary").textContent=firebaseUser?"Google ✓ ▾":"Compte ▾";
+  document.getElementById("accountEmail").textContent=firebaseUser?(firebaseUser.email||"Compte Google"):"Non connecté";
 }
 function firebaseErrorMessage(error){
   const code=String(error?.code||"");
