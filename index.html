@@ -286,11 +286,35 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
 .viewPanel{min-width:0}
 .viewPanel>.card{width:100%}
 .viewPanel .cardhead select{width:auto;max-width:min(100%,350px);min-width:200px}
-.extendedTable{min-width:930px}
-.extendedTable th,.extendedTable td{font-size:12px}
-.extendedTable td{overflow-wrap:anywhere}
-.extendedTable .desc{min-width:160px}
-.extendedTable .money{min-width:95px}
+.extendedTable{min-width:850px;table-layout:fixed}
+.extendedTable col.col-expanded-desc{width:30%}
+.extendedTable col.col-expanded-price{width:12%}
+.extendedTable col.col-expanded-payer{width:13%}
+.extendedTable col.col-expanded-store{width:19%}
+.extendedTable col.col-expanded-link{width:10%}
+.extendedTable col.col-expanded-status{width:9%}
+.extendedTable col.col-expanded-actions{width:7%}
+.extendedTable th,.extendedTable td{font-size:12px;overflow-wrap:anywhere}
+.extendedTable .desc,.extendedTable .money{width:100%;min-width:0;max-width:100%}
+.extendedTable td:nth-child(3),.extendedTable td:nth-child(4){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.extendedTable .ticketCell{min-width:0}
+.statusBox{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;padding:0;border:1px solid transparent;border-radius:7px;font-size:15px;font-weight:900;line-height:1;cursor:pointer}
+.statusBox.is-committed{background:#16a34a;border-color:#15803d;color:white}
+.statusBox.has-link{background:#f59e0b;border-color:#d97706;color:#422006}
+.statusBox.is-missing{background:#dc2626;border-color:#b91c1c;color:white}
+.statusBox:focus-visible{outline:3px solid var(--accent2);outline-offset:2px}
+.statusLegend{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:0;padding:8px 18px 12px;font-size:12px;color:var(--muted)}
+.statusLegend span{display:inline-flex;align-items:center;gap:5px}
+.statusLegend .statusBox{pointer-events:none;width:19px;height:19px;min-width:19px;font-size:11px}
+.editableStatusRow{cursor:pointer;border-radius:9px}
+.editableStatusRow:hover{background:#f0fdfa}
+.editableStatusRow:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.evolutionOnly{max-width:1280px;margin:0 auto}
+.evolutionOnly .statusRow{grid-template-columns:minmax(110px,170px) minmax(180px,1fr) minmax(125px,220px)}
+.categoryModalStats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:6px}
+.categoryModalStats .categoryMetric{min-width:0}
+.categoryModalNote{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px}
+@media(max-width:700px){.evolutionOnly .statusRow{grid-template-columns:1fr}}
 .expandedLink{font-weight:700;text-decoration:none;color:var(--accent)}
 .expandedLink:hover{text-decoration:underline}
 .categoryMetrics{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
@@ -379,23 +403,26 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
     <div id="extendedCategoryMetrics" class="categoryMetrics"></div>
     <div class="tablewrap">
       <table class="extendedTable">
-        <thead><tr class="columnHead"><th>Descriptif</th><th>Prix</th><th>Payé par</th><th>Acheté chez</th><th>Lien</th><th>Ticket</th><th></th></tr></thead>
+        <colgroup><col class="col-expanded-desc"><col class="col-expanded-price"><col class="col-expanded-payer"><col class="col-expanded-store"><col class="col-expanded-link"><col class="col-expanded-status"><col class="col-expanded-actions"></colgroup>
+        <thead><tr class="columnHead"><th>Descriptif</th><th>Prix</th><th>Payé par</th><th>Acheté chez</th><th>Lien</th><th>Statut</th><th></th></tr></thead>
         <tbody id="extendedExpenseBody"></tbody>
       </table>
       <div id="emptyExtendedExpenses" class="empty" hidden>Aucune dépense dans cette catégorie.</div>
     </div>
-    <div class="footerNote">Double-clique sur une ligne pour modifier le payeur, le magasin et le lien. Le descriptif, le prix et le ticket sont modifiables directement.</div>
+    <div class="statusLegend" aria-label="Légende des statuts"><span><i class="statusBox is-committed">✓</i> Engagée</span><span><i class="statusBox has-link">↗</i> Lien disponible</span><span><i class="statusBox is-missing">—</i> À prévoir</span></div>
+    <div class="footerNote">Clique sur la case de statut pour marquer une dépense comme engagée. Double-clique sur une ligne pour modifier le payeur, le magasin ou le lien.</div>
   </section>
 </div>
 <div id="viewEvolution" class="viewPanel" role="tabpanel" hidden>
-  <div class="evolutionLayout">
-    <div id="budgetCategorySlot"></div>
-    <section class="card">
-      <div class="cardhead"><h2>Évolution des dépenses par type</h2></div>
-      <div class="evolutionLegend"><span class="paid">Payées (ticket coché)</span><span class="planned">Prévues</span><span class="target">Repère du budget</span></div>
-      <div id="evolutionChartSlot"></div>
-    </section>
-  </div>
+  <section class="card evolutionOnly">
+    <div class="cardhead">
+      <h2>Évolution des dépenses par type</h2>
+      <button type="button" id="addBudgetCategoryBtn" class="primary">+ Ajouter un type</button>
+    </div>
+    <div class="evolutionLegend"><span class="paid">Engagées</span><span class="planned">Prévues</span><span class="target">Budget</span></div>
+    <div id="evolutionChartSlot"></div>
+    <div class="footerNote">Double-clique sur une catégorie du graphique pour modifier son nom et son budget.</div>
+  </section>
 </div>
 <div id="viewPies" class="viewPanel" role="tabpanel" hidden>
   <section class="card analytics" style="margin-top:0">
@@ -424,7 +451,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
               <th>Descriptif <span class="detailHint">— double-clic pour détails</span></th>
               <th>Prix</th>
               <th>Catégorie</th>
-              <th style="text-align:center">Ticket</th>
+              <th style="text-align:center">Statut</th>
               <th></th>
             </tr>
             <tr class="filterRow">
@@ -490,6 +517,24 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
       </div>
     </div>
 </section>
+</div>
+
+<div id="categoryEditModal" class="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="categoryEditTitle">
+  <div class="modal">
+    <h2 id="categoryEditTitle">Modifier le type de dépense</h2>
+    <p>Personnalise le nom et le budget prévisionnel de cette catégorie.</p>
+    <div class="formGrid">
+      <div class="formField full"><label for="categoryEditName">Nom de la catégorie</label><input id="categoryEditName" maxlength="120" placeholder="Ex. Salle de bain"></div>
+      <div class="formField full"><label for="categoryEditBudget">Budget prévu (€)</label><input id="categoryEditBudget" type="number" min="0" step="0.01" inputmode="decimal"></div>
+    </div>
+    <div id="categoryModalStats" class="categoryModalStats"></div>
+    <div id="categoryModalNote" class="categoryModalNote">Les sommes engagées et prévues sont calculées à partir des lignes de dépenses.</div>
+    <div class="modalActions">
+      <button id="categoryEditDeleteBtn" class="danger" style="margin-right:auto">Supprimer</button>
+      <button id="categoryEditCancelBtn">Annuler</button>
+      <button id="categoryEditSaveBtn" class="primary">Enregistrer</button>
+    </div>
+  </div>
 </div>
 
 <div id="expenseDetailModal" class="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="expenseDetailTitle">
@@ -832,6 +877,62 @@ function updateCategory(id,key,value){
   c[key] = key === "budget" ? Number(value) || 0 : value;
   save(); render();
 }
+let editedCategoryId=null;
+function openCategoryModal(id=null){
+  const category=id===null?null:data.categories.find(c=>c.id===id);
+  if(id!==null && !category) return;
+  editedCategoryId=category?category.id:null;
+  document.getElementById("categoryEditTitle").textContent=category?"Modifier le type de dépense":"Ajouter un type de dépense";
+  document.getElementById("categoryEditName").value=category?.name||"";
+  document.getElementById("categoryEditBudget").value=category?Number(category.budget)||0:0;
+  document.getElementById("categoryEditDeleteBtn").style.display=category?"":"none";
+  const paid=category?amountByCategory(category.id,true):0;
+  const planned=category?amountByCategory(category.id,false):0;
+  document.getElementById("categoryModalStats").innerHTML=category
+    ? `<div class="categoryMetric"><div class="k">Engagées</div><div class="v">${euro(paid)}</div></div><div class="categoryMetric"><div class="k">Prévues</div><div class="v">${euro(planned)}</div></div>`
+    : "";
+  document.getElementById("categoryModalNote").style.display=category?"":"none";
+  document.getElementById("categoryEditModal").classList.add("open");
+  document.getElementById("categoryEditName").focus();
+}
+function closeCategoryModal(){
+  editedCategoryId=null;
+  document.getElementById("categoryEditModal").classList.remove("open");
+}
+function saveCategoryModal(){
+  const name=document.getElementById("categoryEditName").value.trim();
+  const rawBudget=document.getElementById("categoryEditBudget").value.trim();
+  const budget=Number(rawBudget);
+  if(!name){alert("Renseigne le nom de la catégorie.");return;}
+  if(rawBudget===""||!Number.isFinite(budget)||budget<0){alert("Renseigne un budget positif ou nul.");return;}
+  if(editedCategoryId===null){
+    const newId=crypto.randomUUID();
+    data.categories.push({id:newId,name,budget});
+    selectedExtendedCategoryId=newId;
+  }else{
+    const category=data.categories.find(c=>c.id===editedCategoryId);
+    if(!category){closeCategoryModal();return;}
+    category.name=name;
+    category.budget=budget;
+  }
+  closeCategoryModal();
+  save();
+  render();
+}
+function deleteCategoryFromModal(){
+  const id=editedCategoryId;
+  if(!id)return;
+  if(data.categories.length<=1){alert("Il faut conserver au moins une catégorie.");return;}
+  const used=data.expenses.some(e=>e.categoryId===id);
+  if(!confirm(used?"Supprimer ce type ? Ses dépenses seront transférées vers « Autre » ou une autre catégorie.":"Supprimer cette catégorie ?"))return;
+  const fallback=data.categories.find(c=>c.id!==id && c.name==="Autre")||data.categories.find(c=>c.id!==id);
+  data.expenses.forEach(e=>{if(e.categoryId===id)e.categoryId=fallback.id;});
+  data.categories=data.categories.filter(c=>c.id!==id);
+  if(selectedExtendedCategoryId===id) selectedExtendedCategoryId=fallback.id;
+  closeCategoryModal();
+  save();
+  render();
+}
 function deleteCategory(id){
   if(data.categories.length <= 1){ alert("Il faut conserver au moins une catégorie."); return; }
   const used = data.expenses.some(e => e.categoryId === id);
@@ -942,6 +1043,20 @@ function renderFilterCategoryOptions(){
   if([...sel.options].some(o => o.value === current)) sel.value = current;
 }
 
+function expenseStatus(e){
+  if(Boolean(e.receipt)) return {css:"is-committed",icon:"✓",label:"Engagée"};
+  if(normalizeUrl(e.link)) return {css:"has-link",icon:"↗",label:"Lien disponible"};
+  return {css:"is-missing",icon:"—",label:"À prévoir"};
+}
+function expenseStatusButton(e){
+  const state=expenseStatus(e);
+  return `<button type="button" class="statusBox ${state.css}" aria-label="${esc(state.label)} : ${esc(e.description||"Dépense")}. Cliquer pour ${e.receipt?"annuler l’engagement":"marquer comme engagée"}" aria-pressed="${Boolean(e.receipt)}" title="${esc(state.label)} — cliquer pour ${e.receipt?"annuler":"marquer comme engagée"}" onclick="event.stopPropagation();toggleExpenseCommitted('${e.id}')">${state.icon}</button>`;
+}
+function toggleExpenseCommitted(id){
+  const expense=allExpenses().find(x=>x.id===id);
+  if(!expense) return;
+  updateExpense(id,"receipt",!expense.receipt);
+}
 function renderExpenses(){
   const rows = filteredExpenses();
   const body = document.getElementById("expenseBody");
@@ -957,7 +1072,7 @@ function renderExpenses(){
         </select>
       </td>
       <td class="ticketCell">
-        <input class="ticketCheck" type="checkbox" ${e.receipt ? "checked" : ""} onchange="updateExpense('${e.id}','receipt',this.checked)" title="Ticket de caisse disponible">
+        ${expenseStatusButton(e)}
       </td>
       <td><button class="smallbtn danger" onclick="event.stopPropagation();deleteExpense('${e.id}')" title="Supprimer">✕</button></td>
     </tr>
@@ -979,7 +1094,7 @@ function initializeBudgetViews(){
   const chartStatus=analytics.querySelector(".chartFull");
   if(!expenseCard||!categoryCard||!chartTop||!chartBottom||!chartStatus) return;
   document.getElementById("viewGlobal").append(expenseCard);
-  document.getElementById("budgetCategorySlot").append(categoryCard);
+  categoryCard.remove();
   document.getElementById("evolutionChartSlot").append(chartStatus);
   document.getElementById("pieChartsSlot").append(chartTop,chartBottom);
   layout.remove();
@@ -990,6 +1105,7 @@ function initializeBudgetViews(){
     renderExtendedExpenses();
   });
   document.getElementById("extendedAddBtn").addEventListener("click",()=>addExpense({categoryId:selectedExtendedCategoryId}));
+  document.getElementById("addBudgetCategoryBtn").addEventListener("click",()=>openCategoryModal());
 }
 function switchBudgetView(view,categoryId=null){
   if(!["global","extended","evolution","pies"].includes(view)) return;
@@ -1029,7 +1145,7 @@ function renderExtendedExpenses(){
       <td>${esc(e.paidBy||"À renseigner")}</td>
       <td>${esc(e.store||"—")}</td>
       <td>${url?`<a class="expandedLink" href="${esc(url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Ouvrir ↗</a>`:"—"}</td>
-      <td class="ticketCell"><input class="ticketCheck" type="checkbox" ${e.receipt?"checked":""} onchange="updateExpense('${e.id}','receipt',this.checked)" title="Ticket disponible"></td>
+      <td class="ticketCell">${expenseStatusButton(e)}</td>
       <td><button class="smallbtn danger" onclick="event.stopPropagation();deleteExpense('${e.id}')" title="Supprimer">✕</button></td>
     </tr>`;
   }).join("");
@@ -1138,7 +1254,7 @@ function renderCharts(){
     const plannedClass = s.over ? "statusPlannedOver" : "statusPlanned";
 
     return `
-      <div class="statusRow">
+      <div class="statusRow editableStatusRow" role="button" tabindex="0" title="Double-cliquer pour modifier le nom et le budget" aria-label="Modifier ${esc(c.name)}" ondblclick="openCategoryModal('${c.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCategoryModal('${c.id}')}">
         <div class="statusName">${esc(c.name)}</div>
         <div class="statusTrack" title="Budget : ${euro(s.budget)} — Total : ${euro(s.total)}">
           <div class="statusBudgetMarker" style="left:${s.budgetPct}%"></div>
@@ -1362,6 +1478,12 @@ document.getElementById("expenseDetailCancelBtn").onclick = closeExpenseDetails;
 document.getElementById("detailLink").addEventListener("input", refreshDetailLinkButton);
 document.getElementById("expenseDetailModal").addEventListener("click", ev => {
   if(ev.target.id === "expenseDetailModal") closeExpenseDetails();
+});
+document.getElementById("categoryEditSaveBtn").onclick=saveCategoryModal;
+document.getElementById("categoryEditCancelBtn").onclick=closeCategoryModal;
+document.getElementById("categoryEditDeleteBtn").onclick=deleteCategoryFromModal;
+document.getElementById("categoryEditModal").addEventListener("click",ev=>{
+  if(ev.target.id==="categoryEditModal")closeCategoryModal();
 });
 document.getElementById("addCategoryBtn").onclick = addCategory;
 document.getElementById("githubBtn").onclick = openGitHubModal;
