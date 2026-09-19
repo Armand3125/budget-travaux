@@ -349,9 +349,10 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
       <div class="subtitle">Dépenses, budgets cibles et suivi des justificatifs.</div>
     </div>
     <div class="topActions">
-      <span id="syncStatus" class="syncStatus" title="État de la sauvegarde">Enregistré localement</span>
-      <button id="githubBtn" title="Configurer la sauvegarde GitHub">GitHub</button>
-      <button id="syncNowBtn" title="Enregistrer maintenant sur GitHub" disabled>Synchroniser</button>
+      <span id="syncStatus" class="syncStatus" title="État de la sauvegarde">Chargement de Firebase…</span>
+      <button id="googleLoginBtn" title="Connexion à ton budget avec Google" disabled>Se connecter avec Google</button>
+      <button id="googleLogoutBtn" title="Déconnecter le compte Google" style="display:none">Déconnexion</button>
+      <button id="syncNowBtn" title="Enregistrer le budget dans Firebase" disabled>Synchroniser</button>
       <label class="filelabel" title="Charger un fichier JSON">Charger JSON<input id="importJson" type="file" accept=".json,application/json" hidden></label>
       <button id="exportJsonBtn" title="Télécharger les données au format JSON">JSON</button>
       <button id="pdfBtn" title="Exporter le rapport en PDF">PDF</button>
@@ -465,7 +466,7 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
         </table>
         <div id="emptyExpenses" class="empty">Aucune dépense pour ce filtre.</div>
       </div>
-      <div class="footerNote">Double-clique sur une dépense pour renseigner « Payé par », « Acheté chez » et le lien. Les données sont enregistrées automatiquement dans ce navigateur et, une fois connecté, dans le fichier JSON du dépôt GitHub.</div>
+      <div class="footerNote">Double-clique sur une dépense pour renseigner « Payé par », « Acheté chez » et le lien. Une copie locale est conservée ; après connexion Google, les modifications sont sauvegardées dans Firestore.</div>
     </section>
 
     <aside class="card">
@@ -570,26 +571,6 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
   </div>
 </div>
 
-<div id="githubModal" class="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="githubModalTitle">
-  <div class="modal">
-    <h2 id="githubModalTitle">Sauvegarde GitHub</h2>
-    <p>Utilise un jeton GitHub limité à ce dépôt avec l’autorisation <strong>Contents: Read and write</strong>. Il reste uniquement dans ce navigateur et n’est jamais ajouté au code.</p>
-    <div class="formGrid">
-      <div class="formField"><label for="ghOwner">Compte GitHub</label><input id="ghOwner" autocomplete="off" placeholder="ex. armandjulien"></div>
-      <div class="formField"><label for="ghRepo">Dépôt</label><input id="ghRepo" autocomplete="off" value="budget-travaux"></div>
-      <div class="formField"><label for="ghBranch">Branche</label><input id="ghBranch" autocomplete="off" value="main"></div>
-      <div class="formField"><label for="ghPath">Fichier de données</label><input id="ghPath" autocomplete="off" value="budget-travaux.json"></div>
-      <div class="formField full"><label for="ghToken">Jeton d’accès GitHub</label><input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…"></div>
-    </div>
-    <label class="checkLine"><input id="ghRemember" type="checkbox" checked> Mémoriser la connexion sur cet appareil personnel</label>
-    <p class="modalHelp">Le bouton « Déconnecter » efface le jeton enregistré de ce navigateur.</p>
-    <div class="modalActions">
-      <button id="ghDisconnectBtn" class="danger">Déconnecter</button>
-      <button id="ghCancelBtn">Annuler</button>
-      <button id="ghConnectBtn" class="primary">Connecter et charger</button>
-    </div>
-  </div>
-</div>
 
 <script>
 const DEFAULT_CATEGORIES = [
@@ -605,10 +586,11 @@ const DEFAULT_CATEGORIES = [
 ];
 const PALETTE = ["#0f766e","#2563eb","#7c3aed","#db2777","#ea580c","#ca8a04","#16a34a","#0891b2","#64748b","#dc2626","#9333ea","#4f46e5"];
 const DATA_STORAGE_KEY = "travauxBudgetV17";
-const GITHUB_CONFIG_KEY = "travauxGitHubV1";
-const GITHUB_TOKEN_KEY = "travauxGitHubTokenV1";
 let data = loadData();
-const GITHUB_DIRTY_KEY = "travauxBudgetPendingGitHubV1";
+const FIREBASE_DIRTY_KEY = "travauxBudgetPendingFirebaseV1";
+let firebaseUser = null;
+let firebaseCloudReady = false;
+let firebaseLoadRevision = 0;
 let syncTimer = null;
 let syncInProgress = false;
 let syncRevision = 0;
@@ -625,224 +607,152 @@ function save(){
   data.version = 17;
   data.updatedAt = new Date().toISOString();
   localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
-  localStorage.setItem(GITHUB_DIRTY_KEY, "1");
+  localStorage.setItem(FIREBASE_DIRTY_KEY, "1");
   syncRevision++;
   syncRetryCount = 0;
-  scheduleGitHubSync();
+  scheduleFirebaseSync();
 }
 
-function getGitHubConfig(){
-  try{return JSON.parse(localStorage.getItem(GITHUB_CONFIG_KEY) || "null");}catch(e){return null;}
-}
-function getGitHubToken(){
-  return sessionStorage.getItem(GITHUB_TOKEN_KEY) || localStorage.getItem(GITHUB_TOKEN_KEY) || "";
-}
 function setSyncStatus(message,state=""){
-  const el = document.getElementById("syncStatus");
-  if(!el) return;
-  el.textContent = message;
-  el.title = message;
-  el.className = `syncStatus ${state}`.trim();
+  const el=document.getElementById("syncStatus");
+  if(!el)return;
+  el.textContent=message;
+  el.title=message;
+  el.className=`syncStatus ${state}`.trim();
 }
-function githubApiUrl(cfg){
-  const path = String(cfg.path || "budget-travaux.json").split("/").map(encodeURIComponent).join("/");
-  return `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path}?ref=${encodeURIComponent(cfg.branch || "main")}`;
+function isValidBudget(value){
+  return value && Array.isArray(value.categories) && Array.isArray(value.expenses);
 }
-function utf8ToBase64(value){
-  const bytes = new TextEncoder().encode(value);
-  let binary = "";
-  bytes.forEach(byte => { binary += String.fromCharCode(byte); });
-  return btoa(binary);
+function updateGoogleButtons(){
+  const btn=document.getElementById("googleLoginBtn");
+  const logout=document.getElementById("googleLogoutBtn");
+  const cloud=document.getElementById("syncNowBtn");
+  btn.disabled=!window.firebaseBackend;
+  btn.textContent=firebaseUser?(firebaseUser.email||"Connecté à Google"):"Se connecter avec Google";
+  btn.title=firebaseUser?"Connecté : "+(firebaseUser.email||"Compte Google"):"Se connecter avec Google";
+  logout.style.display=firebaseUser?"":"none";
+  cloud.disabled=!(firebaseUser&&window.firebaseBackend);
 }
-function base64ToUtf8(value){
-  const binary = atob(String(value).replace(/\s/g,""));
-  const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
-  return new TextDecoder().decode(bytes);
+function firebaseErrorMessage(error){
+  const code=String(error?.code||"");
+  if(code==="permission-denied")return "Firestore : règles à publier dans Firebase → Firestore → Règles";
+  if(code==="auth/unauthorized-domain")return "Domaine GitHub Pages non autorisé dans Authentication";
+  if(code==="auth/popup-blocked")return "Autorise les fenêtres pop-up pour te connecter";
+  if(code==="auth/popup-closed-by-user")return "Connexion Google annulée";
+  if(code==="unavailable"||code==="failed-precondition")return "Firebase indisponible — copie locale conservée";
+  return "Firebase : échec de la sauvegarde — copie locale conservée";
 }
-async function githubRequest(url,options={}){
-  const token = getGitHubToken();
-  if(!token) throw new Error("Connexion GitHub requise.");
-  const response = await fetch(url,{
-    ...options,
-    headers:{
-      "Accept":"application/vnd.github+json",
-      "Authorization":`Bearer ${token}`,
-      "X-GitHub-Api-Version":"2022-11-28",
-      ...(options.headers || {})
-    }
-  });
-  const body = await response.json().catch(() => ({}));
-  if(!response.ok){
-    const error = new Error(body.message || `Erreur GitHub ${response.status}`);
-    error.status = response.status;
-    throw error;
-  }
-  return body;
-}
-function sameBudget(a,b){
-  return JSON.stringify(a) === JSON.stringify(b);
-}
-function hasUnsyncedLocalData(incoming){
-  if(localStorage.getItem(GITHUB_DIRTY_KEY)==="1") return true;
-  const localTime=Date.parse(data.updatedAt||"")||0;
-  const remoteTime=Date.parse(incoming.updatedAt||"")||0;
-  return localTime>remoteTime && !sameBudget(data,incoming);
-}
-async function loadFromGitHub({replace=true}={}){
-  const cfg=getGitHubConfig();
-  if(!cfg||!getGitHubToken()) throw new Error("Connexion GitHub requise.");
-  const initialRevision=syncRevision;
-  setSyncStatus("Chargement GitHub…","syncing");
-  const remote=await githubRequest(githubApiUrl(cfg));
-  const incoming=JSON.parse(base64ToUtf8(remote.content));
-  if(!Array.isArray(incoming.categories)||!Array.isArray(incoming.expenses)) throw new Error("Le fichier GitHub n’est pas un budget valide.");
-  if(replace){
-    if(initialRevision!==syncRevision || hasUnsyncedLocalData(incoming)){
-      if(sameBudget(data,incoming)){
-        localStorage.removeItem(GITHUB_DIRTY_KEY);
-        setSyncStatus("Synchronisé avec GitHub","synced");
-      }else{
-        localStorage.setItem(GITHUB_DIRTY_KEY,"1");
-        scheduleGitHubSync();
-      }
-      return remote;
-    }
-    data=incoming;
-    localStorage.setItem(DATA_STORAGE_KEY,JSON.stringify(data));
-    localStorage.removeItem(GITHUB_DIRTY_KEY);
-    render();
-  }
-  setSyncStatus("Synchronisé avec GitHub","synced");
-  return remote;
-}
-function syncErrorMessage(error){
-  if(error.status===401) return "Jeton GitHub invalide ou expiré — reconnecte-toi";
-  if(error.status===403) return "GitHub : jeton sans autorisation Contents (lecture et écriture)";
-  if(error.status===404) return "Fichier GitHub introuvable — vérifie le chemin";
-  if(error.status===409||error.status===422) return "Conflit GitHub — nouvelle tentative";
-  return "Échec GitHub — modifications conservées localement";
-}
-async function syncToGitHub(){
-  const cfg=getGitHubConfig();
-  if(!cfg||!getGitHubToken()){
-    setSyncStatus("Enregistré localement — connexion GitHub requise");
+async function handleFirebaseUser(user){
+  const revision=++firebaseLoadRevision;
+  firebaseUser=user;
+  firebaseCloudReady=false;
+  clearTimeout(syncTimer);
+  updateGoogleButtons();
+  if(!user){
+    setSyncStatus("Enregistré localement — connexion Google requise");
     return;
   }
-  if(syncInProgress) return;
+  setSyncStatus("Chargement de ton budget Firebase…","syncing");
+  try{
+    await bundledDataPromise;
+    const snapshot=await window.firebaseBackend.read(user.uid);
+    if(revision!==firebaseLoadRevision||firebaseUser?.uid!==user.uid)return;
+    if(snapshot.exists()){
+      const remote=snapshot.data().budget;
+      if(!isValidBudget(remote))throw new Error("Format de budget Firebase invalide.");
+      if(localStorage.getItem(FIREBASE_DIRTY_KEY)==="1" && JSON.stringify(data)!==JSON.stringify(remote)){
+        const sendLocal=confirm("Tu as des modifications locales non enregistrées en ligne. OK : les envoyer dans Firebase. Annuler : récupérer la version Firebase (la copie locale sera remplacée).");
+        if(sendLocal){
+          firebaseCloudReady=true;
+          scheduleFirebaseSync(0);
+          return;
+        }
+      }
+      data=remote;
+      localStorage.setItem(DATA_STORAGE_KEY,JSON.stringify(data));
+      localStorage.removeItem(FIREBASE_DIRTY_KEY);
+      firebaseCloudReady=true;
+      render();
+      setSyncStatus("Synchronisé avec Firebase","synced");
+      return;
+    }
+    const hasLocalData=allExpenses().length>0 || data.categories.some(c=>Number(c.budget)>0);
+    if(hasLocalData && !confirm("Aucun budget Firebase n'existe encore. Importer ton budget actuel (dépenses et catégories) depuis ce navigateur ?")){
+      setSyncStatus("Budget Firebase vide — clique sur Synchroniser pour importer");
+      return;
+    }
+    firebaseCloudReady=true;
+    localStorage.setItem(FIREBASE_DIRTY_KEY,"1");
+    scheduleFirebaseSync(0);
+  }catch(error){
+    console.error("Chargement Firestore",error);
+    if(revision===firebaseLoadRevision)setSyncStatus(firebaseErrorMessage(error),"error");
+  }
+}
+async function googleLogin(){
+  if(!window.firebaseBackend){setSyncStatus("Firebase en cours de chargement…","syncing");return;}
+  try{
+    await window.firebaseBackend.login();
+  }catch(error){
+    if(error?.code!=="auth/popup-closed-by-user")console.error(error);
+    setSyncStatus(firebaseErrorMessage(error),"error");
+  }
+}
+async function googleLogout(){
+  if(!window.firebaseBackend)return;
+  if(localStorage.getItem(FIREBASE_DIRTY_KEY)==="1" && !confirm("Il reste des modifications locales non synchronisées. Les conserver localement et se déconnecter ?"))return;
+  try{await window.firebaseBackend.logout();}
+  catch(error){console.error(error);setSyncStatus(firebaseErrorMessage(error),"error");}
+}
+async function saveToFirebase(){
+  if(!firebaseUser||!window.firebaseBackend){
+    setSyncStatus("Enregistré localement — connecte-toi avec Google");
+    return;
+  }
+  if(!firebaseCloudReady){
+    if(!confirm("Envoyer ton budget local dans Firebase ? Cela créera ou remplacera ton budget en ligne."))return;
+    firebaseCloudReady=true;
+    localStorage.setItem(FIREBASE_DIRTY_KEY,"1");
+  }
+  if(syncInProgress)return;
   syncInProgress=true;
   clearTimeout(syncTimer);
   syncTimer=null;
   const revision=syncRevision;
-  const snapshot=JSON.stringify(data,null,2)+String.fromCharCode(10);
-  const payload=JSON.parse(snapshot);
+  const userId=firebaseUser.uid;
+  const payload=JSON.parse(JSON.stringify(data));
   let retry=false;
-  setSyncStatus("Enregistrement GitHub…","syncing");
+  setSyncStatus("Enregistrement Firebase…","syncing");
   try{
-    const fileUrl=githubApiUrl(cfg);
-    const putUrl=fileUrl.split("?ref=")[0];
-    let uploaded=false;
-    for(let attempt=0;attempt<3;attempt++){
-      const current=await githubRequest(fileUrl);
-      const remote=JSON.parse(base64ToUtf8(current.content));
-      if(sameBudget(remote,payload)){uploaded=true;break;}
-      try{
-        await githubRequest(putUrl,{
-          method:"PUT",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            message:`Mise à jour du budget — ${new Intl.DateTimeFormat("fr-FR",{dateStyle:"short",timeStyle:"short"}).format(new Date())}`,
-            content:utf8ToBase64(snapshot),
-            sha:current.sha,
-            branch:cfg.branch||"main"
-          })
-        });
-        uploaded=true;break;
-      }catch(error){
-        if((error.status===409||error.status===422)&&attempt<2)continue;
-        throw error;
-      }
-    }
-    if(!uploaded)throw new Error("Écriture GitHub non confirmée.");
+    await window.firebaseBackend.write(userId,payload);
     syncRetryCount=0;
-    if(revision===syncRevision && JSON.stringify(cfg)===JSON.stringify(getGitHubConfig())){
-      localStorage.removeItem(GITHUB_DIRTY_KEY);
-      setSyncStatus("Synchronisé avec GitHub","synced");
+    if(firebaseUser?.uid===userId && revision===syncRevision){
+      localStorage.removeItem(FIREBASE_DIRTY_KEY);
+      setSyncStatus("Synchronisé avec Firebase","synced");
     }else{
-      setSyncStatus("Nouvelles modifications en attente…","syncing");
+      setSyncStatus("Nouvelles modifications à enregistrer…","syncing");
     }
   }catch(error){
-    console.error("Sauvegarde GitHub :",error);
-    localStorage.setItem(GITHUB_DIRTY_KEY,"1");
-    setSyncStatus(syncErrorMessage(error),"error");
-    if(![401,403,404].includes(error.status)){retry=true;syncRetryCount++;}
+    console.error("Sauvegarde Firestore",error);
+    localStorage.setItem(FIREBASE_DIRTY_KEY,"1");
+    setSyncStatus(firebaseErrorMessage(error),"error");
+    if(!["permission-denied","unauthenticated"].includes(error?.code)){retry=true;syncRetryCount++;}
   }finally{
     syncInProgress=false;
-    if(getGitHubConfig()&&getGitHubToken()){
-      if(revision!==syncRevision)scheduleGitHubSync();
-      else if(retry)scheduleGitHubSync(Math.min(60000,5000*2**Math.min(syncRetryCount-1,4)),true);
+    if(firebaseUser?.uid===userId && firebaseCloudReady){
+      if(revision!==syncRevision)scheduleFirebaseSync();
+      else if(retry)scheduleFirebaseSync(Math.min(60000,5000*2**Math.min(syncRetryCount-1,4)),true);
     }
   }
 }
-function scheduleGitHubSync(delay=1200,retry=false){
-  if(!getGitHubConfig()||!getGitHubToken()){
-    setSyncStatus("Enregistré localement — connexion GitHub requise");
+function scheduleFirebaseSync(delay=1200,retry=false){
+  if(!firebaseUser||!window.firebaseBackend||!firebaseCloudReady){
+    setSyncStatus("Enregistré localement — connexion Google requise");
     return;
   }
   clearTimeout(syncTimer);
   if(!retry)setSyncStatus("Modification en attente…","syncing");
-  syncTimer=setTimeout(syncToGitHub,delay);
-}
-function inferGitHubConfig(){
-  const host = location.hostname;
-  if(!host.endsWith(".github.io")) return null;
-  const owner = host.split(".")[0];
-  const firstPath = location.pathname.split("/").filter(Boolean)[0];
-  return {owner,repo:firstPath || `${owner}.github.io`,branch:"main",path:"budget-travaux.json"};
-}
-function openGitHubModal(){
-  const cfg = getGitHubConfig() || inferGitHubConfig() || {owner:"",repo:"budget-travaux",branch:"main",path:"budget-travaux.json"};
-  document.getElementById("ghOwner").value = cfg.owner || "";
-  document.getElementById("ghRepo").value = cfg.repo || "budget-travaux";
-  document.getElementById("ghBranch").value = cfg.branch || "main";
-  document.getElementById("ghPath").value = cfg.path || "budget-travaux.json";
-  document.getElementById("ghToken").value = getGitHubToken();
-  document.getElementById("githubModal").classList.add("open");
-}
-function closeGitHubModal(){ document.getElementById("githubModal").classList.remove("open"); }
-async function connectGitHub(){
-  const cfg = {
-    owner:document.getElementById("ghOwner").value.trim(),
-    repo:document.getElementById("ghRepo").value.trim(),
-    branch:document.getElementById("ghBranch").value.trim() || "main",
-    path:document.getElementById("ghPath").value.trim() || "budget-travaux.json"
-  };
-  const token = document.getElementById("ghToken").value.trim();
-  if(!cfg.owner || !cfg.repo || !token){ alert("Renseigne le compte, le dépôt et le jeton GitHub."); return; }
-  localStorage.setItem(GITHUB_CONFIG_KEY,JSON.stringify(cfg));
-  sessionStorage.setItem(GITHUB_TOKEN_KEY,token);
-  localStorage.removeItem(GITHUB_TOKEN_KEY);
-  if(document.getElementById("ghRemember").checked) localStorage.setItem(GITHUB_TOKEN_KEY,token);
-  document.getElementById("ghConnectBtn").disabled = true;
-  try{
-    await loadFromGitHub({replace:true});
-    document.getElementById("syncNowBtn").disabled = false;
-    closeGitHubModal();
-  }catch(error){
-    setSyncStatus("Connexion GitHub impossible","error");
-    alert(`Connexion impossible : ${error.message}`);
-  }finally{
-    document.getElementById("ghConnectBtn").disabled = false;
-  }
-}
-function disconnectGitHub(){
-  localStorage.removeItem(GITHUB_CONFIG_KEY);
-  localStorage.removeItem(GITHUB_TOKEN_KEY);
-  sessionStorage.removeItem(GITHUB_TOKEN_KEY);
-  document.getElementById("syncNowBtn").disabled = true;
-  clearTimeout(syncTimer);
-  syncTimer=null;
-  setSyncStatus("Enregistré localement");
-  closeGitHubModal();
+  syncTimer=setTimeout(saveToFirebase,delay);
 }
 async function loadBundledDataIfNeeded(){
   if(localStorage.getItem(DATA_STORAGE_KEY)) return;
@@ -1560,14 +1470,9 @@ document.getElementById("categoryEditExpensesBtn").onclick=()=>{
 document.getElementById("categoryEditModal").addEventListener("click",ev=>{
   if(ev.target.id==="categoryEditModal")closeCategoryModal();
 });
-document.getElementById("githubBtn").onclick = openGitHubModal;
-document.getElementById("syncNowBtn").onclick = syncToGitHub;
-document.getElementById("ghCancelBtn").onclick = closeGitHubModal;
-document.getElementById("ghConnectBtn").onclick = connectGitHub;
-document.getElementById("ghDisconnectBtn").onclick = disconnectGitHub;
-document.getElementById("githubModal").addEventListener("click",ev => {
-  if(ev.target.id === "githubModal") closeGitHubModal();
-});
+document.getElementById("googleLoginBtn").onclick=googleLogin;
+document.getElementById("googleLogoutBtn").onclick=googleLogout;
+document.getElementById("syncNowBtn").onclick=saveToFirebase;
 document.getElementById("exportJsonBtn").onclick = exportJSON;
 document.getElementById("pdfBtn").onclick = printReport;
 document.getElementById("importJson").addEventListener("change", ev => {
@@ -1578,6 +1483,7 @@ document.getElementById("importJson").addEventListener("change", ev => {
     try{
       const incoming = JSON.parse(r.result);
       if(!Array.isArray(incoming.categories) || !Array.isArray(incoming.expenses)) throw new Error();
+      if(firebaseCloudReady && !confirm("Importer ce fichier JSON et remplacer le budget actuellement sauvegardé dans Firebase ?"))return;
       data = incoming;
       save();
       render();
@@ -1591,19 +1497,47 @@ document.getElementById("importJson").addEventListener("change", ev => {
 
 initializeBudgetViews();
 render();
-loadBundledDataIfNeeded();
-if(getGitHubConfig() && getGitHubToken()){
-  document.getElementById("syncNowBtn").disabled = false;
-  if(localStorage.getItem(GITHUB_DIRTY_KEY)==="1"){
-    scheduleGitHubSync();
-  }else{
-    loadFromGitHub({replace:true}).catch(error => {
+const bundledDataPromise=loadBundledDataIfNeeded();
+updateGoogleButtons();
+setSyncStatus("Chargement de Firebase…","syncing");
+</script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCExYF7ivk5gJ8vcQpktPs2QV-Z1g-hkSM",
+  authDomain:"budget-travaux-4993c.firebaseapp.com",
+  projectId:"budget-travaux-4993c",
+  storageBucket:"budget-travaux-4993c.firebasestorage.app",
+  messagingSenderId:"875990842282",
+  appId:"1:875990842282:web:827e4b96895a7efab949d3"
+};
+try{
+  const app=initializeApp(firebaseConfig);
+  const auth=getAuth(app);
+  const db=getFirestore(app);
+  const budgetDoc=uid=>doc(db,"users",uid,"budgets","main");
+  window.firebaseBackend={
+    login:()=>signInWithPopup(auth,new GoogleAuthProvider()),
+    logout:()=>signOut(auth),
+    read:uid=>getDoc(budgetDoc(uid)),
+    write:(uid,budget)=>setDoc(budgetDoc(uid),{budget})
+  };
+  updateGoogleButtons();
+  onAuthStateChanged(auth,user=>{
+    handleFirebaseUser(user).catch(error=>{
       console.error(error);
-      setSyncStatus("GitHub indisponible — données locales préservées","error");
+      setSyncStatus(firebaseErrorMessage(error),"error");
     });
-  }
-}else if(getGitHubConfig()){
-  setSyncStatus("GitHub à reconnecter");
+  },error=>{
+    console.error(error);
+    setSyncStatus(firebaseErrorMessage(error),"error");
+  });
+}catch(error){
+  console.error("Initialisation Firebase",error);
+  setSyncStatus("Impossible de charger Firebase — vérifie la connexion Internet","error");
 }
 </script>
 </body>
