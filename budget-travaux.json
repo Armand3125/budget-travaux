@@ -52,7 +52,7 @@
       "categoryId": "cat-destruction",
       "legacyUnitPrice": 10,
       "legacyQuantity": 2,
-      "receipt": true
+      "receipt": false
     },
     {
       "id": "legacy-02",
@@ -491,5 +491,5 @@
       "receipt": false
     }
   ],
-  "updatedAt": "2026-09-19T00:02:30.786Z"
+  "updatedAt": "2026-09-19T08:02:49.072Z"
 }
