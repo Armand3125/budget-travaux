@@ -277,6 +277,44 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
   .statusRow{grid-template-columns:1fr}
   .statusValue{text-align:left}
 }
+
+/* Navigation entre vues */
+.viewTabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 14px;margin:0 0 7px;scrollbar-width:thin}
+.viewTab{flex:none;white-space:nowrap;padding:11px 17px;border-radius:10px;background:#fff;color:#526071}
+.viewTab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:white}
+.viewPanel[hidden]{display:none!important}
+.viewPanel{min-width:0}
+.viewPanel>.card{width:100%}
+.viewPanel .cardhead select{width:auto;max-width:min(100%,350px);min-width:200px}
+.extendedTable{min-width:930px}
+.extendedTable th,.extendedTable td{font-size:12px}
+.extendedTable td{overflow-wrap:anywhere}
+.extendedTable .desc{min-width:160px}
+.extendedTable .money{min-width:95px}
+.expandedLink{font-weight:700;text-decoration:none;color:var(--accent)}
+.expandedLink:hover{text-decoration:underline}
+.categoryMetrics{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.categoryMetric{background:#f8fafc;border-radius:10px;padding:10px 14px;min-width:140px;flex:1}
+.categoryMetric .k{font-size:11px;color:var(--muted)}
+.categoryMetric .v{font-size:19px;font-weight:750;margin-top:4px}
+.evolutionLayout{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(0,1.6fr);gap:16px;align-items:start}
+.evolutionLayout > .card,.evolutionLayout > div{min-width:0}
+.evolutionLayout .chartFull{border:0;border-radius:0;padding:18px}
+.evolutionLayout .statusRow{grid-template-columns:125px minmax(100px,1fr) 160px}
+.evolutionLegend{display:flex;gap:17px;flex-wrap:wrap;padding:12px 18px 0;color:var(--muted);font-size:12px}
+.evolutionLegend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.evolutionLegend .paid::before{background:#0f766e}
+.evolutionLegend .planned::before{background:#86efac}
+.evolutionLegend .target::before{background:#94a3b8}
+.categoryViewButton{width:100%;margin-top:10px;font-size:12px;color:var(--accent)}
+@media(max-width:1050px){.evolutionLayout{grid-template-columns:1fr}}
+@media(max-width:700px){
+  .viewTab{padding:10px 12px;font-size:12px}
+  .categoryMetrics{padding:10px}
+  .evolutionLayout .statusRow{grid-template-columns:1fr}
+  .evolutionLayout .statusValue{text-align:left}
+  .viewPanel .cardhead select{min-width:unset;width:100%}
+}
 </style>
 </head>
 <body>
@@ -320,6 +358,51 @@ input:focus,select:focus{outline:2px solid rgba(20,184,166,.18);border-color:var
       </div>
     </div>
   </div>
+
+
+<nav class="viewTabs" role="tablist" aria-label="Vues du budget">
+  <button type="button" class="viewTab" data-view="global" role="tab" aria-controls="viewGlobal" aria-selected="true">Dépenses globales</button>
+  <button type="button" class="viewTab" data-view="extended" role="tab" aria-controls="viewExtended" aria-selected="false">Dépenses par type</button>
+  <button type="button" class="viewTab" data-view="evolution" role="tab" aria-controls="viewEvolution" aria-selected="false">Évolution et budgets</button>
+  <button type="button" class="viewTab" data-view="pies" role="tab" aria-controls="viewPies" aria-selected="false">Camemberts</button>
+</nav>
+<div id="viewGlobal" class="viewPanel" role="tabpanel"></div>
+<div id="viewExtended" class="viewPanel" role="tabpanel" hidden>
+  <section class="card">
+    <div class="cardhead">
+      <h2>Dépenses détaillées par type</h2>
+      <div class="toolbar">
+        <select id="extendedCategorySelect" aria-label="Choisir le type de dépense"></select>
+        <button type="button" class="primary" id="extendedAddBtn">+ Ajouter</button>
+      </div>
+    </div>
+    <div id="extendedCategoryMetrics" class="categoryMetrics"></div>
+    <div class="tablewrap">
+      <table class="extendedTable">
+        <thead><tr class="columnHead"><th>Descriptif</th><th>Prix</th><th>Payé par</th><th>Acheté chez</th><th>Lien</th><th>Ticket</th><th></th></tr></thead>
+        <tbody id="extendedExpenseBody"></tbody>
+      </table>
+      <div id="emptyExtendedExpenses" class="empty" hidden>Aucune dépense dans cette catégorie.</div>
+    </div>
+    <div class="footerNote">Double-clique sur une ligne pour modifier le payeur, le magasin et le lien. Le descriptif, le prix et le ticket sont modifiables directement.</div>
+  </section>
+</div>
+<div id="viewEvolution" class="viewPanel" role="tabpanel" hidden>
+  <div class="evolutionLayout">
+    <div id="budgetCategorySlot"></div>
+    <section class="card">
+      <div class="cardhead"><h2>Évolution des dépenses par type</h2></div>
+      <div class="evolutionLegend"><span class="paid">Payées (ticket coché)</span><span class="planned">Prévues</span><span class="target">Repère du budget</span></div>
+      <div id="evolutionChartSlot"></div>
+    </section>
+  </div>
+</div>
+<div id="viewPies" class="viewPanel" role="tabpanel" hidden>
+  <section class="card analytics" style="margin-top:0">
+    <div class="cardhead"><h2>Répartition des dépenses</h2></div>
+    <div class="chartsWrap" id="pieChartsSlot"></div>
+  </section>
+</div>
 
   <div class="layout">
     <section class="card">
@@ -882,6 +965,76 @@ function renderExpenses(){
 
 }
 
+
+let activeBudgetView = "global";
+let selectedExtendedCategoryId = "";
+function initializeBudgetViews(){
+  const layout=document.querySelector(".layout");
+  const analytics=document.querySelector("section.analytics");
+  if(!layout||!analytics) return;
+  const expenseCard=layout.querySelector("section.card");
+  const categoryCard=layout.querySelector("aside.card");
+  const chartTop=analytics.querySelector(".chartTop");
+  const chartBottom=analytics.querySelector(".chartBottom");
+  const chartStatus=analytics.querySelector(".chartFull");
+  if(!expenseCard||!categoryCard||!chartTop||!chartBottom||!chartStatus) return;
+  document.getElementById("viewGlobal").append(expenseCard);
+  document.getElementById("budgetCategorySlot").append(categoryCard);
+  document.getElementById("evolutionChartSlot").append(chartStatus);
+  document.getElementById("pieChartsSlot").append(chartTop,chartBottom);
+  layout.remove();
+  analytics.remove();
+  document.querySelectorAll(".viewTab").forEach(tab=>tab.addEventListener("click",()=>switchBudgetView(tab.dataset.view)));
+  document.getElementById("extendedCategorySelect").addEventListener("change",ev=>{
+    selectedExtendedCategoryId=ev.target.value;
+    renderExtendedExpenses();
+  });
+  document.getElementById("extendedAddBtn").addEventListener("click",()=>addExpense({categoryId:selectedExtendedCategoryId}));
+}
+function switchBudgetView(view,categoryId=null){
+  if(!["global","extended","evolution","pies"].includes(view)) return;
+  if(categoryId&&data.categories.some(c=>c.id===categoryId)) selectedExtendedCategoryId=categoryId;
+  activeBudgetView=view;
+  document.querySelectorAll(".viewTab").forEach(tab=>{
+    const selected=tab.dataset.view===view;
+    tab.setAttribute("aria-selected",String(selected));
+    tab.tabIndex=selected?0:-1;
+  });
+  ["global","extended","evolution","pies"].forEach(name=>{
+    document.getElementById("view"+name[0].toUpperCase()+name.slice(1)).hidden=name!==view;
+  });
+  if(view==="extended") renderExtendedExpenses();
+}
+function openExtendedCategory(id){switchBudgetView("extended",id);}
+function renderExtendedExpenses(){
+  const select=document.getElementById("extendedCategorySelect");
+  if(!select) return;
+  if(!data.categories.some(c=>c.id===selectedExtendedCategoryId)) selectedExtendedCategoryId=data.categories[0]?.id||"";
+  select.innerHTML=data.categories.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
+  select.value=selectedExtendedCategoryId;
+  const category=data.categories.find(c=>c.id===selectedExtendedCategoryId);
+  const expenses=allExpenses().filter(e=>e.categoryId===selectedExtendedCategoryId);
+  const paid=expenses.filter(e=>e.receipt).reduce((sum,e)=>sum+(Number(e.price)||0),0);
+  const total=expenses.reduce((sum,e)=>sum+(Number(e.price)||0),0);
+  const budget=Number(category?.budget)||0;
+  const metrics=[["Budget prévu",euro(budget)],["Payé",euro(paid)],["Total engagé",euro(total)],["Reste",euro(budget-total)]];
+  document.getElementById("extendedCategoryMetrics").innerHTML=metrics.map(([name,value])=>
+    `<div class="categoryMetric"><div class="k">${name}</div><div class="v">${esc(value)}</div></div>`).join("");
+  document.getElementById("emptyExtendedExpenses").style.display=expenses.length?"none":"block";
+  document.getElementById("extendedExpenseBody").innerHTML=expenses.map(e=>{
+    const url=normalizeUrl(e.link);
+    return `<tr class="expenseRow" ondblclick="openExpenseDetails('${e.id}')" title="Double-cliquer pour les détails">
+      <td><input class="desc" value="${esc(e.description)}" placeholder="Descriptif" onchange="updateExpense('${e.id}','description',this.value)"></td>
+      <td><input class="money" type="number" min="0" step="0.01" value="${Number(e.price)||0}" onchange="updateExpense('${e.id}','price',this.value)"></td>
+      <td>${esc(e.paidBy||"À renseigner")}</td>
+      <td>${esc(e.store||"—")}</td>
+      <td>${url?`<a class="expandedLink" href="${esc(url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Ouvrir ↗</a>`:"—"}</td>
+      <td class="ticketCell"><input class="ticketCheck" type="checkbox" ${e.receipt?"checked":""} onchange="updateExpense('${e.id}','receipt',this.checked)" title="Ticket disponible"></td>
+      <td><button class="smallbtn danger" onclick="event.stopPropagation();deleteExpense('${e.id}')" title="Supprimer">✕</button></td>
+    </tr>`;
+  }).join("");
+}
+
 function renderCategories(){
   document.getElementById("categoryList").innerHTML = data.categories.map(c => {
     const spent = spentByCategory(c.id);
@@ -902,6 +1055,7 @@ function renderCategories(){
           <div class="mini"><div class="k">${remaining>=0?"Reste":"Dépassement"}</div><div class="v" style="${remaining<0?'color:var(--danger)':''}">${euro(Math.abs(remaining))}</div></div>
         </div>
         <div class="bar ${over?"over":""}"><div style="width:${pct}%"></div></div>
+        <button type="button" class="categoryViewButton" onclick="openExtendedCategory('${c.id}')">Voir les dépenses ↗</button>
       </div>
     `;
   }).join("");
@@ -1032,6 +1186,7 @@ function renderSummaries(){
 function render(){
   renderFilterCategoryOptions();
   renderExpenses();
+  renderExtendedExpenses();
   renderCategories();
   renderSummaries();
   renderCharts();
@@ -1238,6 +1393,7 @@ document.getElementById("importJson").addEventListener("change", ev => {
   ev.target.value = "";
 });
 
+initializeBudgetViews();
 render();
 loadBundledDataIfNeeded();
 if(getGitHubConfig() && getGitHubToken()){
