@@ -421,7 +421,7 @@ function selectWeekDate(date,openEditor=false){
   selectedEntryDate=date;
   document.getElementById("entryDate").value=date;
   document.getElementById("mobileDate").value=date;
-  renderWeek();
+  document.querySelectorAll("#weekGrid .dayCard").forEach(card=>card.classList.toggle("selected",card.dataset.date===date));
   renderMobileSimple();
   if(openEditor)openMobileAdd(date);
 }
@@ -433,7 +433,7 @@ function renderWeek(){
   document.getElementById("weekGrid").innerHTML=days.map(d=>{
     const date=localDate(d),exp=weekExp.filter(x=>x.date===date),spent=sum(exp),weekend=d.getDay()===0||d.getDay()===6,dailyBudget=weekend?20:30,available=dailyBudget-spent,fill=Math.min(100,Math.max(0,spent/dailyBudget*100)),selected=date===selectedEntryDate;
     const chips=CATEGORIES.map(c=>({c,v:sum(exp.filter(x=>(x.category||"Autre")===c))})).filter(x=>x.v>0).map(x=>`<button type="button" class="catChip" style="background:${COLORS[x.c]}" onclick="event.stopPropagation();selectWeekDate('${date}');openDetail('${date}','expense','${x.c}')" ondblclick="event.stopPropagation()"><span class="catChipLeft"><span class="catDot" style="background:#fff"></span><span class="catName">${x.c}</span></span><span class="catAmt">${money(x.v)}</span></button>`).join("");
-    return `<div class="dayCard ${date===today?"today":""} ${weekend?"weekendDay":""} ${selected?"selected":""}" role="button" tabindex="0" title="Double-cliquer pour ajouter une dépense" aria-label="${d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})} : double-cliquer pour ajouter une dépense" onclick="selectWeekDate('${date}')" ondblclick="openExpenseModal('${date}')" onkeydown="if(event.target===this&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openExpenseModal('${date}')}">
+    return `<div class="dayCard ${date===today?"today":""} ${weekend?"weekendDay":""} ${selected?"selected":""}" data-date="${date}" role="button" tabindex="0" title="Double-cliquer pour ajouter une dépense" aria-label="${d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})} : double-cliquer pour ajouter une dépense" onclick="selectWeekDate('${date}')" ondblclick="openExpenseModal('${date}')" onkeydown="if(event.target===this&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openExpenseModal('${date}')}">
       <div class="dayTop">
         <div><div class="dayName">${d.toLocaleDateString("fr-FR",{weekday:"long"})}</div><div class="dayNum">${d.getDate()}<span class="dayMonth">${d.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")}</span></div></div>
         <button type="button" class="dayQuickAdd" title="Ajouter une dépense ce jour" aria-label="Ajouter une dépense le ${date}" onclick="event.stopPropagation();openExpenseModal('${date}')" ondblclick="event.stopPropagation()">＋</button>
