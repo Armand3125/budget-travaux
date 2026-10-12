@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#13231c">
+<title>Fortuna V3R6</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#f3f5f0;--card:#fff;--ink:#17221d;--muted:#728078;--line:#dfe5df;--green:#285c46;--green2:#3e7b5f;--soft:#e8efe9;--gold:#c89c45;--red:#bb4c4c;--shadow:0 12px 36px rgba(36,58,46,.08);--radius:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}button,input,select{font:inherit}.app{width:min(1760px,calc(100vw - 28px));max-width:none;margin:auto;padding:18px 18px 94px}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-18px -18px 18px;padding:12px 18px;background:rgba(243,245,240,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(223,229,223,.9)}.brand{display:flex;align-items:center;gap:10px;min-width:0}.brandIcon{width:44px;height:44px;flex:none;border-radius:15px;background:#e5e7eb;display:grid;place-items:center;font-size:23px;box-shadow:none}.brand h1{font-size:22px;margin:0;line-height:1.1}.version{font-size:10px;color:var(--muted);font-weight:850;letter-spacing:.08em}.topActions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}.topActions .exportBtn{display:none}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 12px;border-radius:12px;font-weight:750;cursor:pointer}.btn:hover{background:#f8faf7}.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}.btn.danger{color:var(--red)}.btn.small{padding:7px 9px;font-size:12px}.sync{display:flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:11px;font-weight:850;white-space:nowrap}.dot{width:8px;height:8px;border-radius:50%;background:#a5ada8}.sync.ok .dot{background:#4b9a6f}.sync.work .dot{background:#d69d35}.sync.err .dot{background:#c74f4f}.hidden{display:none!important}
+.monthNav{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 18px}.monthNav button{width:42px;height:42px;padding:0}.monthTitle{min-width:190px;text-align:center;font-size:20px;font-weight:900;text-transform:capitalize}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}.metric .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:850}.metric .v{font-size:27px;font-weight:950;margin-top:7px}.metric .sub{font-size:12px;color:var(--muted);margin-top:4px}.metric.balance .v{color:var(--green)}.metric.expense .v{color:var(--red)}.metric.income .v{color:var(--green2)}
+.mainGrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:16px;margin-top:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.cardHead{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.cardHead h2{margin:0;font-size:16px}.cardBody{padding:18px}.tabs{display:flex;gap:7px;padding:5px;background:#eef2ed;border-radius:13px;margin-bottom:16px}.tab{flex:1;border:0;background:transparent;padding:10px;border-radius:10px;font-weight:850;color:var(--muted);cursor:pointer}.tab.active{background:white;color:var(--ink);box-shadow:0 3px 10px rgba(20,30,24,.08)}
+.formGrid{display:grid;grid-template-columns:1.4fr .7fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:850;letter-spacing:.05em}.field input,.field select{width:100%;border:1px solid #cfd8d0;border-radius:12px;padding:11px 12px;background:#fff;color:var(--ink);outline:none}
+.categorySelectHidden{display:none!important}
+.categoryPictos{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.categoryPicto{border:1px solid var(--line);background:#fff;border-radius:12px;min-width:0;padding:8px 4px 7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;color:var(--ink);transition:.15s}
+.categoryPicto:hover{transform:translateY(-1px);border-color:#aeb9b2}
+.categoryPicto.active{border-color:var(--green);box-shadow:0 0 0 2px rgba(40,92,70,.12);background:#f7faf8}
+.categoryPictoIcon{width:auto;height:auto;border-radius:0;display:block;background:transparent;font-size:24px;line-height:1;box-shadow:none}
+.categoryPictoName{font-size:9px;font-weight:850;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.mobileCategoryPictos{grid-column:1/-1}
+.mobileCategoryPictos .categoryPicto{padding:8px 4px}
+.field input:focus,.field select:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(62,123,95,.11)}.dateRow{display:block;margin-top:10px}.datePicker{position:relative;width:100%}.datePicker input{width:100%;padding-right:48px;min-height:44px;border:1px solid #cfd8d0;border-radius:12px;background:#fff;color:var(--ink);outline:none;cursor:pointer}.datePicker input:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(62,123,95,.11)}.datePicker input::-webkit-calendar-picker-indicator{opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer}.datePickerBtn{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:36px;height:34px;border:0;border-radius:9px;background:#eef3ef;display:grid;place-items:center;cursor:pointer;font-size:17px}.datePickerBtn:hover{background:#e3ebe5}.submitRow{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.section{margin-top:16px}.empty{padding:24px;text-align:center;color:var(--muted);font-size:13px}
+.chartWrap{display:grid;grid-template-columns:210px 1fr;gap:16px;align-items:center}.donut{width:190px;height:190px;margin:auto;position:relative}.donut svg{width:100%;height:100%;transform:rotate(-90deg)}.donutCenter{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}.donutCenter b{font-size:22px}.donutCenter span{display:block;color:var(--muted);font-size:11px}.legend{display:flex;flex-direction:column;gap:9px}.legendRow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px}.legendLeft{display:flex;align-items:center;gap:8px}.swatch{width:10px;height:10px;border-radius:3px}.legendRow strong{white-space:nowrap}.yearChartScroll{overflow-x:auto;padding-bottom:3px}.barChart{display:flex;align-items:flex-end;gap:10px;height:270px;padding-top:18px;min-width:820px}.barMonth{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:4px;height:100%;position:relative;padding-bottom:28px}.bar{width:34%;border-radius:7px 7px 2px 2px;min-height:2px}.bar.in{background:#4f8e6e}.bar.out{background:#d77979}.barLabel{position:absolute;bottom:3px;font-size:11px;color:var(--muted)}.barLegend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:8px}.barLegend span{display:flex;align-items:center;gap:6px}.reportGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.reportBox{border:1px solid var(--line);background:#fafbf9;border-radius:14px;padding:14px;min-width:0}.reportBox .k{font-size:11px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:.04em}.reportBox .v{font-size:19px;font-weight:900;margin-top:5px;overflow:hidden;text-overflow:ellipsis}.reportBox .s{font-size:11px;color:var(--muted);font-weight:750;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.reportBox.accent{border-color:#cfd9d2;background:#f6faf7}.reportBox.warn .v{color:var(--red)}.footerTools{display:flex;gap:8px;flex-wrap:wrap}.bottomNav{display:none}.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(15px);z-index:80;background:#17221d;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.weekHead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.weekNav{display:flex;align-items:center;gap:7px}.weekNav .btn{padding:7px 10px}.weekTitle{font-size:13px;font-weight:900;color:#47554d}.weekSummary{display:flex;gap:8px;flex-wrap:wrap}.weekStat{padding:7px 10px;border-radius:999px;background:#f4f7f3;border:1px solid var(--line);font-size:11px;font-weight:850;color:var(--muted)}.weekStat strong{color:var(--ink)}
+.weekGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.dayCard{min-width:0;border:1px solid var(--line);border-radius:15px;background:#fafbf9;padding:10px;display:flex;flex-direction:column;gap:8px}.dayCard.today{border-color:#b6c9bd;box-shadow:inset 0 0 0 1px #dbe7df}.dayCard.weekendDay{background:#292c31;border-color:#292c31;color:#fff}.dayCard.weekendDay.today{border-color:#6b7280;box-shadow:inset 0 0 0 1px #6b7280}.dayCard.weekendDay .dayTop{border-bottom-color:rgba(255,255,255,.18)}.dayCard.weekendDay .dayName,.dayCard.weekendDay .dayEmpty{color:rgba(255,255,255,.72)}.dayCard.weekendDay .dayTotal{color:#fecaca}.dayTop{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;padding-bottom:7px;border-bottom:1px solid #ebefeb}.dayName{font-size:10px;font-weight:900;text-transform:uppercase;color:var(--muted)}.dayNum{font-size:22px;line-height:1;font-weight:950;margin-top:2px}.dayTotal{font-size:11px;font-weight:900;color:var(--red);white-space:nowrap}.dayEmpty{font-size:11px;color:#9ba49f;padding:9px 0;text-align:center}.catChip{width:100%;border:0;border-radius:10px;padding:8px 9px;display:flex;align-items:center;justify-content:space-between;gap:7px;cursor:pointer;text-align:left;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}.catChip:hover{filter:brightness(1.06)}.catChipLeft{display:flex;align-items:center;gap:6px;min-width:0}.catDot{width:8px;height:8px;border-radius:50%;flex:none}.catName{font-size:11px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.catAmt{font-size:11px;font-weight:900;white-space:nowrap}.incomeChip{background:#166534;color:#fff}.incomeChip .catAmt{color:#fff}.weekLegend{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:11px}
+.sheetBackdrop{position:fixed;inset:0;z-index:90;background:rgba(15,25,20,.46);display:none;align-items:center;justify-content:center;padding:18px}.sheetBackdrop.open{display:flex}.detailSheet{width:min(560px,100%);max-height:min(82vh,760px);overflow:auto;background:#fff;border-radius:22px;box-shadow:0 28px 80px rgba(20,35,26,.26)}.sheetHead{position:sticky;top:0;background:#fff;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px;border-bottom:1px solid var(--line)}.sheetTitle{font-size:18px;font-weight:950}.sheetSub{font-size:12px;color:var(--muted);margin-top:3px}.sheetClose{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:18px}.detailList{padding:12px 18px 4px}.detailRow{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #edf0ed}.detailMain{min-width:0}.detailLabel{font-size:13px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.detailAmount{font-size:13px;font-weight:950;color:var(--red);white-space:nowrap}.detailAmount.income{color:var(--green2)}.detailActions{display:flex;gap:4px}.iconBtn{width:31px;height:31px;border:1px solid var(--line);border-radius:9px;background:#fff;cursor:pointer}.quickAdd{padding:16px 18px 20px;background:#f8faf7;border-top:1px solid var(--line)}.quickAddTitle{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:9px}.quickAddGrid{display:grid;grid-template-columns:1fr 110px auto;gap:8px}.quickAdd input{min-width:0;width:100%;border:1px solid #cfd8d0;border-radius:11px;padding:10px 11px;background:#fff}.quickAdd .btn{padding:10px 12px}
+
+.weightedTrendCard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.weightedTrendHead{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.weightedTrendHead h2{margin:0;font-size:16px}.weightedTrendLegend{display:flex;gap:12px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:11px;font-weight:800}.weightedTrendLegend span{display:flex;align-items:center;gap:6px}.weightedTrendLegend i{width:10px;height:10px;border-radius:50%;display:inline-block}.weightedTrendBody{padding:14px 16px 10px}.weightedTrendChart{width:100%;height:330px}.weightedTrendChart svg{width:100%;height:100%;display:block}.wGrid{stroke:#e9eeea;stroke-width:1}.wZero{stroke:#aab5ae;stroke-width:1.2;stroke-dasharray:5 5}.wArea{fill:url(#trendFill)}.wLine{fill:none;stroke:#285c46;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;filter:url(#trendShadow)}.wDot{fill:#285c46;stroke:#fff;stroke-width:1.5}.wLast{fill:#285c46;stroke:#fff;stroke-width:2}.wLabel{font-size:10px;fill:#75827a;font-weight:700}.wValue{font-size:10px;fill:#425047;font-weight:850}.weightedTrendFoot{padding:0 18px 14px;color:var(--muted);font-size:11px}
+
+.desktopShell{display:grid;grid-template-columns:310px minmax(0,1fr) 430px;gap:16px;align-items:start;grid-template-areas:"left week week" "left center right"}
+.desktopRail{display:flex;flex-direction:column;gap:13px;position:sticky;top:78px;max-height:calc(100vh - 92px);overflow:auto;padding:12px;background:#edf1ed;border:1px solid var(--line);border-radius:22px;scrollbar-width:thin}
+.desktopCenter{min-width:0;display:flex;flex-direction:column;gap:18px}
+.desktopShell .section{margin-top:0}
+.desktopRail .card{box-shadow:none;border-radius:16px}
+.desktopRail .cardHead{padding:13px 14px}
+.desktopRail .cardBody{padding:14px}
+.desktopLeft .monthNav{margin:0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px;box-shadow:none}
+.desktopLeft .monthTitle{min-width:0;flex:1;font-size:15px}
+.desktopLeft .monthNav button{width:36px;height:36px}
+.desktopLeft .formGrid{grid-template-columns:1fr}
+.desktopLeft .formGrid .field:first-child{grid-column:auto}
+.desktopLeft .dateRow{grid-template-columns:repeat(3,1fr)}
+.desktopLeft .dateRow .field{grid-column:1/-1}
+.desktopLeft .quick{padding:8px 3px;font-size:10px}
+.desktopLeft .submitRow{display:grid;grid-template-columns:1fr}
+.desktopLeft .submitRow .btn{width:100%}
+.desktopLeft .footerTools{display:grid;grid-template-columns:1fr 1fr}
+.desktopLeft .footerTools .btn{padding:9px 7px;font-size:11px;text-align:center}
+.desktopRight .chartWrap{grid-template-columns:1fr;gap:8px}
+.desktopRight .donut{width:190px;height:190px}
+.desktopRight .legend{gap:7px}
+.desktopRight .legendRow{font-size:12px}
+.desktopRight .reportGrid{grid-template-columns:1fr 1fr;gap:11px}
+.desktopRight .railMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.desktopRight .budgetMetrics .metric{padding:13px 12px;min-width:0}.desktopRight .budgetMetrics .metric .k{font-size:9px;white-space:nowrap}.desktopRight .budgetMetrics .metric .v{font-size:20px;white-space:nowrap}.desktopRight .budgetMetrics .metric .sub{font-size:9px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.desktopRight .railMetrics .metric{padding:13px;box-shadow:none;border-radius:15px}
+.desktopRight .railMetrics .metric .k{font-size:10px}
+.desktopRight .railMetrics .metric .v{font-size:21px;margin-top:5px}
+.desktopRight .railMetrics .metric .sub{font-size:10px;line-height:1.35}
+
+.desktopRight .reportBox{padding:11px}
+.desktopRight .reportBox .v{font-size:17px}
+
+
+
+.desktopCenter #weightedTrend,.desktopCenter #history,.desktopCenter #charts{margin-top:0}
+.desktopCenter #charts>.card{width:100%}
+.railAdd,.railCategory,.railReport{margin:0}
+@media(min-width:1181px) and (max-width:1450px){
+  .desktopShell{grid-template-columns:290px minmax(0,1fr) 470px;gap:14px}
+  .desktopRight .railMetrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:621px) and (max-width:1180px){
+  .app{width:min(1140px,calc(100vw - 24px))}
+  .desktopShell{grid-template-columns:270px minmax(0,1fr);gap:14px}
+  .desktopRight{grid-column:1/-1;position:static;max-height:none;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .desktopRight .railMetrics{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .desktopRight .railCategory,.desktopRight .railReport{min-width:0}
+}
+.mobileSimple{display:none}
+.mobilePeriodTabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--line);margin:0 -2px 12px}
+.mobilePeriodBtn{position:relative;border:0;background:transparent;padding:12px 4px 11px;font-size:13px;font-weight:800;color:var(--muted);cursor:pointer}
+.mobilePeriodBtn.active{color:var(--green)}
+.mobilePeriodBtn.active:after{content:"";position:absolute;left:18%;right:18%;bottom:-1px;height:3px;border-radius:999px;background:var(--green)}
+.mobileOverview{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:13px 14px 18px}
+.mobilePeriodNav{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:7px}
+.mobilePeriodArrow{width:42px;height:42px;border:0;background:transparent;color:var(--muted);font-size:29px;line-height:1;cursor:pointer}
+.mobilePeriodLabel{text-align:center;font-size:16px;font-weight:900;color:var(--ink);text-transform:none}
+.mobileDonutZone{position:relative;display:grid;place-items:center;min-height:265px;padding:10px 0 0}
+.mobileDonut{width:240px;height:240px;position:relative}
+.mobileDonut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.mobileDonutCenter{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
+.mobileDonutCenter b{font-size:31px;line-height:1;font-weight:950;color:var(--ink)}
+.mobileDonutCenter span{display:block;margin-top:6px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.mobileAddRound{position:absolute;right:3px;bottom:4px;width:58px;height:58px;border:0;border-radius:50%;background:var(--green);color:#fff;font-size:31px;line-height:1;box-shadow:0 10px 24px rgba(40,92,70,.24);cursor:pointer}
+.mobileCatList{display:flex;flex-direction:column;gap:9px;margin-top:13px}
+.mobileCatRow{display:grid;grid-template-columns:1fr 62px 88px;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px 13px;box-shadow:0 4px 16px rgba(36,58,46,.04)}
+.mobileCatLeft{display:flex;align-items:center;gap:10px;min-width:0}.mobileCatDot{width:14px;height:14px;border-radius:50%;flex:none}.mobileCatName{font-size:14px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mobileCatPct{text-align:right;color:var(--muted);font-size:13px;font-weight:850}.mobileCatValue{text-align:right;font-size:14px;font-weight:950;white-space:nowrap}
+.mobileEmpty{padding:25px 14px;text-align:center;color:var(--muted);font-size:12px;background:#fff;border:1px solid var(--line);border-radius:15px}
+body.forceMobile .mobileSimple{display:block}
+body.forceMobile .desktopOnly,body.forceMobile .bottomNav{display:none!important}
+body.forceMobile .app{width:min(460px,calc(100vw - 18px));max-width:460px;padding:10px 12px 32px}
+body.forceMobile .topbar{margin:-10px -12px 10px;padding:9px 12px}
+body.forceMobile .topActions .btn:not(#phoneViewBtn){display:none}
+body.forceMobile #phoneViewBtn{display:inline-flex}
+body.forceMobile .mobileAddSheet{max-width:460px;margin:0 auto}
+
+.mobileAddBackdrop{position:fixed;inset:0;z-index:95;background:rgba(15,25,20,.48);display:none;align-items:flex-end}.mobileAddBackdrop.open{display:flex}.mobileAddSheet{width:100%;background:#fff;border-radius:22px 22px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -18px 55px rgba(18,30,22,.24)}.mobileAddHandle{width:44px;height:4px;border-radius:99px;background:#d2d8d3;margin:0 auto 14px}.mobileAddTitle{font-size:17px;font-weight:950;margin-bottom:13px}.mobileAddGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.mobileAddField{display:flex;flex-direction:column;gap:5px}.mobileAddField.full{grid-column:1/-1}.mobileAddField label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:850}.mobileAddField input,.mobileAddField select{width:100%;border:1px solid #cfd8d0;border-radius:12px;padding:12px;background:#fff;color:var(--ink)}.mobileAddActions{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-top:13px}.mobileAddActions .btn{padding:12px}
+@media(max-width:900px){.grid4{grid-template-columns:1fr 1fr}.mainGrid{grid-template-columns:1fr}.reportGrid{grid-template-columns:1fr 1fr}.chartWrap{grid-template-columns:1fr 1fr}.topbar{align-items:flex-start}.topActions{max-width:58%}.weekGrid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:620px){.mobileSimple{display:block}.desktopOnly,.bottomNav{display:none!important}.app{padding:10px 12px 28px}.topbar{margin:-10px -12px 10px;padding:9px 12px;position:sticky}.brand h1{font-size:19px}.brandIcon{width:38px;height:38px}.topActions{max-width:none}.topActions .btn{display:none!important}.sync{padding:6px 8px;font-size:10px}.monthTitle{font-size:18px;min-width:170px}.grid4{gap:8px}.metric{padding:13px}.metric .v{font-size:22px}.mainGrid{gap:12px}.cardBody{padding:14px}.formGrid{grid-template-columns:1fr 1fr}.formGrid .field:first-child{grid-column:1/-1}.dateRow{grid-template-columns:1fr 1fr 1fr}.dateRow .field{grid-column:1/-1}.quick{padding:10px 4px;font-size:11px}.chartWrap{grid-template-columns:1fr}.reportGrid{grid-template-columns:1fr 1fr}.bottomNav{position:fixed;display:grid;grid-template-columns:repeat(4,1fr);left:10px;right:10px;bottom:10px;z-index:50;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:17px;box-shadow:0 12px 35px rgba(25,40,31,.18);backdrop-filter:blur(12px);overflow:hidden}.bottomNav a{padding:11px 4px;text-align:center;text-decoration:none;color:var(--muted);font-size:10px;font-weight:850}.bottomNav a span{display:block;font-size:17px;margin-bottom:2px}.barChart{height:190px}.weekHead{align-items:flex-start}.weekSummary{width:100%}.weekGrid{grid-template-columns:1fr;gap:7px}.dayCard{display:grid;grid-template-columns:74px 1fr;padding:9px}.dayTop{grid-row:1/-1;display:block;border-bottom:0;border-right:1px solid #ebefeb;padding:2px 9px 2px 1px}.dayCard.weekendDay .dayTop{border-right-color:rgba(255,255,255,.18)}.dayTotal{margin-top:9px}.dayNum{font-size:24px}.dayEmpty{padding:9px;text-align:left}.catChip{padding:8px 10px}.sheetBackdrop{align-items:flex-end;padding:0}.detailSheet{width:100%;max-height:88vh;border-radius:22px 22px 0 0}.quickAddGrid{grid-template-columns:1fr 92px}.quickAddGrid .btn{grid-column:1/-1}.detailRow{grid-template-columns:1fr auto}.detailActions{grid-column:1/-1;justify-content:flex-end}}
+
+/* Fortuna V3R6 : calendrier lisible et selection du jour */
+@media(min-width:1181px){
+.desktopShell{grid-template-columns:310px minmax(0,1fr) 430px;grid-template-areas:"left week week" "left center right"}
+.desktopLeft{grid-area:left}.desktopCenter{grid-area:center}.desktopRight{grid-area:right}#history{grid-area:week}
+}
+@media(min-width:621px) and (max-width:1180px){
+.desktopShell{grid-template-columns:260px minmax(0,1fr);grid-template-areas:"week week" "left center" "right right";gap:14px}
+.desktopLeft{grid-area:left}.desktopCenter{grid-area:center}.desktopRight{grid-area:right;grid-column:auto}#history{grid-area:week}
+}
+#history .cardHead{padding:20px 22px}
+#history .cardHead h2{font-size:23px}
+#history .cardBody{padding:20px 22px 22px}
+#history .weekTitle{font-size:15px;margin-top:5px}
+#history .weekNav{gap:9px}
+#history .weekNav .btn{font-size:14px;padding:10px 13px}
+#history .weekSummary{gap:10px}
+#history .weekStat{font-size:13px;padding:9px 14px}
+#history .weekStat strong{font-size:15px}
+#history .weekGrid{gap:12px;margin-top:17px!important}
+#history .dayCard{min-height:210px;padding:15px 13px;border-radius:17px;gap:11px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+#history .dayCard:hover{border-color:var(--green2);transform:translateY(-1px)}
+#history .dayCard:focus-visible{outline:3px solid var(--green2);outline-offset:3px}
+#history .dayCard.selected{border-color:var(--green2);box-shadow:0 0 0 3px rgba(40,92,70,.17),inset 0 0 0 1px var(--green2);background:#edf7ef}
+#history .dayCard.selected.weekendDay{background:#263b31;color:white;border-color:#8acaab;box-shadow:0 0 0 3px rgba(66,143,101,.3)}
+#history .dayName{font-size:13px;letter-spacing:.02em;text-transform:capitalize}
+#history .dayNum{font-size:36px;line-height:1.1;margin-top:4px;display:flex;align-items:baseline;gap:4px}
+#history .dayMonth{font-size:12px;font-weight:800;color:var(--muted)}
+#history .weekendDay .dayMonth{color:#d2dbd5}
+#history .dayTotal{font-size:14px;line-height:1.2;margin-top:4px}
+#history .dayContent{display:flex;flex:1;flex-direction:column;gap:6px;min-width:0}
+#history .dayEmpty{font-size:12px;padding:13px 0}
+#history .catChip{padding:10px 9px}
+#history .catName,#history .catAmt{font-size:12px}
+#history .dayPickHint{font-size:11px;font-weight:800;color:var(--green2);border-top:1px solid var(--line);padding-top:9px;text-align:center}
+#history .weekendDay .dayPickHint{color:#b5e9ce;border-color:rgba(255,255,255,.2)}
+@media(min-width:621px) and (max-width:860px){#history .weekGrid{grid-template-columns:repeat(7,minmax(115px,1fr));overflow-x:auto;padding-bottom:9px}}
+.mobileWeekDates{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:14px 0 0}
+.mobileWeekDay{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;padding:8px 2px;border:1px solid var(--line);border-radius:10px;background:#f6f8f5;color:var(--ink);cursor:pointer}
+.mobileWeekDay span{font-size:10px;font-weight:750;color:var(--muted);text-transform:capitalize}
+.mobileWeekDay strong{font-size:18px;font-weight:950}
+.mobileWeekDay.selected{background:#e5f0e8;border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+
+
+/* Fortuna V3R6 : semaine plein écran, fenêtre d'ajout, budget journalier */
+@media(min-width:621px){
+  .desktopShell{display:grid;grid-template-columns:minmax(0,1fr) 440px;grid-template-areas:"week week" "center right";align-items:start;gap:20px}
+  #history{grid-area:week;grid-column:1/-1}
+  .desktopCenter{grid-area:center;min-width:0}
+  .desktopRight{grid-area:right;grid-column:auto;position:static;max-height:none;overflow:visible;padding:16px;min-width:0}
+  .desktopRight .monthNav{margin:0 0 4px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px}
+  .desktopRight .monthTitle{min-width:0;flex:1;font-size:17px}
+}
+@media(min-width:621px) and (max-width:1100px){
+  .desktopShell{grid-template-columns:minmax(0,1fr);grid-template-areas:"week" "center" "right"}
+  #history{grid-column:1}
+  .desktopRight{grid-template-columns:1fr 1fr}
+  .desktopRight .monthNav{grid-column:1/-1}
+  .desktopRight .railMetrics{grid-column:1/-1}
+}
+#history .cardHead.weekHead{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:22px 26px}
+#history .weekHeading{flex:0 0 auto;min-width:175px}
+#history .weekHeading h2{font-size:24px;font-weight:950;margin:0}
+#history .weekTitle{font-size:15px;line-height:1.3;margin-top:5px}
+#history .weekSummary{display:flex;align-items:center;gap:9px;flex-wrap:wrap;width:auto;flex:1 1 auto;justify-content:center}
+#history .weekStat{font-size:13px;line-height:1.3;padding:10px 14px;border-radius:13px;white-space:nowrap}
+#history .weekStat strong{font-size:16px;margin-left:5px;color:var(--ink)}
+#history .weekStat strong.negative{color:var(--red)}
+#history .weekNav{margin-left:auto;gap:8px}
+#history .weekNav .btn{padding:10px 13px;font-size:13px}
+#history .weekNav .btn.primary{padding:10px 15px}
+#history .cardBody{padding:26px}
+#history .weekGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:16px;margin:0!important}
+#history .dayCard{min-height:370px;padding:18px 15px 16px;border-radius:18px;gap:16px;cursor:pointer}
+#history .dayTop{align-items:flex-start;min-height:84px;padding-bottom:14px}
+#history .dayName{font-size:14px;line-height:1.25}
+#history .dayNum{font-size:43px;line-height:1.15;margin-top:7px}
+#history .dayMonth{font-size:13px;margin-left:2px}
+#history .dayQuickAdd{flex:none;display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid #dbe4dd;background:#fff;border-radius:10px;color:var(--green);font-size:23px;line-height:1;cursor:pointer;opacity:.75}
+#history .dayQuickAdd:hover{opacity:1;background:#e4f0e7;border-color:var(--green2)}
+#history .weekendDay .dayQuickAdd{background:#3a4141;color:#def6e6;border-color:#65706a}
+#history .dayContent{display:flex;flex:1;flex-direction:column;gap:9px}
+#history .dayEmpty{font-size:12px;color:#939f97;padding:18px 0;text-align:center}
+#history .catChip{padding:12px 11px;min-height:41px;border-radius:11px}
+#history .catName,#history .catAmt{font-size:13px}
+#history .dayBudget{margin-top:auto;padding-top:17px;border-top:1px solid #e5eae5;display:flex;flex-direction:column;gap:12px}
+#history .weekendDay .dayBudget{border-color:#51585d}
+#history .dayBudgetCap{display:flex;align-items:baseline;justify-content:space-between;gap:5px;color:var(--muted);font-size:11px;font-weight:800}
+#history .dayBudgetCap strong{font-size:13px;color:var(--ink);white-space:nowrap}
+#history .weekendDay .dayBudgetCap,#history .weekendDay .dayBudgetCap strong{color:#dce4df}
+#history .dayBudgetBar{height:7px;width:100%;background:#e5ece6;overflow:hidden;border-radius:99px}
+#history .weekendDay .dayBudgetBar{background:#495351}
+#history .dayBudgetFill{height:100%;border-radius:99px;background:#ca8d59}
+#history .dayBudgetFill.overBudget{background:#cc5353}
+#history .dayFinance{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#history .dayFinanceBlock{display:flex;flex-direction:column;gap:6px;min-width:0}
+#history .dayFinanceBlock span{font-size:11px;font-weight:800;color:var(--muted)}
+#history .dayFinanceBlock strong{font-size:17px;font-weight:950;white-space:nowrap;letter-spacing:-.03em}
+#history .dayFinanceBlock .spent,#history .dayFinanceBlock .negative{color:var(--red)}
+#history .dayFinanceBlock .available{color:var(--green)}
+#history .weekendDay .dayFinanceBlock span{color:#c2cec6}
+#history .weekendDay .dayFinanceBlock .available{color:#a3e5ba}
+#history .weekendDay .dayFinanceBlock .spent{color:#ffb9b9}
+#history .dayCard.selected{border-color:#8ec2a4;box-shadow:inset 0 0 0 1px rgba(40,92,70,.2),0 0 0 2px rgba(40,92,70,.08)}
+#history .dayCard.selected.weekendDay{background:#292c31}
+#history .dayCard:hover{transform:translateY(-2px)}
+#history .weekendDay .dayEmpty{color:#b9c5bd}
+.expenseBackdrop{position:fixed;inset:0;z-index:95;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(17,31,24,.55);backdrop-filter:blur(4px)}
+.expenseBackdrop.open{display:flex}
+.expenseModalOpen{overflow:hidden}
+.expenseDialog{width:min(590px,100%);max-height:calc(100vh - 48px);overflow:auto;border-radius:23px;background:#fff;box-shadow:0 30px 90px rgba(11,27,18,.3)}
+.expenseDialog .card{box-shadow:none;border:0;border-radius:23px}
+.expenseDialog .cardHead{padding:22px 26px}
+.expenseDialog .cardHead h2{font-size:21px}
+.expenseClose{width:38px;height:38px;flex:none;border:1px solid var(--line);border-radius:50%;font-size:24px;line-height:1;background:#fff;color:var(--ink);cursor:pointer}
+.expenseClose:hover{background:#f0f4f0}
+.expenseDialog .cardBody{padding:22px 26px 27px}
+.expenseDialog .formGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.expenseDialog .formGrid .field:first-child{grid-column:1/-1}
+.expenseDialog .formGrid .field:nth-child(3){grid-column:1/-1}
+.expenseDialog .field label{font-size:12px}
+.expenseDialog .categoryPictos{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.expenseDialog .categoryPicto{padding:12px 8px}
+.expenseDialog .categoryPictoIcon{font-size:27px}
+.expenseDialog .categoryPictoName{font-size:12px}
+.expenseDialog .submitRow .btn{padding:12px 20px}
+@media(min-width:621px) and (max-width:1220px){
+ #history .cardHead.weekHead{gap:14px}
+ #history .weekSummary{order:3;flex:1 1 100%;justify-content:flex-start}
+ #history .weekGrid{grid-template-columns:repeat(7,minmax(155px,1fr));overflow-x:auto;padding-bottom:8px}
+}
+@media(max-width:620px){
+ .expenseBackdrop.open{display:none}
+ .expenseDialog{max-height:94vh}
+ #history .weekGrid{grid-template-columns:1fr}
+}
+
+
+/* Fortuna V3R6 : calendrier moins imposant, mêmes informations et interactions */
+@media(min-width:621px){
+  .app{width:min(1360px,calc(100vw - 36px));padding-left:12px;padding-right:12px}
+  .topbar{margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px}
+  .desktopShell{gap:14px;grid-template-columns:minmax(0,1fr) 410px}
+}
+@media(min-width:621px) and (max-width:1100px){
+  .desktopShell{grid-template-columns:minmax(0,1fr)}
+}
+#history{border-radius:18px}
+#history .cardHead.weekHead{padding:15px 19px;gap:12px}
+#history .weekHeading{min-width:140px}
+#history .weekHeading h2{font-size:21px}
+#history .weekTitle{font-size:13px;margin-top:3px}
+#history .weekSummary{gap:6px}
+#history .weekStat{font-size:11px;padding:7px 10px;border-radius:11px}
+#history .weekStat strong{font-size:13px;margin-left:3px}
+#history .weekNav{gap:6px}
+#history .weekNav .btn{padding:7px 10px;font-size:12px}
+#history .weekNav .btn.primary{padding:8px 11px}
+#history .cardBody{padding:17px 19px 19px}
+#history .weekGrid{gap:11px}
+#history .dayCard{min-height:290px;padding:12px 11px 11px;border-radius:14px;gap:9px}
+#history .dayTop{min-height:61px;padding-bottom:7px}
+#history .dayName{font-size:12px}
+#history .dayNum{font-size:34px;margin-top:3px}
+#history .dayMonth{font-size:11px;margin-left:1px}
+#history .dayQuickAdd{width:27px;height:27px;border-radius:8px;font-size:19px}
+#history .dayContent{gap:6px}
+#history .catChip{padding:8px 7px;min-height:33px;border-radius:9px}
+#history .catName,#history .catAmt{font-size:11px}
+#history .catChipLeft{gap:4px}
+#history .catDot{width:6px;height:6px}
+#history .dayEmpty{font-size:11px;padding:10px 0}
+#history .dayBudget{padding-top:10px;gap:8px}
+#history .dayBudgetCap{font-size:10px}
+#history .dayBudgetCap strong{font-size:11px}
+#history .dayBudgetBar{height:5px}
+#history .dayFinance{gap:5px}
+#history .dayFinanceBlock{gap:4px}
+#history .dayFinanceBlock span{font-size:10px}
+#history .dayFinanceBlock strong{font-size:14px;letter-spacing:-.025em}
+@media(min-width:621px) and (max-width:1220px){
+  #history .weekGrid{grid-template-columns:repeat(7,minmax(145px,1fr))}
+}
+@media(max-width:620px){
+  #history .cardHead.weekHead{padding:13px 14px}
+  #history .cardBody{padding:13px}
+}
+
+
+/* Fortuna V3R6 : navigation agrandie, bouton plus vert et détail du jour en deux panneaux */
+#history .weekNav .weekArrowLarge{width:45px;min-height:43px;padding:7px!important;font-size:26px!important;line-height:1;font-weight:800}
+#history .weekNav .weekTodayLarge{min-height:43px;padding:10px 17px!important;font-size:14px!important;font-weight:850}
+#history .dayQuickAdd,#history .weekendDay .dayQuickAdd{
+  display:grid;place-items:center;width:28px;height:28px;flex:none;
+  color:#fff;background:var(--green);border:1px solid var(--green);
+  font-size:22px;font-weight:850;line-height:1;border-radius:9px;opacity:1;
+}
+#history .dayQuickAdd:hover,#history .weekendDay .dayQuickAdd:hover{
+  background:var(--green2);border-color:var(--green2);color:#fff;opacity:1;
+}
+.dayDetailOpen{overflow:hidden}
+.dayDetailDialog{width:min(990px,100%);max-height:min(88vh,850px);border-radius:20px}
+.dayDetailHead{padding:19px 22px}
+.dayDetailHead .sheetTitle{font-size:21px}
+.dayDetailColumns{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(310px,1fr);align-items:stretch}
+.dayDetailExpenses{min-width:0;padding:20px 20px 26px}
+.dayDetailSummary{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:9px}
+.dayDetailStat{display:flex;flex-direction:column;gap:7px;padding:13px 12px;background:#f4f7f3;border:1px solid var(--line);border-radius:13px}
+.dayDetailStat span{font-size:11px;color:var(--muted);font-weight:800}
+.dayDetailStat strong{font-size:17px;font-weight:950;white-space:nowrap}
+.dayDetailStatMain{background:#e9f0ea}
+.dayDetailStatMain strong{font-size:21px;color:var(--red)}
+.dayDetailStat .positive{color:var(--green)}
+.dayDetailStat .negative{color:var(--red)}
+.dayDetailListHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:22px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.dayDetailListHead h3{font-size:14px;font-weight:900;margin:0}
+.dayDetailListHead span{font-size:12px;color:var(--muted);font-weight:800}
+.dayDetailExpenses .detailList{padding:7px 0}
+.dayExpenseRow{grid-template-columns:minmax(0,1fr) auto auto;gap:9px;padding:12px 0}
+.dayDetailCategory{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;font-weight:800;margin-top:5px}
+.dayDetailCategory i{width:8px;height:8px;border-radius:50%;flex:none}
+.dayDetailForm{background:#f7f9f6;border-left:1px solid var(--line);padding:22px}
+.dayDetailForm h3{font-size:17px;font-weight:950;margin:0 0 20px}
+.dayDetailFormGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:15px}
+.dayDetailField{display:flex;flex-direction:column;gap:7px;min-width:0}
+.dayDetailField label{font-size:11px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+.dayDetailField>input,.dayDetailField>.datePicker input{width:100%;min-height:43px;border:1px solid #cfd8d0;border-radius:11px;background:#fff;padding:10px 12px;color:var(--ink);font:inherit}
+.dayDetailField>.datePicker input{padding-right:49px}
+.dayDetailCategories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.dayDetailCategories .categoryPicto{padding:10px 4px;gap:5px}
+.dayDetailCategories .categoryPictoIcon{font-size:23px}
+.dayDetailCategories .categoryPictoName{font-size:10px}
+.dayDetailFormGrid>.btn{min-height:44px;margin-top:3px}
+@media(max-width:760px){
+  .dayDetailDialog{width:100%;max-height:92vh;border-radius:19px 19px 0 0}
+  .dayDetailColumns{grid-template-columns:1fr}
+  .dayDetailForm{border-left:0;border-top:1px solid var(--line);padding:18px}
+  .dayDetailExpenses{padding:18px}
+  .dayDetailStat{padding:10px 8px}
+  .dayDetailStat strong{font-size:14px}
+  .dayDetailStatMain strong{font-size:17px}
+  .dayDetailHead{padding:16px 18px}
+}
+
+
+/* Fortuna V3R6 — cartes sobres : uniquement le disponible */
+#history .dayCard{min-height:252px}
+#history .dayBudgetSimple{margin-top:auto;padding-top:11px;border-top:1px solid #e4e9e5;gap:0}
+#history .dayFinanceSingle{display:flex;align-items:center;justify-content:space-between;gap:7px;min-width:0}
+#history .dayFinanceSingle span{font-size:11px;color:var(--muted);font-weight:850}
+#history .dayFinanceSingle strong{font-size:16px;font-weight:950;white-space:nowrap;letter-spacing:-.02em}
+#history .dayFinanceSingle .available{color:var(--green)}
+#history .dayFinanceSingle .negative{color:var(--red)}
+#history .weekendDay .dayBudgetSimple{border-color:rgba(255,255,255,.2)}
+#history .weekendDay .dayFinanceSingle span{color:#c2cec6}
+#history .weekendDay .dayFinanceSingle .available{color:#a3e5ba}
+#history .weekendDay .dayFinanceSingle .negative{color:#ffb9b9}
+/* Détail du jour : sections par catégorie et emoji */
+.dayDetailExpenses .detailList{padding:10px 0 0;display:flex;flex-direction:column;gap:12px}
+.detailGroup{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#fff}
+.detailGroupHead{display:flex;align-items:center;gap:9px;padding:11px 12px;background:color-mix(in srgb,var(--group-color) 7%,white);border-bottom:1px solid var(--line);box-shadow:inset 3px 0 0 var(--group-color)}
+.detailGroupEmoji{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:9px;background:#fff;font-size:19px;line-height:1}
+.detailGroupTitle{font-size:13px;font-weight:900;min-width:0}
+.detailGroupCount{margin-left:auto;font-size:10px;font-weight:800;color:var(--muted);white-space:nowrap}
+.detailGroupTotal{font-size:13px;font-weight:950;white-space:nowrap;color:var(--ink)}
+.detailGroupRows{padding:0 11px}
+.dayDetailExpenses .detailGroupRows .dayExpenseRow{padding:12px 0;grid-template-columns:minmax(0,1fr) auto auto}
+.dayDetailExpenses .detailGroupRows .dayExpenseRow:last-child{border-bottom:0}
+.dayDetailExpenses .detailGroupRows .detailLabel{font-size:13px}
+@media(max-width:760px){
+  #history .dayCard{min-height:0}
+  .detailGroupHead{gap:7px;padding:9px}
+  .detailGroupCount{font-size:9px}
+  .detailGroupTotal{font-size:12px}
+  .detailGroupRows{padding:0 9px}
+}
+
+
+/* V3R6 — Barre horizontale hebdomadaire : dépenses en rouge, disponible en vert */
+#history .weekSummary{display:flex;align-items:center;justify-content:center;flex:1 1 430px;min-width:315px;max-width:680px;width:auto;padding:0 3px}
+#history .weekBudget{display:flex;flex-direction:column;gap:9px;width:100%;min-width:0}
+#history .weekBudgetLabels{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:12px;font-size:11px;line-height:1.3;font-weight:750;white-space:nowrap}
+#history .weekBudgetLabels>span{display:inline-flex;align-items:center;gap:5px}
+#history .weekBudgetLabels strong{font-size:13px;font-weight:950}
+#history .weekBudgetLabels i{display:inline-block;flex:none;width:8px;height:8px;border-radius:50%}
+#history .weekBudgetSpentLabel{color:#b64c4c}
+#history .weekBudgetSpentLabel i{background:#cf5555}
+#history .weekBudgetAvailableLabel{color:#2e7650}
+#history .weekBudgetAvailableLabel i{background:#43956a}
+#history .weekBudgetAvailableLabel.overBudget{color:#b64c4c}
+#history .weekBudgetAvailableLabel.overBudget i{background:#cf5555}
+#history .weekBudgetTotalLabel{color:var(--muted)}
+#history .weekBudgetTotalLabel strong{color:var(--ink)}
+#history .weekBudgetTrack{display:flex;width:100%;height:14px;overflow:hidden;border-radius:99px;background:#409466;box-shadow:inset 0 1px 3px rgba(10,40,20,.13)}
+#history .weekBudgetSpent{background:#d25555;flex:none;height:100%;transition:width .25s ease}
+#history .weekBudgetAvailable{background:#43986b;flex:1;min-width:0;height:100%}
+@media(min-width:621px) and (max-width:1220px){
+  #history .weekSummary{order:3;flex:1 1 100%;max-width:none;min-width:0;padding:4px 0 0;justify-content:stretch}
+}
+@media(max-width:720px){
+  #history .weekSummary{min-width:0;max-width:none;width:100%;padding:5px 0 0}
+  #history .weekBudgetLabels{gap:6px;font-size:10px}
+  #history .weekBudgetLabels strong{font-size:11px}
+}
+
+
+/* V3R6 — Bilan mensuel en haut, deux graphiques parfaitement alignés */
+@media(min-width:621px){
+ .desktopShell{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"monthly" "week" "charts";gap:15px}
+ .monthTopBar{grid-area:monthly}
+ #history{grid-area:week;grid-column:auto}
+ .desktopCenter{grid-area:charts;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:15px;align-items:stretch;min-width:0}
+ .desktopCenter #weightedTrend,.desktopCenter .railCategory{min-width:0;display:flex;margin:0}
+ .desktopCenter .weightedTrendCard,.desktopCenter .railCategory>.card{flex:1;min-width:0;height:100%;display:flex;flex-direction:column}
+ .desktopCenter .weightedTrendHead,.desktopCenter .railCategory .cardHead{min-height:88px;align-items:center;padding:17px 20px}
+ .desktopCenter .railCategory .cardHead h2{font-size:16px}
+ .desktopCenter .railCategory .cardBody{flex:1;display:flex;align-items:center;justify-content:center;padding:16px}
+ .desktopCenter .railCategory #categoryChart{width:100%}
+ .desktopCenter .railCategory .chartWrap{grid-template-columns:minmax(160px,210px) minmax(0,1fr)}
+}
+.monthTopBar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 20px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:var(--shadow)}
+.monthTopNav{display:flex;align-items:center;justify-content:flex-start;flex:0 0 auto;gap:9px;margin:0;min-width:240px}
+.monthTopNav .monthTitle{flex:1;min-width:158px;text-align:center;font-size:18px;font-weight:950;text-transform:capitalize;white-space:nowrap}
+.monthTopNav .btn{width:35px;height:35px;padding:0}
+.monthTopMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));flex:1;max-width:850px;gap:12px;align-items:center}
+.monthTopMetric{display:flex;flex-direction:column;min-width:0;gap:4px;padding-left:18px;border-left:1px solid var(--line)}
+.monthTopMetric>span{font-size:11px;color:var(--muted);font-weight:850}
+.monthTopMetric>strong{font-size:21px;font-weight:950;line-height:1.15;white-space:nowrap}
+.monthTopMetric>small{font-size:10px;line-height:1.3;font-weight:700;color:var(--muted)}
+.monthTopMetric.monthExpense>strong{color:var(--red)}
+.monthTopMetric.monthBalance>strong{color:var(--green)}
+/* Barre fixe rouge/vert ; dépassement matérialisé par une marque blanche au seuil. */
+#history .weekBudgetTrack{position:relative;display:block;width:100%;height:15px;border-radius:999px;overflow:hidden;background:#43986b}
+#history .weekBudgetSpent{position:absolute;top:0;bottom:0;left:0;background:#cf5353;flex:none;height:100%;transition:width .2s ease}
+#history .weekBudgetLimit{position:absolute;top:0;bottom:0;width:3px;transform:translateX(-50%);background:#fff;box-shadow:0 0 1px rgba(17,26,18,.35);z-index:2}
+@media(min-width:621px) and (max-width:1050px){
+ .monthTopBar{gap:13px;padding:12px 14px}
+ .monthTopNav{min-width:220px}
+ .monthTopMetric{padding-left:9px}
+ .monthTopMetric>strong{font-size:17px}
+ .desktopCenter{grid-template-columns:1fr}
+ .desktopCenter .railCategory .chartWrap{grid-template-columns:210px 1fr}
+}
+@media(max-width:800px){
+ .monthTopBar{flex-wrap:wrap}
+ .monthTopMetrics{flex-basis:100%;max-width:none}
+}
+@media(max-width:620px){.monthTopBar{display:none}}
+
+
+/* V3R6 — barre hebdomadaire centrée, graphique pondéré plus large */
+@media(min-width:1251px){
+  #history .cardHead.weekHead{
+    display:grid;
+    grid-template-columns:minmax(165px,1fr) minmax(400px,620px) minmax(165px,1fr);
+    align-items:center;
+    column-gap:16px;
+  }
+  #history .weekHeading{justify-self:start;min-width:0}
+  #history .weekSummary{order:initial;grid-column:2;justify-self:center;width:100%;min-width:0;max-width:620px;flex:none;margin:0;padding:0}
+  #history .weekNav{justify-self:end;margin:0;flex-wrap:nowrap}
+}
+@media(min-width:621px) and (max-width:1250px){
+  #history .cardHead.weekHead{display:grid;grid-template-columns:minmax(0,1fr) auto;row-gap:13px;align-items:center}
+  #history .weekHeading{grid-column:1;grid-row:1;min-width:0}
+  #history .weekNav{grid-column:2;grid-row:1;margin:0;justify-self:end}
+  #history .weekSummary{grid-column:1/-1;grid-row:2;order:initial;justify-self:center;width:min(100%,700px);max-width:700px;min-width:0;flex:none;margin:0 auto;padding:0}
+}
+@media(min-width:1051px){
+  .desktopCenter{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr)}
+  .desktopCenter .railCategory .chartWrap{grid-template-columns:minmax(0,1fr);gap:12px}
+  .desktopCenter .railCategory .donut{width:175px;height:175px}
+  .desktopCenter .railCategory .legend{width:100%}
+}
+#weightedTrend .weightedTrendHead{justify-content:flex-start}
+#weightedTrend .weightedTrendHead h2{margin:0}
+
+
+/* V3R6 — comparaison des mois et budget immobilier */
+@media(min-width:1051px){
+  .desktopCenter{grid-template-columns:minmax(0,2.7fr) minmax(0,1fr);gap:13px}
+  .desktopCenter .railCategory .chartWrap{grid-template-columns:minmax(0,1fr);gap:10px}
+  .desktopCenter .railCategory .donut{width:min(165px,100%);height:165px;margin:auto}
+  .desktopCenter .railCategory .legend{width:100%}
+}
+#weightedTrend .weightedTrendHead{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+#weightedTrend .weightedTrendHead h2{font-size:16px}
+.trendCompareOptions{display:inline-flex;gap:3px;align-items:center;padding:4px;background:#edf2ee;border-radius:10px;white-space:nowrap}
+.trendCompareBtn{border:0;border-radius:7px;padding:8px 10px;color:var(--muted);background:transparent;font:inherit;font-size:11px;font-weight:850;cursor:pointer}
+.trendCompareBtn.active{background:#fff;color:var(--green);box-shadow:0 1px 4px rgba(0,0,0,.10)}
+.trendCompareBtn:hover{color:var(--green)}
+.trendMonthLegend{display:flex;flex-wrap:wrap;align-items:center;gap:7px 11px;padding:0 16px 14px;min-height:20px}
+.trendMonthLegend:empty{display:none}
+.trendMonthLabel{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:750;color:var(--muted);white-space:nowrap}
+.trendMonthLabel.current{font-weight:950;color:var(--ink)}
+.trendMonthLabel i{height:9px;width:9px;border-radius:50%;display:inline-block;flex:none}
+.apartmentBudget{margin-top:16px;overflow:hidden}
+.apartmentHeader{padding:21px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line)}
+.apartmentHeaderTitle{display:flex;align-items:center;gap:12px;min-width:0}
+.apartmentHeaderIcon{height:46px;width:46px;border-radius:14px;background:#e9f2eb;display:grid;place-items:center;font-size:25px;flex:none}
+.apartmentHeader h2{margin:0;font-size:19px;font-weight:950}
+.apartmentHeader p{margin:5px 0 0;font-size:11px;color:var(--muted)}
+.apartmentTotals{display:flex;align-items:center;gap:13px}
+.apartmentTotal{display:flex;flex-direction:column;gap:5px;padding:0 18px;border-left:1px solid var(--line);min-width:145px}
+.apartmentTotal span{font-size:11px;font-weight:850;color:var(--muted)}
+.apartmentTotal strong{font-size:22px;font-weight:950;white-space:nowrap;color:var(--green)}
+.apartmentTotal+ .apartmentTotal strong{color:var(--ink)}
+.apartmentBody{padding:15px 23px 19px}
+.apartmentRows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 13px}
+.apartmentRow{display:grid;grid-template-columns:minmax(0,1fr) 125px 98px 96px 22px;gap:8px;align-items:center;min-width:0;padding:12px 13px;background:#f8faf8;border:1px solid var(--line);border-radius:12px}
+.apartmentRowIdentity{display:flex;align-items:center;min-width:0;gap:8px}
+.apartmentRowEmoji{font-size:20px;flex:none}
+.apartmentRowName{font-size:12px;font-weight:900;min-width:0;line-height:1.3}
+.apartmentRowNameInput{font:inherit;font-size:12px;font-weight:850;min-width:0;max-width:100%;border:1px solid #cbd8cd;border-radius:8px;padding:7px;background:#fff}
+.apartmentRowAmount{position:relative;min-width:0}
+.apartmentRowAmount input{width:100%;height:36px;border:1px solid #cedad0;border-radius:9px;background:#fff;padding:7px 25px 7px 9px;color:var(--ink);font:inherit;font-size:12px;font-weight:900}
+.apartmentRowAmount span{position:absolute;right:10px;top:9px;color:var(--muted);font-size:12px}
+.apartmentFrequency{min-width:0;width:100%;height:36px;border:1px solid #cedad0;border-radius:9px;background:#fff;color:var(--ink);padding:5px;font-size:11px;font-weight:750;cursor:pointer}
+.apartmentMonthly{text-align:right;min-width:0;display:flex;flex-direction:column;gap:3px}
+.apartmentMonthly strong{font-size:13px;font-weight:950;white-space:nowrap}
+.apartmentMonthly small{font-size:10px;color:var(--muted)}
+.apartmentRemove{border:0;background:transparent;color:#b55c5c;font-size:20px;line-height:1;cursor:pointer}
+.apartmentRowSpacer{width:22px}
+.apartmentBottom{display:flex;align-items:center;gap:17px;flex-wrap:wrap;margin-top:16px}
+.apartmentAddButton{color:var(--green);white-space:nowrap}
+.apartmentBottom span{font-size:11px;color:var(--muted);line-height:1.5;flex:1}
+@media(min-width:621px) and (max-width:1290px){.apartmentRows{grid-template-columns:1fr}.apartmentRow{grid-template-columns:minmax(0,1fr) 145px 110px 110px 22px}}
+@media(max-width:800px){
+  .apartmentHeader{flex-wrap:wrap;align-items:flex-start;padding:16px}
+  .apartmentTotals{width:100%;justify-content:space-between}
+  .apartmentTotal{flex:1;padding:0 9px;min-width:0}
+  .apartmentTotal strong{font-size:19px}
+  .apartmentRows{grid-template-columns:1fr}
+  .apartmentBody{padding:12px}
+}
+@media(max-width:620px){
+ .apartmentBudget{margin-top:14px}
+ .apartmentHeader h2{font-size:17px}
+ .apartmentRow{grid-template-columns:minmax(0,1fr) minmax(0,105px) 86px;gap:8px}
+ .apartmentRowIdentity{grid-column:1/-1}
+ .apartmentRowAmount{grid-column:1}
+ .apartmentFrequency{grid-column:2}
+ .apartmentMonthly{grid-column:3}
+ .apartmentRemove,.apartmentRowSpacer{grid-column:3;justify-self:end;display:none}
+ .apartmentRow:has(.apartmentRemove) .apartmentRemove{display:block;grid-row:1}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V3R6</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
+<section id="mobileHome" class="mobileSimple">
+  <div class="mobilePeriodTabs">
+    <button id="mpDay" class="mobilePeriodBtn active" onclick="setMobilePeriod('day')">Jour</button>
+    <button id="mpWeek" class="mobilePeriodBtn" onclick="setMobilePeriod('week')">Semaine</button>
+    <button id="mpMonth" class="mobilePeriodBtn" onclick="setMobilePeriod('month')">Mois</button>
+    <button id="mpYear" class="mobilePeriodBtn" onclick="setMobilePeriod('year')">Année</button>
+  </div>
+  <div class="mobileOverview">
+    <div class="mobilePeriodNav">
+      <button class="mobilePeriodArrow" onclick="shiftMobilePeriod(-1)" aria-label="Période précédente">‹</button>
+      <div id="mobilePeriodLabel" class="mobilePeriodLabel"></div>
+      <button class="mobilePeriodArrow" onclick="shiftMobilePeriod(1)" aria-label="Période suivante">›</button>
+    </div>
+    <div id="mobileWeekDates" class="mobileWeekDates hidden" aria-label="Choisir un jour"></div>
+    <div class="mobileDonutZone">
+      <div id="mobileDonut" class="mobileDonut"></div>
+      <button class="mobileAddRound" onclick="openMobileAdd()" aria-label="Ajouter une dépense">＋</button>
+    </div>
+  </div>
+  <div id="mobileCatList" class="mobileCatList"></div>
+</section>
+
+<div class="desktopShell desktopOnly">
+
+  <section class="monthTopBar" id="dashboard" aria-label="Synthèse mensuelle">
+    <div class="monthNav monthTopNav">
+      <button type="button" class="btn" onclick="shiftMonth(-1)" aria-label="Mois précédent">‹</button>
+      <div id="monthTitle" class="monthTitle"></div>
+      <button type="button" class="btn" onclick="shiftMonth(1)" aria-label="Mois suivant">›</button>
+    </div>
+    <div class="monthTopMetrics">
+      <div class="monthTopMetric monthExpense"><span>Dépenses du mois</span><strong id="mExpenses">0 €</strong><small id="mExpenseCount">0 dépense</small></div>
+      <div class="monthTopMetric"><span>Budget du mois</span><strong id="mBudget">0 €</strong><small>30 € semaine · 20 € weekend</small></div>
+      <div class="monthTopMetric monthBalance"><span>Reste à date</span><strong id="mRemaining">0 €</strong><small id="mRemainingSub">budget cumulé − dépenses</small></div>
+    </div>
+  </section>
+
+
+
+  <section class="card" id="history">
+    <div class="cardHead weekHead">
+      <div class="weekHeading"><h2>Semaine</h2><div id="weekTitle" class="weekTitle"></div></div>
+      <div id="weekSummary" class="weekSummary"></div>
+      <div class="weekNav">
+        <button type="button" class="btn small weekArrowLarge" onclick="shiftWeek(-1)" aria-label="Semaine précédente">‹</button>
+        <button type="button" class="btn small weekTodayLarge" onclick="goCurrentWeek()">Cette semaine</button>
+        <button type="button" class="btn small weekArrowLarge" onclick="shiftWeek(1)" aria-label="Semaine suivante">›</button>
+      </div>
+    </div>
+    <div class="cardBody"><div id="weekGrid" class="weekGrid"></div></div>
+  </section>
+  <main class="desktopCenter" aria-label="Graphiques du mois">
+    <section class="section" id="weightedTrend">
+  <div class="weightedTrendCard">
+    <div class="weightedTrendHead">
+      <h2>Dépenses pondérées dans le temps</h2>
+      <div class="trendCompareOptions" role="group" aria-label="Comparer avec les mois précédents">
+        <button type="button" class="trendCompareBtn active" data-trend-months="0" onclick="setTrendComparison(0)">Ce mois</button>
+        <button type="button" class="trendCompareBtn" data-trend-months="4" onclick="setTrendComparison(4)">+ 4 mois</button>
+        <button type="button" class="trendCompareBtn" data-trend-months="12" onclick="setTrendComparison(12)">+ 12 mois</button>
+      </div>
+    </div>
+    <div class="weightedTrendBody"><div id="weightedTrendChart" class="weightedTrendChart"></div></div>
+    <div id="trendMonthLegend" class="trendMonthLegend"></div>
+  </div>
+</section>
+    <section class="railCategory"><div class="card"><div class="cardHead"><h2>Dépenses par catégorie</h2></div><div class="cardBody"><div id="categoryChart"></div></div></div></section>
+  </main>
+</div>
+
+<section class="apartmentBudget card" id="apartmentBudget" aria-label="Budget de l'appartement">
+  <div class="apartmentHeader">
+    <div class="apartmentHeaderTitle">
+      <span class="apartmentHeaderIcon" aria-hidden="true">🏡</span>
+      <div><h2>Budget de l'appartement</h2><p>Charges récurrentes · modifiables et enregistrées avec Fortuna</p></div>
+    </div>
+    <div class="apartmentTotals">
+      <div class="apartmentTotal"><span>Coût mensuel estimé</span><strong id="aptMonthlyTotal">—</strong></div>
+      <div class="apartmentTotal"><span>Coût annuel estimé</span><strong id="aptYearlyTotal">—</strong></div>
+    </div>
+  </div>
+  <div class="apartmentBody">
+    <div id="apartmentRows" class="apartmentRows"></div>
+    <div class="apartmentBottom">
+      <button type="button" class="btn apartmentAddButton" onclick="addApartmentLine()">＋ Ajouter un poste</button>
+      <span>Les montants annuels sont répartis sur 12 mois. Les postes non renseignés ne sont pas inclus dans le total. Ce budget est distinct des dépenses journalières.</span>
+    </div>
+  </div>
+</section>
+
+</div>
+<div id="expenseBackdrop" class="expenseBackdrop" onclick="if(event.target===this)closeExpenseModal()"><div class="expenseDialog" role="dialog" aria-modal="true" aria-labelledby="expenseDialogTitle"><section class="railAdd" id="add"><div class="card"><div class="cardHead"><div><h2 id="expenseDialogTitle">Ajouter une dépense</h2><span id="editBadge" class="hidden">Modification</span></div><button type="button" class="expenseClose" aria-label="Fermer" onclick="closeExpenseModal()">×</button></div><div class="cardBody"><input type="hidden" id="editId"><input type="hidden" id="editOriginalType"><div class="formGrid"><div class="field"><label id="labelCaption">Libellé</label><input id="entryLabel" placeholder="Ex. Restaurant, essence…" autocomplete="off"></div><div class="field"><label>Montant</label><input id="entryAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div><div id="categoryField" class="field"><label>Catégorie</label><select id="entryCategory" class="categorySelectHidden"></select><div id="entryCategoryPictos" class="categoryPictos">
+<button type="button" class="categoryPicto active" style="--cat:#2563EB" data-cat="Travail" onclick="chooseCategory('entry','Travail')"><span class="categoryPictoIcon">💼</span><span class="categoryPictoName">Travail</span></button>
+<button type="button" class="categoryPicto" style="--cat:#16A34A" data-cat="Course" onclick="chooseCategory('entry','Course')"><span class="categoryPictoIcon">🛒</span><span class="categoryPictoName">Course</span></button>
+<button type="button" class="categoryPicto" style="--cat:#9333EA" data-cat="Création" onclick="chooseCategory('entry','Création')"><span class="categoryPictoIcon">🎨</span><span class="categoryPictoName">Création</span></button>
+<button type="button" class="categoryPicto" style="--cat:#EA580C" data-cat="Soirée" onclick="chooseCategory('entry','Soirée')"><span class="categoryPictoIcon">🍸</span><span class="categoryPictoName">Soirée</span></button>
+<button type="button" class="categoryPicto" style="--cat:#0891B2" data-cat="Weekend" onclick="chooseCategory('entry','Weekend')"><span class="categoryPictoIcon">🏕️</span><span class="categoryPictoName">Weekend</span></button>
+<button type="button" class="categoryPicto" style="--cat:#64748B" data-cat="Autre" onclick="chooseCategory('entry','Autre')"><span class="categoryPictoIcon">•••</span><span class="categoryPictoName">Autre</span></button>
+</div></div></div><div class="dateRow"><div class="field"><label>Date</label><div class="datePicker"><input id="entryDate" type="date"><button type="button" class="datePickerBtn" onclick="openDatePicker('entryDate')" aria-label="Ouvrir le calendrier">📅</button></div></div></div><div class="submitRow"><button id="cancelEdit" class="btn hidden" onclick="cancelEdit()">Annuler</button><button id="saveEntry" class="btn primary" onclick="saveEntry()">Ajouter la dépense</button></div></div></div></section></div></div>
+<nav class="bottomNav"><a href="#dashboard"><span>⌂</span>Accueil</a><a href="#add" onclick="event.preventDefault();openExpenseModal(selectedEntryDate)"><span>＋</span>Ajouter</a><a href="#history"><span>▦</span>Semaine</a><a href="#weightedTrend"><span>◔</span>Budget</a></nav><div id="toast" class="toast"></div>
+
+<div id="mobileAddBackdrop" class="mobileAddBackdrop" onclick="if(event.target===this)closeMobileAdd()">
+  <div class="mobileAddSheet">
+    <div class="mobileAddHandle"></div>
+    <div class="mobileAddTitle">Nouvelle dépense</div>
+    <div class="mobileAddGrid">
+      <div class="mobileAddField"><label>Montant</label><input id="mobileAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00 €"></div>
+      <div class="mobileAddField full"><label>Catégorie</label><select id="mobileCategory" class="categorySelectHidden"></select><div id="mobileCategoryPictos" class="categoryPictos mobileCategoryPictos">
+<button type="button" class="categoryPicto active" style="--cat:#2563EB" data-cat="Travail" onclick="chooseCategory('mobile','Travail')"><span class="categoryPictoIcon">💼</span><span class="categoryPictoName">Travail</span></button>
+<button type="button" class="categoryPicto" style="--cat:#16A34A" data-cat="Course" onclick="chooseCategory('mobile','Course')"><span class="categoryPictoIcon">🛒</span><span class="categoryPictoName">Course</span></button>
+<button type="button" class="categoryPicto" style="--cat:#9333EA" data-cat="Création" onclick="chooseCategory('mobile','Création')"><span class="categoryPictoIcon">🎨</span><span class="categoryPictoName">Création</span></button>
+<button type="button" class="categoryPicto" style="--cat:#EA580C" data-cat="Soirée" onclick="chooseCategory('mobile','Soirée')"><span class="categoryPictoIcon">🍸</span><span class="categoryPictoName">Soirée</span></button>
+<button type="button" class="categoryPicto" style="--cat:#0891B2" data-cat="Weekend" onclick="chooseCategory('mobile','Weekend')"><span class="categoryPictoIcon">🏕️</span><span class="categoryPictoName">Weekend</span></button>
+<button type="button" class="categoryPicto" style="--cat:#64748B" data-cat="Autre" onclick="chooseCategory('mobile','Autre')"><span class="categoryPictoIcon">•••</span><span class="categoryPictoName">Autre</span></button>
+</div></div>
+      <div class="mobileAddField full"><label>Libellé</label><input id="mobileLabel" placeholder="Ex. Courses, restaurant…" autocomplete="off"></div>
+      <div class="mobileAddField full"><label>Date</label><div class="datePicker"><input id="mobileDate" type="date"><button type="button" class="datePickerBtn" onclick="openDatePicker('mobileDate')" aria-label="Ouvrir le calendrier">📅</button></div></div>
+    </div>
+    <div class="mobileAddActions">
+      <button class="btn" onclick="closeMobileAdd()">Annuler</button>
+      <button class="btn primary" onclick="saveMobileExpense()">Ajouter</button>
+    </div>
+  </div>
+</div>
+<div id="detailBackdrop" class="sheetBackdrop" onclick="backdropClose(event)">
+  <div class="detailSheet dayDetailDialog" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="sheetHead dayDetailHead">
+      <div>
+        <div id="detailTitle" class="sheetTitle">Détail de la journée</div>
+        <div id="detailSub" class="sheetSub"></div>
+      </div>
+      <button type="button" class="sheetClose" onclick="closeDetail()" aria-label="Fermer">×</button>
+    </div>
+    <div class="dayDetailColumns">
+      <section class="dayDetailExpenses" aria-label="Dépenses de la journée">
+        <div id="detailSummary" class="dayDetailSummary"></div>
+        <div class="dayDetailListHead"><h3>Dépenses de la journée</h3><span id="detailCount"></span></div>
+        <div id="detailList" class="detailList"></div>
+      </section>
+      <section class="dayDetailForm" aria-label="Ajouter une dépense">
+        <h3 id="quickAddTitle">Ajouter une dépense</h3>
+        <div class="dayDetailFormGrid">
+          <div class="dayDetailField">
+            <label for="quickAmount">Montant</label>
+            <input id="quickAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00 €">
+          </div>
+          <div class="dayDetailField">
+            <label for="quickLabel">Libellé</label>
+            <input id="quickLabel" placeholder="Ex. Courses, restaurant…" autocomplete="off">
+          </div>
+          <div class="dayDetailField">
+            <label>Catégorie</label>
+            <select id="quickCategory" class="categorySelectHidden" aria-label="Catégorie de la dépense"></select>
+            <div id="quickCategoryPictos" class="categoryPictos dayDetailCategories"></div>
+          </div>
+          <div class="dayDetailField">
+            <label for="quickDate">Date</label>
+            <div class="datePicker"><input id="quickDate" type="date"><button type="button" class="datePickerBtn" onclick="openDatePicker('quickDate')" aria-label="Choisir une date">📅</button></div>
+          </div>
+          <button id="quickAddBtn" type="button" class="btn primary" onclick="quickAddOperation()">Ajouter la dépense</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script>
+const CATEGORIES=["Travail","Course","Création","Soirée","Weekend","Autre"],COLORS={Travail:"#2563EB",Course:"#16A34A",Création:"#9333EA",Soirée:"#EA580C",Weekend:"#0891B2",Autre:"#64748B"},STORAGE_KEY="fortunaV1",DIRTY_KEY="fortunaV1Dirty";let data=loadData(),selectedMonth=new Date(),weekStart=startOfWeek(new Date()),trendComparisonMonths=0,entryType="expense",selectedEntryDate=localDate(),firebaseUser=null,syncTimer=null,syncInProgress=false,detailContext=null,mobilePeriod="day",mobileAnchor=new Date();selectedMonth.setDate(1);
+function freshData(){return{version:206,updatedAt:new Date(0).toISOString(),expenses:[],incomes:[]}}function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes))return x}catch(e){}return freshData()}function markAndSave(){data.version=206;data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud()}function saveRemoteCopy(remote){data=remote;data.version=206;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.removeItem(DIRTY_KEY);renderAll()}function money(n){return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(Number(n)||0)}function localDate(d=new Date()){const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)}function parseLocal(s){const[a,b,c]=String(s).split("-").map(Number);return new Date(a,b-1,c)}function uid(){return crypto?.randomUUID?.()||("f"+Date.now()+Math.random().toString(16).slice(2))}function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}function monthKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}function itemMonth(x){return String(x.date||"").slice(0,7)}function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1800)}function setSync(text,state=""){const el=document.getElementById("syncStatus");el.className=`sync ${state}`;el.querySelector("span:last-child").textContent=text}function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()),day=x.getDay()||7;x.setDate(x.getDate()-day+1);x.setHours(0,0,0,0);return x}function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}function sum(a){return a.reduce((s,x)=>s+Number(x.amount||0),0)}
+function openDatePicker(id){const el=document.getElementById(id);if(!el)return;try{el.showPicker?el.showPicker():el.focus()}catch(_){el.focus()}}
+function chooseCategory(target,category){const select=document.getElementById(target==="mobile"?"mobileCategory":"entryCategory");if(select)select.value=category;syncCategoryPicker(target,category)}
+function syncCategoryPicker(target,category){const box=document.getElementById(target==="mobile"?"mobileCategoryPictos":"entryCategoryPictos");if(!box)return;box.querySelectorAll(".categoryPicto").forEach(b=>b.classList.toggle("active",b.dataset.cat===category))}
+function init(){document.getElementById("entryDate").value=localDate();document.getElementById("mobileDate").value=localDate();document.addEventListener("keydown",expenseModalEscape);document.getElementById("entryDate").addEventListener("change",e=>{selectedEntryDate=e.target.value;renderWeek()});const cats=document.getElementById("entryCategory"),mc=document.getElementById("mobileCategory"),qc=document.getElementById("quickCategory");
+const icons={Travail:"💼",Course:"🛒",Création:"🎨",Soirée:"🍸",Weekend:"🏕️",Autre:"•••"};
+CATEGORIES.forEach(c=>{cats.add(new Option(c,c));mc.add(new Option(c,c));qc.add(new Option(c,c))});
+document.getElementById("quickCategoryPictos").innerHTML=CATEGORIES.map(c=>`<button type="button" class="categoryPicto" style="--cat:${COLORS[c]}" data-cat="${c}"><span class="categoryPictoIcon">${icons[c]}</span><span class="categoryPictoName">${c}</span></button>`).join("");
+document.querySelectorAll("#quickCategoryPictos .categoryPicto").forEach(button=>button.addEventListener("click",()=>syncQuickCategory(button.dataset.cat)));
+cats.value="Travail";mc.value="Travail";qc.value="Travail";syncCategoryPicker("entry","Travail");syncCategoryPicker("mobile","Travail");syncQuickCategory("Travail");renderAll()}function shiftMonth(n){selectedMonth=new Date(selectedMonth.getFullYear(),selectedMonth.getMonth()+n,1);renderDashboard();renderCategory();renderWeightedTrend()}function shiftWeek(n){weekStart=addDays(weekStart,n*7);renderWeek()}function goCurrentWeek(){weekStart=startOfWeek(new Date());renderWeek()}function setEntryType(){
+  entryType="expense";
+  document.getElementById("categoryField").classList.remove("hidden");
+  document.getElementById("labelCaption").textContent="Libellé";
+  document.getElementById("entryLabel").placeholder="Ex. Restaurant, essence…";
+  document.getElementById("saveEntry").textContent=document.getElementById("editId").value?"Enregistrer":"Ajouter la dépense";
+}
+function openExpenseModal(date=selectedEntryDate,editing=false){
+  if(document.body.classList.contains("forceMobile")||window.matchMedia("(max-width:620px)").matches){openMobileAdd(date);return}
+  if(!editing)cancelEdit();
+  selectedEntryDate=date;
+  document.getElementById("entryDate").value=date;
+  document.getElementById("expenseDialogTitle").textContent=editing?"Modifier la dépense":"Ajouter une dépense";
+  document.getElementById("expenseBackdrop").classList.add("open");
+  document.body.classList.add("expenseModalOpen");
+  setTimeout(()=>document.getElementById(editing?"entryLabel":"entryAmount").focus(),40);
+}
+function closeExpenseModal(){
+  document.getElementById("expenseBackdrop").classList.remove("open");
+  document.body.classList.remove("expenseModalOpen");
+  cancelEdit();
+}
+function expenseModalEscape(event){
+  if(event.key!=="Escape")return;
+if(document.getElementById("expenseBackdrop").classList.contains("open"))closeExpenseModal();
+else if(document.getElementById("detailBackdrop").classList.contains("open"))closeDetail();
+}
+function saveEntry(){
+  const label=document.getElementById("entryLabel").value.trim(),amount=Number(document.getElementById("entryAmount").value),date=document.getElementById("entryDate").value,editId=document.getElementById("editId").value;
+  if(!label||!Number.isFinite(amount)||amount<=0||!date){alert("Renseigne un libellé, un montant supérieur à 0 et une date.");return}
+  const item={id:editId||uid(),label,amount:Math.round(amount*100)/100,date,category:document.getElementById("entryCategory").value||"Autre"};
+  if(editId)data.expenses=data.expenses.filter(x=>x.id!==editId);
+  data.expenses.push(item);
+  selectedEntryDate=date;
+  selectedMonth=new Date(Number(date.slice(0,4)),Number(date.slice(5,7))-1,1);
+  weekStart=startOfWeek(parseLocal(date));
+  markAndSave();
+  closeExpenseModal();
+  renderWeek();
+  toast(editId?"Dépense modifiée":"Dépense enregistrée");
+}
+function editItem(type,id){
+  if(type!=="expense")return;
+  const x=data.expenses.find(x=>x.id===id);if(!x)return;
+  closeDetail();
+  document.getElementById("editId").value=id;
+  document.getElementById("editOriginalType").value="expense";
+  document.getElementById("entryLabel").value=x.label;
+  document.getElementById("entryAmount").value=x.amount;
+  document.getElementById("entryDate").value=x.date;
+  document.getElementById("entryCategory").value=x.category||"Autre";
+  syncCategoryPicker("entry",x.category||"Autre");
+  document.getElementById("editBadge").classList.remove("hidden");
+  document.getElementById("cancelEdit").classList.remove("hidden");
+  document.getElementById("saveEntry").textContent="Enregistrer";
+  openExpenseModal(x.date,true);
+}
+function cancelEdit(){document.getElementById("editId").value="";document.getElementById("editOriginalType").value="";document.getElementById("entryLabel").value="";document.getElementById("entryAmount").value="";document.getElementById("editBadge").classList.add("hidden");document.getElementById("cancelEdit").classList.add("hidden");document.getElementById("entryDate").value=selectedEntryDate;setEntryType()}
+function deleteItem(type,id){if(!confirm("Supprimer cette opération ?"))return;if(type==="expense")data.expenses=data.expenses.filter(x=>x.id!==id);else data.incomes=data.incomes.filter(x=>x.id!==id);const ctx=detailContext?{...detailContext}:null;markAndSave();if(ctx)openDetail(ctx.date,ctx.kind,ctx.category);toast("Opération supprimée")}
+function getApartmentLines(){
+  if(data.apartmentBudget&&Array.isArray(data.apartmentBudget.items))return data.apartmentBudget.items;
+  return APARTMENT_DEFAULT_ITEMS.map(item=>({...item}));
+}
+function apartmentMonthlyValue(item){
+  const value=item.amount===null||item.amount===""||item.amount===undefined?0:Number(item.amount);
+  const normal=Number.isFinite(value)?Math.max(0,value):0;
+  return item.frequency==="year"?normal/12:normal;
+}
+function renderApartmentBudget(){
+  const target=document.getElementById("apartmentRows");
+  if(!target)return;
+  const lines=getApartmentLines(),monthly=lines.reduce((sum,item)=>sum+apartmentMonthlyValue(item),0);
+  document.getElementById("aptMonthlyTotal").textContent=money(monthly);
+  document.getElementById("aptYearlyTotal").textContent=money(monthly*12);
+  target.innerHTML=lines.map(item=>{
+    const custom=item.isCustom===true;
+    const value=item.amount===null||item.amount===""||item.amount===undefined?"":String(item.amount);
+    return `<div class="apartmentRow" data-apartment-id="${esc(item.id)}">
+      <div class="apartmentRowIdentity"><span class="apartmentRowEmoji" aria-hidden="true">${esc(item.icon||"📋")}</span>
+        ${custom?`<input class="apartmentRowNameInput" aria-label="Nom du poste" value="${esc(item.label)}" onchange="saveApartmentField('${esc(item.id)}','label',this.value)">`:`<span class="apartmentRowName">${esc(item.label)}</span>`}
+      </div>
+      <div class="apartmentRowAmount"><input type="number" min="0" step="0.01" inputmode="decimal" value="${esc(value)}" placeholder="À renseigner" aria-label="Montant : ${esc(item.label)}" onchange="saveApartmentField('${esc(item.id)}','amount',this.value)"><span>€</span></div>
+      <select class="apartmentFrequency" aria-label="Périodicité : ${esc(item.label)}" onchange="saveApartmentField('${esc(item.id)}','frequency',this.value)">
+        <option value="month" ${item.frequency==="month"?"selected":""}>par mois</option>
+        <option value="year" ${item.frequency==="year"?"selected":""}>par an</option>
+      </select>
+      <div class="apartmentMonthly"><strong>${money(apartmentMonthlyValue(item))}</strong><small>/mois</small></div>
+      ${custom?`<button type="button" class="apartmentRemove" title="Supprimer ce poste" aria-label="Supprimer ${esc(item.label)}" onclick="removeApartmentLine('${esc(item.id)}')">×</button>`:`<span class="apartmentRowSpacer"></span>`}
+    </div>`;
+  }).join("");
+}
+function saveApartmentField(id,field,value){
+  const items=getApartmentLines().map(item=>({...item}));
+  const row=items.find(item=>item.id===id);if(!row)return;
+  if(field==="amount"){
+    const number=Number(value);
+    if(value.trim()==="")row.amount=null;
+    else if(Number.isFinite(number)&&number>=0)row.amount=Math.round(number*100)/100;
+    else{toast("Montant invalide");renderApartmentBudget();return;}
+  }else if(field==="frequency")row.frequency=value==="year"?"year":"month";
+  else if(field==="label")row.label=value.trim()||"Autres frais";
+  else return;
+  data.apartmentBudget={items};
+  markAndSave();
+  toast("Budget appartement enregistré");
+}
+function addApartmentLine(){
+  const items=getApartmentLines().map(item=>({...item}));
+  items.push({id:uid(),label:"Nouveau poste",icon:"📋",amount:null,frequency:"month",isCustom:true});
+  data.apartmentBudget={items};
+  markAndSave();
+  const fields=document.querySelectorAll(".apartmentRowNameInput");
+  if(fields.length){fields[fields.length-1].focus();fields[fields.length-1].select();}
+}
+function removeApartmentLine(id){
+  const items=getApartmentLines().filter(item=>item.id!==id);
+  data.apartmentBudget={items};
+  markAndSave();
+  toast("Poste supprimé");
+}
+function renderAll(){renderDashboard();renderCategory();renderWeek();renderWeightedTrend();renderApartmentBudget();renderMobileSimple()}function monthData(offset=0){const d=new Date(selectedMonth.getFullYear(),selectedMonth.getMonth()+offset,1),k=monthKey(d);return{expenses:data.expenses.filter(x=>itemMonth(x)===k),incomes:data.incomes.filter(x=>itemMonth(x)===k)}}function monthBudget(year,month,lastDay=null){const days=new Date(year,month+1,0).getDate(),end=lastDay===null?days:Math.max(0,Math.min(days,lastDay));let total=0;for(let d=1;d<=end;d++){const date=new Date(year,month,d),weekend=date.getDay()===0||date.getDay()===6;total+=weekend?20:30}return total}
+function renderDashboard(){const m=monthData(),ex=sum(m.expenses),y=selectedMonth.getFullYear(),mo=selectedMonth.getMonth(),fullBudget=monthBudget(y,mo),today=new Date(),monthStart=new Date(y,mo,1),monthEnd=new Date(y,mo+1,0);let cutoffDay=0;if(monthEnd<new Date(today.getFullYear(),today.getMonth(),today.getDate()))cutoffDay=monthEnd.getDate();else if(monthStart<=today&&today<=monthEnd)cutoffDay=today.getDate();const cutoffKey=cutoffDay?localDate(new Date(y,mo,cutoffDay)):"",spentToDate=cutoffDay?sum(m.expenses.filter(x=>x.date<=cutoffKey)):0,budgetToDate=monthBudget(y,mo,cutoffDay),remaining=budgetToDate-spentToDate;document.getElementById("monthTitle").textContent=selectedMonth.toLocaleDateString("fr-FR",{month:"long",year:"numeric"});document.getElementById("mExpenses").textContent=money(ex);document.getElementById("mExpenseCount").textContent=`${m.expenses.length} dépense${m.expenses.length>1?"s":""}`;document.getElementById("mBudget").textContent=money(fullBudget);document.getElementById("mRemaining").textContent=money(remaining);document.getElementById("mRemaining").style.color=remaining<0?"var(--red)":"var(--green)";document.getElementById("mRemainingSub").textContent=cutoffDay?`au ${new Date(y,mo,cutoffDay).toLocaleDateString("fr-FR",{day:"numeric",month:"short"})}`:"mois à venir"}
+function renderCategory(){const m=monthData(),tot=sum(m.expenses);if(!tot){document.getElementById("categoryChart").innerHTML='<div class="empty">Aucune dépense ce mois-ci.</div>';return}const vals=CATEGORIES.map(c=>({c,v:sum(m.expenses.filter(x=>(x.category||"Autre")===c))})).filter(x=>x.v>0),r=73,circ=2*Math.PI*r;let off=0;const rings=vals.map(x=>{const len=x.v/tot*circ,s=`<circle cx="95" cy="95" r="${r}" fill="none" stroke="${COLORS[x.c]}" stroke-width="24" stroke-dasharray="${len} ${circ-len}" stroke-dashoffset="${-off}"/>`;off+=len;return s}).join("");document.getElementById("categoryChart").innerHTML=`<div class="chartWrap"><div class="donut"><svg viewBox="0 0 190 190"><circle cx="95" cy="95" r="${r}" fill="none" stroke="#edf1ed" stroke-width="24"/>${rings}</svg><div class="donutCenter"><div><b>${money(tot)}</b><span>Dépenses</span></div></div></div><div class="legend">${vals.map(x=>`<div class="legendRow"><div class="legendLeft"><span class="swatch" style="background:${COLORS[x.c]}"></span><span>${x.c}</span></div><strong>${money(x.v)}</strong></div>`).join("")}</div></div>`}
+function selectWeekDate(date,openEditor=false){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return;
+  selectedEntryDate=date;
+  document.getElementById("entryDate").value=date;
+  document.getElementById("mobileDate").value=date;
+  document.querySelectorAll("#weekGrid .dayCard").forEach(card=>card.classList.toggle("selected",card.dataset.date===date));
+  renderMobileSimple();
+  if(openEditor)openMobileAdd(date);
+}
+function renderWeek(){
+  const days=Array.from({length:7},(_,i)=>addDays(weekStart,i)),end=days[6],today=localDate(),sameMonth=weekStart.getMonth()===end.getMonth();
+  document.getElementById("weekTitle").textContent=sameMonth?`${weekStart.getDate()} – ${end.getDate()} ${end.toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}`:`${weekStart.toLocaleDateString("fr-FR",{day:"numeric",month:"short"})} – ${end.toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"numeric"})}`;
+  const dates=new Set(days.map(localDate)),weekExp=data.expenses.filter(x=>dates.has(x.date)),ex=sum(weekExp),budget=days.reduce((s,d)=>s+((d.getDay()===0||d.getDay()===6)?20:30),0),remaining=budget-ex;
+  const exceeded=ex>budget;
+  const displayedPercent=exceeded?100:(budget>0?Math.max(0,Math.min(100,ex/budget*100)):0);
+  const limitPercent=exceeded?(ex>0?100*budget/ex:0):null;
+  document.getElementById("weekSummary").innerHTML=`
+    <div class="weekBudget" role="group" aria-label="Répartition du budget de la semaine">
+      <div class="weekBudgetLabels">
+        <span class="weekBudgetSpentLabel"><i aria-hidden="true"></i>Dépensé <strong>${money(ex)}</strong></span>
+        <span class="weekBudgetTotalLabel">Budget <strong>${money(budget)}</strong></span>
+        <span class="weekBudgetAvailableLabel ${exceeded?"overBudget":""}"><i aria-hidden="true"></i>${exceeded?"Dépassement":"Disponible"} <strong>${money(exceeded?ex-budget:remaining)}</strong></span>
+      </div>
+      <div class="weekBudgetTrack" role="progressbar" aria-label="Budget dépensé" aria-valuemin="0" aria-valuemax="${Math.max(1,Math.round(budget))}" aria-valuenow="${Math.round(ex)}" aria-valuetext="${money(ex)} dépensés sur ${money(budget)}${exceeded?"; dépassement "+money(ex-budget):""}">
+        <div class="weekBudgetSpent" style="width:${displayedPercent}%"></div>
+        ${exceeded?`<div class="weekBudgetLimit" style="left:${limitPercent}%" title="Limite du budget : ${money(budget)}"></div>`:""}
+      </div>
+    </div>`;
+  document.getElementById("weekGrid").innerHTML=days.map(d=>{
+    const date=localDate(d),exp=weekExp.filter(x=>x.date===date),spent=sum(exp),weekend=d.getDay()===0||d.getDay()===6,dailyBudget=weekend?20:30,available=dailyBudget-spent,selected=date===selectedEntryDate;
+    const chips=CATEGORIES.map(c=>({c,v:sum(exp.filter(x=>(x.category||"Autre")===c))})).filter(x=>x.v>0).map(x=>`<button type="button" class="catChip" style="background:${COLORS[x.c]}" onclick="event.stopPropagation();selectWeekDate('${date}');openDetail('${date}','expense','${x.c}')" ondblclick="event.stopPropagation()"><span class="catChipLeft"><span class="catDot" style="background:#fff"></span><span class="catName">${x.c}</span></span><span class="catAmt">${money(x.v)}</span></button>`).join("");
+    return `<div class="dayCard ${date===today?"today":""} ${weekend?"weekendDay":""} ${selected?"selected":""}" data-date="${date}" role="button" tabindex="0" title="Double-cliquer pour voir le détail du jour" aria-label="${d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})} : double-cliquer pour voir le détail du jour" onclick="selectWeekDate('${date}')" ondblclick="openDetail('${date}','expense','')" onkeydown="if(event.target===this&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openDetail('${date}','expense','')}">
+      <div class="dayTop">
+        <div><div class="dayName">${d.toLocaleDateString("fr-FR",{weekday:"long"})}</div><div class="dayNum">${d.getDate()}<span class="dayMonth">${d.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")}</span></div></div>
+        <button type="button" class="dayQuickAdd" title="Ajouter une dépense ce jour" aria-label="Ajouter une dépense le ${date}" onclick="event.stopPropagation();openExpenseModal('${date}')" ondblclick="event.stopPropagation()">+</button>
+      </div>
+      <div class="dayContent">${chips||'<div class="dayEmpty">Aucune dépense</div>'}</div>
+      <div class="dayBudget dayBudgetSimple">
+        <div class="dayFinanceSingle">
+          <span>Disponible</span>
+          <strong class="${available<0?"negative":"available"}">${money(available)}</strong>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+function syncQuickCategory(category){
+  const select=document.getElementById("quickCategory");
+  const chosen=CATEGORIES.includes(category)?category:"Autre";
+  select.value=chosen;
+  document.querySelectorAll("#quickCategoryPictos .categoryPicto").forEach(button=>button.classList.toggle("active",button.dataset.cat===chosen));
+}
+function openDetail(date,kind="expense",category=""){
+  if(kind!=="expense")return;
+  selectWeekDate(date);
+  detailContext={date,kind:"expense",category};
+  const day=parseLocal(date);
+  const items=data.expenses.filter(item=>item.date===date).sort((a,b)=>String(b.id).localeCompare(String(a.id)));
+  const total=sum(items);
+  const dayBudget=(day.getDay()===0||day.getDay()===6)?20:30;
+  const remaining=dayBudget-total;
+  const icons={Travail:"💼",Course:"🛒",Création:"🎨",Soirée:"🍸",Weekend:"🏕️",Autre:"•••"};
+  document.getElementById("detailTitle").textContent="Détail du jour";
+  document.getElementById("detailSub").textContent=day.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  document.getElementById("detailCount").textContent=`${items.length} dépense${items.length>1?"s":""}`;
+  document.getElementById("detailSummary").innerHTML=`
+    <div class="dayDetailStat dayDetailStatMain"><span>Total dépensé</span><strong>${money(total)}</strong></div>
+    <div class="dayDetailStat"><span>Budget</span><strong>${money(dayBudget)}</strong></div>
+    <div class="dayDetailStat"><span>Disponible</span><strong class="${remaining<0?"negative":"positive"}">${money(remaining)}</strong></div>`;
+  const groups=CATEGORIES.map(cat=>({cat,items:items.filter(item=>(CATEGORIES.includes(item.category)?item.category:"Autre")===cat)})).filter(group=>group.items.length);
+  document.getElementById("detailList").innerHTML=groups.length?groups.map(group=>{
+    const subtotal=sum(group.items);
+    return `<section class="detailGroup" style="--group-color:${COLORS[group.cat]}" aria-label="Catégorie ${esc(group.cat)}">
+      <div class="detailGroupHead">
+        <span class="detailGroupEmoji" aria-hidden="true">${icons[group.cat]}</span>
+        <span class="detailGroupTitle">${esc(group.cat)}</span>
+        <span class="detailGroupCount">${group.items.length} dépense${group.items.length>1?"s":""}</span>
+        <strong class="detailGroupTotal">${money(subtotal)}</strong>
+      </div>
+      <div class="detailGroupRows">${group.items.map(item=>`<div class="detailRow dayExpenseRow">
+        <div class="detailMain"><div class="detailLabel">${esc(item.label)}</div></div>
+        <div class="detailAmount">−${money(item.amount)}</div>
+        <div class="detailActions">
+          <button type="button" class="iconBtn" title="Modifier ${esc(item.label)}" onclick="editItem('expense','${esc(item.id)}')">✎</button>
+          <button type="button" class="iconBtn" title="Supprimer ${esc(item.label)}" onclick="deleteItem('expense','${esc(item.id)}')">×</button>
+        </div>
+      </div>`).join("")}</div>
+    </section>`;
+  }).join(""):'<div class="empty">Aucune dépense enregistrée pour ce jour.</div>';
+  document.getElementById("quickAddTitle").textContent="Ajouter une dépense";
+  document.getElementById("quickDate").value=date;
+  document.getElementById("quickLabel").value="";
+  document.getElementById("quickAmount").value="";
+  syncQuickCategory(CATEGORIES.includes(category)?category:"Travail");
+  document.getElementById("detailBackdrop").classList.add("open");
+  document.body.classList.add("dayDetailOpen");
+}
+function closeDetail(){
+  document.getElementById("detailBackdrop").classList.remove("open");
+  document.body.classList.remove("dayDetailOpen");
+  detailContext=null;
+}
+function backdropClose(e){if(e.target.id==="detailBackdrop")closeDetail()}
+function quickAddOperation(){
+  if(!detailContext)return;
+  const label=document.getElementById("quickLabel").value.trim();
+  const amount=Number(document.getElementById("quickAmount").value);
+  const date=document.getElementById("quickDate").value;
+  const category=document.getElementById("quickCategory").value||"Autre";
+  if(!label||!Number.isFinite(amount)||amount<=0||!/^\d{4}-\d{2}-\d{2}$/.test(date)){
+    toast("Renseigne un libellé, un montant et une date valides");return;
+  }
+  data.expenses.push({id:uid(),label,amount:Math.round(amount*100)/100,date,category});
+  selectedEntryDate=date;
+  selectedMonth=new Date(Number(date.slice(0,4)),Number(date.slice(5,7))-1,1);
+  weekStart=startOfWeek(parseLocal(date));
+  markAndSave();
+  openDetail(date,"expense",category);
+  toast("Dépense ajoutée");
+}
+function togglePhoneView(){const on=document.body.classList.toggle("forceMobile");const b=document.getElementById("phoneViewBtn");if(b)b.textContent=on?"Vue ordinateur":"Vue téléphone";renderMobileSimple();window.scrollTo({top:0,behavior:"smooth"})}
+
+const APARTMENT_DEFAULT_ITEMS=[
+ {id:"credit",label:"Mensualité du crédit",icon:"🏦",amount:798,frequency:"month"},
+ {id:"loanInsurance",label:"Assurance emprunteur",icon:"🛡️",amount:null,frequency:"month"},
+ {id:"homeInsurance",label:"Assurance habitation",icon:"🏠",amount:null,frequency:"year"},
+ {id:"condoFees",label:"Charges de copropriété",icon:"🏢",amount:160,frequency:"month"},
+ {id:"propertyTax",label:"Taxe foncière",icon:"🧾",amount:950,frequency:"year"},
+ {id:"electricity",label:"Électricité",icon:"⚡",amount:null,frequency:"month"},
+ {id:"internet",label:"Internet",icon:"🌐",amount:null,frequency:"month"},
+ {id:"otherFees",label:"Autres frais",icon:"📋",amount:null,frequency:"month"}
+];
+const TREND_MONTH_COLORS=["#D65E67","#437CC3","#AD6ACB","#E49C38","#009B99","#B36C47","#CA5796","#718E34","#50649E","#CD7045","#8C62B9","#3094BB"];
+function setTrendComparison(months){
+  trendComparisonMonths=[0,4,12].includes(months)?months:0;
+  renderWeightedTrend();
+}
+function weightedMonthSeriesFor(anchor){
+  const y=anchor.getFullYear(),m=anchor.getMonth(),monthLastDay=new Date(y,m+1,0).getDate(),today=new Date();
+  const isCurrent=today.getFullYear()===y&&today.getMonth()===m;
+  const end=isCurrent?today.getDate():monthLastDay;
+  const monthExpenses=data.expenses.filter(item=>itemMonth(item)===monthKey(anchor));
+  const expenseTotals=new Map();
+  monthExpenses.forEach(item=>expenseTotals.set(item.date,(expenseTotals.get(item.date)||0)+Number(item.amount||0)));
+  let cumulative=0;
+  const pts=[];
+  for(let d=1;d<=end;d++){
+    const date=new Date(y,m,d),key=localDate(date),spent=expenseTotals.get(key)||0;
+    const weekend=date.getDay()===0||date.getDay()===6,budget=weekend?20:30,diff=budget-spent;
+    cumulative+=diff;
+    pts.push({date,day:d,value:Math.round(cumulative*100)/100,spent,budget,diff,weekend});
+  }
+  return pts;
+}
+function weightedMonthSeries(){return weightedMonthSeriesFor(selectedMonth)}
+function smoothTrendPath(points,tension=.42){if(!points.length)return"";if(points.length===1)return`M ${points[0].x} ${points[0].y}`;let d=`M ${points[0].x} ${points[0].y}`;for(let i=0;i<points.length-1;i++){const p0=points[i-1]||points[i],p1=points[i],p2=points[i+1],p3=points[i+2]||p2,c1x=p1.x+(p2.x-p0.x)/6*tension,c1y=p1.y+(p2.y-p0.y)/6*tension,c2x=p2.x-(p3.x-p1.x)/6*tension,c2y=p2.y-(p3.y-p1.y)/6*tension;d+=` C ${c1x} ${c1y}, ${c2x} ${c2y}, ${p2.x} ${p2.y}`}return d}
+function renderWeightedTrend(){
+  const el=document.getElementById("weightedTrendChart");
+  const legend=document.getElementById("trendMonthLegend");
+  if(!el||!legend)return;
+  document.querySelectorAll(".trendCompareBtn").forEach(btn=>{
+    const chosen=Number(btn.dataset.trendMonths)===trendComparisonMonths;
+    btn.classList.toggle("active",chosen);
+    btn.setAttribute("aria-pressed",chosen?"true":"false");
+  });
+  const series=Array.from({length:trendComparisonMonths+1},(_,offset)=>{
+    const anchor=new Date(selectedMonth.getFullYear(),selectedMonth.getMonth()-offset,1);
+    return {offset,anchor,pts:weightedMonthSeriesFor(anchor),color:offset===0?"#285c46":TREND_MONTH_COLORS[offset-1]};
+  });
+  const all=series.flatMap(s=>s.pts);
+  if(!all.length){
+    el.innerHTML='<div class="empty">Aucune donnée.</div>';
+    legend.innerHTML="";
+    return;
+  }
+  const W=1040,H=270,pL=54,pR=18,pT=18,pB=35;
+  const values=all.map(p=>p.value),min=Math.min(0,...values),max=Math.max(0,...values);
+  const padding=Math.max(14,(max-min)*.06),bottom=min<0?min-padding:Math.min(0,min),top=max+padding;
+  const span=Math.max(1,top-bottom),x=day=>pL+(W-pL-pR)*(day-1)/30,y=value=>pT+(H-pT-pB)*(top-value)/span,zeroY=y(0);
+  let grid="";
+  for(let i=0;i<=4;i++){
+    const value=top-span*i/4,gy=y(value);
+    grid+=`<line class="wGrid" x1="${pL}" y1="${gy}" x2="${W-pR}" y2="${gy}"/><text class="wLabel" x="${pL-7}" y="${gy+4}" text-anchor="end">${Math.round(value)} €</text>`;
+  }
+  const base=series[0].pts;
+  const weekendBars=base.filter(p=>p.weekend).map(p=>`<rect x="${x(p.day)-5}" y="${pT}" width="10" height="${H-pT-pB}" rx="2" fill="#76817a" fill-opacity=".12"><title>${p.date.toLocaleDateString("fr-FR")} · weekend</title></rect>`).join("");
+  const labels=[1,5,10,15,20,25,30].map(d=>`<text class="wLabel" x="${x(d)}" y="${H-9}" text-anchor="middle">${d}</text>`).join("");
+  const makePoints=s=>s.pts.map(p=>({x:x(p.day),y:y(p.value)}));
+  const areaPoints=makePoints(series[0]);
+  const areaPath=areaPoints.length?`${smoothTrendPath(areaPoints)} L ${areaPoints[areaPoints.length-1].x} ${zeroY} L ${areaPoints[0].x} ${zeroY} Z`:"";
+  const comparePaths=series.slice(1).reverse().map(s=>{
+    const positions=makePoints(s);
+    return `<path d="${smoothTrendPath(positions)}" fill="none" stroke="${s.color}" stroke-width="2" opacity=".83" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }).join("");
+  const primaryPath=`<path d="${smoothTrendPath(areaPoints)}" fill="none" stroke="#285c46" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" filter="url(#trendShadow)"/>`;
+  const hoverDots=series.map(s=>s.pts.map(p=>`<circle cx="${x(p.day)}" cy="${y(p.value)}" r="5.5" fill="transparent" stroke="none"><title>${s.anchor.toLocaleDateString("fr-FR",{month:"long",year:"numeric"})} · ${p.day} · dépenses ${money(p.spent)} · budget ${money(p.budget)} · cumul ${money(p.value)}</title></circle>`).join("")).join("");
+  const last=areaPoints[areaPoints.length-1];
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Évolution du budget restant cumulé par jour du mois, comparée aux ${trendComparisonMonths} derniers mois">
+    <defs>
+      <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#285c46" stop-opacity=".14"/><stop offset="100%" stop-color="#285c46" stop-opacity=".025"/></linearGradient>
+      <filter id="trendShadow" x="-10%" y="-20%" width="120%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#285c46" flood-opacity=".13"/></filter>
+    </defs>
+    ${weekendBars}${grid}<line class="wZero" x1="${pL}" y1="${zeroY}" x2="${W-pR}" y2="${zeroY}"/>
+    <path d="${areaPath}" fill="url(#trendFill)"/>${comparePaths}${primaryPath}
+    <circle cx="${last.x}" cy="${last.y}" r="4.5" fill="#285c46" stroke="#fff" stroke-width="2"/>
+    ${hoverDots}${labels}
+  </svg>`;
+  legend.innerHTML=series.map(s=>`<span class="trendMonthLabel ${s.offset===0?"current":""}" title="${s.anchor.toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}"><i style="background:${s.color}"></i>${s.anchor.toLocaleDateString("fr-FR",{month:"short",year:"2-digit"})}</span>`).join("");
+}
+function setMobilePeriod(period){mobilePeriod=period;["day","week","month","year"].forEach(p=>document.getElementById("mp"+p[0].toUpperCase()+p.slice(1))?.classList.toggle("active",p===period));renderMobileSimple()}
+function shiftMobilePeriod(n){const d=new Date(mobileAnchor);if(mobilePeriod==="day")d.setDate(d.getDate()+n);else if(mobilePeriod==="week")d.setDate(d.getDate()+n*7);else if(mobilePeriod==="month")d.setMonth(d.getMonth()+n);else d.setFullYear(d.getFullYear()+n);mobileAnchor=d;renderMobileSimple()}
+function mobileRange(){const a=new Date(mobileAnchor);let from,to;if(mobilePeriod==="week"){from=startOfWeek(a);to=addDays(from,6)}else if(mobilePeriod==="month"){from=new Date(a.getFullYear(),a.getMonth(),1);to=new Date(a.getFullYear(),a.getMonth()+1,0)}else if(mobilePeriod==="year"){from=new Date(a.getFullYear(),0,1);to=new Date(a.getFullYear(),11,31)}else{from=new Date(a.getFullYear(),a.getMonth(),a.getDate());to=new Date(from)}from.setHours(0,0,0,0);to.setHours(23,59,59,999);return{from,to}}
+function mobilePeriodText(from,to){if(mobilePeriod==="day")return from.toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"numeric"});if(mobilePeriod==="week")return from.toLocaleDateString("fr-FR",{day:"numeric",month:"short"})+" – "+to.toLocaleDateString("fr-FR",{day:"numeric",month:"short"});if(mobilePeriod==="month")return from.toLocaleDateString("fr-FR",{month:"long",year:"numeric"});return String(from.getFullYear())}
+function renderMobileWeekDates(from){
+  const target=document.getElementById("mobileWeekDates");if(!target)return;
+  target.classList.toggle("hidden",mobilePeriod!=="week");
+  if(mobilePeriod!=="week")return;
+  target.innerHTML=Array.from({length:7},(_,i)=>addDays(from,i)).map(d=>{
+    const date=localDate(d);
+    return `<button type="button" class="mobileWeekDay ${date===selectedEntryDate?"selected":""}" onclick="selectWeekDate('${date}',true)"><span>${d.toLocaleDateString("fr-FR",{weekday:"short"}).replace(".","")}</span><strong>${d.getDate()}</strong></button>`;
+  }).join("");
+}
+function renderMobileSimple(){const home=document.getElementById("mobileHome");if(!home)return;const{from,to}=mobileRange(),fromKey=localDate(from),toKey=localDate(to),items=data.expenses.filter(x=>x.date>=fromKey&&x.date<=toKey),total=sum(items);document.getElementById("mobilePeriodLabel").textContent=mobilePeriodText(from,to);renderMobileWeekDates(from);const cats=CATEGORIES.map(c=>({c,v:sum(items.filter(x=>(x.category||"Autre")===c))})).filter(x=>x.v>0);const donut=document.getElementById("mobileDonut"),r=86,circ=2*Math.PI*r;let off=0;const rings=cats.map(x=>{const len=total?x.v/total*circ:0,svg=`<circle cx="120" cy="120" r="${r}" fill="none" stroke="${COLORS[x.c]}" stroke-width="34" stroke-dasharray="${len} ${circ-len}" stroke-dashoffset="${-off}"/>`;off+=len;return svg}).join("");donut.innerHTML=`<svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="${r}" fill="none" stroke="#e9eeea" stroke-width="34"/>${rings}</svg><div class="mobileDonutCenter"><div><b>${money(total)}</b><span>Dépenses</span></div></div>`;document.getElementById("mobileCatList").innerHTML=cats.length?cats.sort((a,b)=>b.v-a.v).map(x=>{const pct=total?Math.round(x.v/total*100):0;return`<div class="mobileCatRow"><div class="mobileCatLeft"><span class="mobileCatDot" style="background:${COLORS[x.c]}"></span><span class="mobileCatName">${x.c}</span></div><div class="mobileCatPct">${pct} %</div><div class="mobileCatValue">${money(x.v)}</div></div>`}).join(""):'<div class="mobileEmpty">Aucune dépense sur cette période.</div>'}
+function openMobileAdd(date=selectedEntryDate){document.getElementById("mobileAmount").value="";document.getElementById("mobileLabel").value="";document.getElementById("mobileDate").value=date;document.getElementById("mobileCategory").value="Travail";syncCategoryPicker("mobile","Travail");document.getElementById("mobileAddBackdrop").classList.add("open");setTimeout(()=>document.getElementById("mobileAmount").focus(),80)}
+function closeMobileAdd(){document.getElementById("mobileAddBackdrop").classList.remove("open")}
+
+function saveMobileExpense(){const amount=Number(document.getElementById("mobileAmount").value),label=document.getElementById("mobileLabel").value.trim(),category=document.getElementById("mobileCategory").value||"Autre",date=document.getElementById("mobileDate").value;if(!amount||amount<=0||!label||!date){toast("Montant, catégorie, libellé et date requis");return}data.expenses.push({id:uid(),label,amount:Math.round(amount*100)/100,date,category});selectedEntryDate=date;mobileAnchor=parseLocal(date);document.getElementById("entryDate").value=date;markAndSave();closeMobileAdd();toast("Dépense ajoutée")}
+function download(name,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}function exportJSON(){download(`fortuna-${localDate()}.json`,JSON.stringify(data,null,2),"application/json")}function exportCSV(){const rows=[["Date","Type","Libellé","Catégorie","Montant"],...data.expenses.map(x=>[x.date,"Dépense",x.label,x.category||"Autre",x.amount])].sort((a,b)=>a[0]==="Date"?-1:b[0]==="Date"?1:b[0].localeCompare(a[0]));download(`fortuna-${localDate()}.csv`,"\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\n"),"text/csv;charset=utf-8")}function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.expenses)||!Array.isArray(x.incomes))throw 0;if(confirm(`Importer ${x.expenses.length} dépenses ?`)){data={version:206,updatedAt:new Date().toISOString(),expenses:x.expenses,incomes:x.incomes,apartmentBudget:x.apartmentBudget&&Array.isArray(x.apartmentBudget.items)?x.apartmentBudget:undefined};localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud(0);toast("Import enregistré")}}catch(_){alert("Fichier Fortuna invalide.")}e.target.value=""};r.readAsText(f)}function updateAuthUI(){document.getElementById("googleBtn").classList.toggle("hidden",!!firebaseUser);document.getElementById("logoutBtn").classList.toggle("hidden",!firebaseUser)}async function googleLogin(){if(window.firebaseBackend)try{await window.firebaseBackend.login()}catch(e){console.error(e);setSync("Erreur connexion","err")}}async function googleLogout(){if(window.firebaseBackend)await window.firebaseBackend.logout()}function validRemote(x){return x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)}async function handleFirebaseUser(user){firebaseUser=user||null;updateAuthUI();if(!user){setSync("Local");return}setSync("Comparaison…","work");try{const snap=await window.firebaseBackend.read(user.uid),remote=snap.exists()?snap.data().fortuna:null;if(!validRemote(remote)){await pushCloud();return}const localHas=data.expenses.length||data.incomes.length,remoteHas=remote.expenses.length||remote.incomes.length;if(!localHas&&remoteHas){saveRemoteCopy(remote);setSync("Synchronisé","ok");return}if(localHas&&!remoteHas){await pushCloud();return}const lt=Date.parse(data.updatedAt||0)||0,rt=Date.parse(remote.updatedAt||0)||0,dirty=localStorage.getItem(DIRTY_KEY)==="1";if(rt>lt+1000){saveRemoteCopy(remote);setSync("Synchronisé","ok");toast("Version en ligne récupérée")}else if(lt>rt+1000||dirty){await pushCloud()}else if(JSON.stringify(remote)!==JSON.stringify(data)){saveRemoteCopy(remote);setSync("Synchronisé","ok")}else{localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}}catch(e){console.error(e);setSync("Sync indisponible","err")}}async function pushCloud(){if(!firebaseUser||!window.firebaseBackend||syncInProgress)return;syncInProgress=true;setSync("Enregistrement…","work");try{await window.firebaseBackend.write(firebaseUser.uid,data);localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}catch(e){console.error(e);setSync("Erreur sync","err");throw e}finally{syncInProgress=false}}function scheduleCloud(delay=600){if(!firebaseUser||!window.firebaseBackend)return;setSync("Enregistrement…","work");clearTimeout(syncTimer);syncTimer=setTimeout(()=>pushCloud().catch(()=>{}),delay)}async function manualSync(){if(!firebaseUser){setSync("Connexion Google…","work");await googleLogin();return}await pushCloud();toast("Synchronisation terminée")}window.handleFirebaseUser=handleFirebaseUser;init();
+</script>
+<script type="module">import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";const firebaseConfig={apiKey:"AIzaSyCExYF7ivk5gJ8vcQpktPs2QV-Z1g-hkSM",authDomain:"budget-travaux-4993c.firebaseapp.com",projectId:"budget-travaux-4993c",storageBucket:"budget-travaux-4993c.firebasestorage.app",messagingSenderId:"875990842282",appId:"1:875990842282:web:827e4b96895a7efab949d3"};try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),budgetDoc=uid=>doc(db,"users",uid,"budgets","main");window.firebaseBackend={login:()=>signInWithPopup(auth,new GoogleAuthProvider()),logout:()=>signOut(auth),read:uid=>getDoc(budgetDoc(uid)),write:(uid,fortuna)=>setDoc(budgetDoc(uid),{fortuna},{merge:true})};onAuthStateChanged(auth,user=>window.handleFirebaseUser?.(user))}catch(e){console.error(e);document.getElementById("syncStatus")?.classList.add("err")}</script>
+</body></html>
