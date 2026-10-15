@@ -1567,7 +1567,7 @@ function tyPartsRender(){
   '<td class="total" id="tyTotal_'+k+'">0 €</td></tr>';
  out.innerHTML='<table class="tySimTable" aria-label="Coûts de fabrication par pièce">'+
   '<colgroup><col style="width:101px">'+parts.map(()=>'<col style="width:110px">').join('')+'<col style="width:92px"></colgroup>'+
-  '<thead><tr><th>Fabrication</th>'+header+'<th class="addPartHead"><button type="button" class="btn primary" onclick="tyAddPart()">+ Pièce</button></th></tr></thead><tbody>'+
+  '<thead><tr><th>Fabrication</th>'+header+'<th class="addPartHead">Total <button type="button" class="btn primary" title="Ajouter une pièce" aria-label="Ajouter une pièce" onclick="tyAddPart()">+</button></th></tr></thead><tbody>'+
   editable('Qté / objet','qty',1)+editable('Temps (h)','hours',.1)+editable('Poids (g)','grams',1)+
   calc('Électricité','elec')+calc('Matière','matter')+calc('Amortissement','amort')+
   editable('Papier bulle €','bubble',.01)+editable('NFC €','nfc',.01)+editable('Colle €','glue',.01)+
