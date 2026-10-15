@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#13231c">
-<title>Fortuna V4R7</title>
+<title>Fortuna V4R8</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#f3f5f0;--card:#fff;--ink:#17221d;--muted:#728078;--line:#dfe5df;--green:#285c46;--green2:#3e7b5f;--soft:#e8efe9;--gold:#c89c45;--red:#bb4c4c;--shadow:0 12px 36px rgba(36,58,46,.08);--radius:18px}
@@ -657,36 +657,78 @@ body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!imp
 /* V4R4 : comptabilité Tylice séparée */
 .tyliceSection{margin:18px 0}.tyliceSection .cardHead{flex-wrap:wrap}.tyliceSection .cardHead small{display:block;color:var(--muted);margin-top:5px}.tyliceHeadActions{display:flex;align-items:center;gap:12px}.tyliceHeadActions strong{white-space:nowrap;color:#9333ea}.tyliceItems{padding:4px 15px;max-height:350px;overflow:auto}.tyliceRow{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(80px,auto);gap:10px;align-items:center;min-height:54px;border-bottom:1px solid var(--line);font-size:13px}.tyliceRow:last-child{border-bottom:0}.tyliceDesc{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:750}.tyliceDesc small{display:block;color:var(--muted);font-weight:500;margin-top:3px}.tyliceRow strong{text-align:right;white-space:nowrap}.tyliceSection .mobileExpenseEdit{width:44px;height:44px}@media(max-width:620px){.tyliceSection{margin-top:18px}.tyliceSection .cardHead{padding:13px}.tyliceHeadActions{width:100%;justify-content:space-between}.tyliceItems{padding:4px 12px}}
 
-/* Fortuna V4R7 — simulateur Tylice, réservé au bureau */
-.tySim{margin:18px 0;overflow:hidden}.tySimHeader{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:20px 23px;border-bottom:1px solid var(--line)}
-.tySimHeader h2{font-size:21px;margin:3px 0 6px}.tySimHeader p{font-size:12px;color:var(--muted);margin:0}.tySimActions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.tySim input,.tySim select{width:100%;min-width:0;border:1px solid #cbd8ce;border-radius:10px;background:#fff;padding:9px 10px;min-height:40px;font:inherit;font-size:13px;color:var(--ink)}
-.tySim input[type=checkbox]{width:17px;min-height:17px;height:17px;accent-color:#8152c5}.tySim input:focus-visible,.tySim select:focus-visible{outline:2px solid #9775b5;outline-offset:1px}
-.tySimBody{display:flex;flex-direction:column;gap:17px;padding:20px 23px 23px}.tySim label:not(.tyCheck){display:flex;flex-direction:column;gap:6px;min-width:0}
-.tySim label span{font-size:11px;font-weight:850;color:#617267}.tySimFields{display:grid;grid-template-columns:2fr 1.3fr .7fr .8fr 1fr;gap:10px}
-.tySimBox{background:#fbfcfa;border:1px solid #e1e7e1;border-radius:14px;padding:15px}.tySimBoxHead{display:flex;align-items:center;justify-content:space-between;gap:13px;flex-wrap:wrap;margin-bottom:12px}
-.tySimBoxHead h3{margin:0;font-size:15px}.tySimBoxHead small{font-size:11px;color:var(--muted)}
-.tySimParts{display:grid;gap:9px}.tySimPart{background:white;border:1px solid #e1e6e1;border-radius:12px;padding:12px}
-.tySimPartTitle{display:grid;grid-template-columns:minmax(180px,1fr) 115px 40px;gap:9px;align-items:end;margin-bottom:10px}
-.tySimPartFields{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}.tySimPartCalc{display:flex;gap:8px 16px;flex-wrap:wrap;justify-content:flex-end;border-top:1px solid #eef2ee;margin-top:10px;padding-top:10px;font-size:11px;color:var(--muted)}
-.tySimPartCalc strong{color:var(--ink);font-size:13px}.tySimDelete{border:1px solid #efd8d8;background:#fff4f4;color:#a84747;border-radius:10px;height:40px;cursor:pointer;font-size:20px}
-.tySimCosts{display:grid;grid-template-columns:1fr 1.5fr;gap:13px}.tySimBoxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.tySimCheckboxes{display:flex;gap:9px 18px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.tySim label.tyCheck{display:inline-flex;flex-direction:row;align-items:center;gap:7px;cursor:pointer;font-size:12px;font-weight:800}
-.tySimShipping{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.tySimShipHint{display:block;margin-top:9px;font-size:11px;line-height:1.5;color:var(--muted)}
-.tySimKPIs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}.tySimKPI{display:flex;flex-direction:column;gap:7px;border:1px solid #e0e9e2;background:#f2f6f2;border-radius:13px;padding:14px}
-.tySimKPI span{font-size:11px;color:var(--muted);font-weight:800}.tySimKPI strong{font-size:23px;font-weight:950;white-space:nowrap;color:var(--ink)}
-.tySimKPI.positive{background:#eaf4ee}.tySimKPI.positive strong{color:#256c48}.tySimKPI.negative{background:#fff0f0}.tySimKPI.negative strong{color:#b44141}
-.tySimBreakdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px 16px}.tySimBreakdown>div{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid #e5eae5;font-size:12px}
-.tySimBreakdown strong{white-space:nowrap}.tySimWarning{font-size:12px;color:#a34d35;font-weight:800;margin-top:8px}.tySimFooter{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.tySimFooter small{font-size:11px;color:var(--muted)}
-@media(max-width:1150px){.tySimFields{grid-template-columns:repeat(3,minmax(0,1fr))}.tySimCosts{grid-template-columns:1fr}.tySimBreakdown{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){#tySimSection{display:none!important}}body.forceMobile #tySimSection{display:none!important}
+
+/* Fortuna V4R8 : rentabilité Tylice, interface tableur ultra-compacte */
+.tySim{margin:12px 0 15px;overflow:hidden;border-radius:13px}
+.tySim *{box-sizing:border-box}
+.tySimHead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#f7f9f6;border-bottom:1px solid #cbd6cd;padding:7px 11px}
+.tySimHead h2{font-size:15px;font-weight:900;margin:0;white-space:nowrap}
+.tySimHead nav{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.tySim .btn{padding:5px 8px;font-size:11px;border-radius:6px;min-height:27px}
+.tySim input,.tySim select{width:100%;height:23px;min-width:0;min-height:0;border:1px solid #c9d6cc;border-radius:3px;background:#fff;padding:1px 5px;color:var(--ink);font:inherit;font-size:11px;line-height:1.15}
+.tySim select{padding-right:2px}
+.tySim input:focus,.tySim select:focus{outline:1px solid #44765a;outline-offset:0;border-color:#44765a}
+.tySim input[type=checkbox]{width:13px;height:13px;min-height:0;accent-color:#285c46}
+.tySim input[type=number]{text-align:right;font-variant-numeric:tabular-nums}
+.tySim #tySel{width:175px}
+.tySimMain{display:grid;grid-template-columns:214px minmax(0,1fr);align-items:stretch}
+.tySimIdentity{background:#fcfdfb;border-right:2px solid #cad7cc;padding:8px;display:flex;flex-direction:column;gap:3px}
+.tySimIdRow{display:grid;grid-template-columns:77px minmax(0,1fr);gap:4px;align-items:center;min-height:23px}
+.tySimIdRow>label{font-weight:750;font-size:10px;line-height:1.1;color:#52645a}
+.tySimIdRow.output{background:#f0f5f1;border-radius:3px;padding:3px 4px;margin-top:2px}
+.tySimIdRow.output strong{font-size:13px;font-weight:950;text-align:right;white-space:nowrap}
+.tySimIdRow.output.ca strong{color:#26774e}
+.tySimIdRow.output.profit{background:#e0f1e6}.tySimIdRow.output.profit strong{color:#176b42}
+.tySimIdRow.output.profit.negative{background:#fff0f0}.tySimIdRow.output.profit.negative strong{color:#b34141}
+.tySimIdRow.output.margin{background:#e6f1ea}.tySimIdRow.output.margin strong{color:#276847}
+.tySimIdRow.output.cost{background:#f1f2f1}
+.tySimIdNote{font-size:9px;color:#789082;line-height:1.3;margin-top:3px}
+.tySimRight{min-width:0;overflow-x:auto;overscroll-behavior-x:contain}
+.tySimTable{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10px;min-width:420px}
+.tySimTable th,.tySimTable td{border:1px solid #d9e3da;padding:2px 4px;text-align:right;height:23px;white-space:nowrap}
+.tySimTable thead th{background:#e8f1e9;text-align:center;color:#264c37;font-size:10px;font-weight:900;border-top:0;height:28px}
+.tySimTable thead th:first-child{background:#e1e8e2;text-align:left}
+.tySimTable tbody th{text-align:left;font-size:10px;background:#f5f8f5;font-weight:750;color:#536459;white-space:normal}
+.tySimTable tr:nth-child(even) td{background:#fbfcfb}
+.tySimTable td.total{background:#edf4ed!important;font-size:11px;font-weight:900;color:#285c46}
+.tySimTable .strongrow td,.tySimTable .strongrow th{background:#eaf4ed!important;font-weight:950}
+.tySimTable .strongrow td.total{background:#d5e9dc!important}
+.tySimTable td input{width:100%;height:19px;border:1px solid #dce6dc;padding:0 3px;font-size:10px;text-align:right;background:#fff}
+.tySimTable td input:focus{border-color:#285c46}
+.tySimTable thead th .nameInput{display:inline-block;width:calc(100% - 16px);height:21px;vertical-align:middle;text-align:center;font-size:10px;font-weight:850}
+.tySimTable .removePart{display:inline-block;width:15px;padding:0;border:0;color:#a95e5e;background:transparent;cursor:pointer;font-size:15px;line-height:18px;vertical-align:middle}
+.tySimTable .addPartHead{min-width:80px}
+.tySimTable .addPartHead .btn{padding:2px 4px;min-height:21px;font-size:10px}
+.tySimBelow{border-top:2px solid #cbd6cd;padding:7px 9px 9px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:8px 12px}
+.tySimGroup{min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:0}
+.tySimGroupTitle{flex:none;font-size:10px;font-weight:900;color:#506657;min-width:64px}
+.tyMiniField{display:flex;align-items:center;gap:4px;min-width:0;font-size:10px;font-weight:700;color:#5b695f;white-space:nowrap}
+.tyMiniField input{width:43px}
+.tyMiniField input.wide{width:66px}
+.tyMiniField select{width:115px}
+.tySimGroup.tyOptions{gap:6px 10px}
+.tySim label.tyCheck{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:750;cursor:pointer;white-space:nowrap}
+.tySimShipLine{grid-column:1/-1;display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.tySimShipLine .tySimGroupTitle{min-width:64px}
+.tySimShipLine .tyMiniField input{width:75px}
+.tySimShipLine #tyShipInfo{font-size:9px;color:#6e7f71;line-height:1.2}
+.tySimDetails{grid-column:1/-1;border-top:1px solid #e0e8e0;padding-top:6px}
+.tySimDetails summary{font-size:10px;color:#486954;font-weight:750;cursor:pointer;user-select:none}
+.tySimBreakdown{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px 7px;margin-top:7px}
+.tySimBreakdown>div{display:flex;flex-direction:column;gap:3px;border:1px solid #e2e8e3;border-radius:4px;padding:5px 6px;font-size:10px}
+.tySimBreakdown>div span{color:#6c7a6f}.tySimBreakdown strong{font-weight:950;white-space:nowrap}
+.tySimFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 9px 8px;flex-wrap:wrap}
+.tySimFooter small{font-size:9px;color:#86948a}
+.tySimWarning{font-size:10px;color:#ac5138;font-weight:850;margin:4px 9px}
+@media(max-width:1200px){.tySimMain{grid-template-columns:200px minmax(0,1fr)}.tySimTable{min-width:400px}.tySimBreakdown{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:900px){#tySimSection{display:none!important}}
+body.forceMobile #tySimSection{display:none!important}
 
 </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V4R7</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
+<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V4R8</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
 <section id="mobileHome" class="mobileSimple">
   <div class="mobilePeriodTabs">
     <button id="mpDay" class="mobilePeriodBtn active" onclick="setMobilePeriod('day')">Jour</button>
@@ -758,52 +800,57 @@ body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!imp
 
 <section class="tyliceSection card" aria-label="Suivi des dépenses Tylice"><div class="cardHead"><div><h2>🟣 Tylice · dépenses professionnelles</h2><small id="tyliceCount"></small></div><div class="tyliceHeadActions"><strong id="tyliceTotal">0 €</strong><button type="button" class="btn primary" onclick="addTylice()">+ Dépense</button></div></div><div id="tyliceItems" class="tyliceItems"></div></section>
 
-<section class="tySim card" id="tySimSection" aria-label="Rentabilité des projets Tylice">
- <div class="tySimHeader">
-  <div><h2>🧮 Tylice · rentabilité d'un projet</h2><p>Coûts d'impression 3D, assemblage, expédition et bénéfice · indépendant des dépenses courantes</p></div>
-  <div class="tySimActions"><select id="tySel" aria-label="Projet" onchange="tySelect(this.value)"></select><button type="button" class="btn primary" onclick="tyNew()">+ Projet</button><button type="button" class="btn danger" onclick="tyDelete()">Supprimer</button></div>
+
+<section class="tySim card" id="tySimSection" aria-label="Calculateur des projets Tylice">
+ <header class="tySimHead">
+  <h2>🟣 Tylice · bénéfice projet</h2>
+  <nav aria-label="Projets Tylice"><select id="tySel" aria-label="Choisir un projet" onchange="tySelect(this.value)"></select>
+   <button type="button" class="btn primary" onclick="tyNew()">+ Projet</button>
+   <button type="button" class="btn danger" onclick="tyDelete()">Supprimer</button>
+   <button type="button" class="btn" onclick="tyCopy()">Copier bilan</button>
+  </nav>
+ </header>
+ <div class="tySimMain">
+  <div class="tySimIdentity" aria-label="Données et résultats du projet">
+   <div class="tySimIdRow"><label for="tyName">Projet</label><input id="tyName" maxlength="130" placeholder="Nom du projet" oninput="tyField('name',this.value)"></div>
+   <div class="tySimIdRow"><label for="tySource">Commande</label><input id="tySource" maxlength="90" list="tySources" placeholder="Shopify, direct…" oninput="tyField('source',this.value)"><datalist id="tySources"><option value="Shopify"></option><option value="SumUp"></option><option value="Direct"></option><option value="Etsy"></option></datalist></div>
+   <div class="tySimIdRow"><label for="tyFormat">Format</label><select id="tyFormat" onchange="tyField('format',this.value)"><option>Tr</option><option>In</option><option>Ex</option><option>Autre</option></select></div>
+   <div class="tySimIdRow"><label for="tyQuantity">Objets</label><input id="tyQuantity" type="number" min="1" step="1" oninput="tyField('quantity',this.value)"></div>
+   <div class="tySimIdRow"><label for="tyCA">CA (€)</label><input id="tyCA" type="number" min="0" step="0.01" oninput="tyField('ca',this.value)"></div>
+   <div class="tySimIdRow output ca"><label>CA total</label><strong id="tyRCA">0 €</strong></div>
+   <div class="tySimIdRow output cost"><label>Coût total</label><strong id="tyRCost">0 €</strong></div>
+   <div class="tySimIdRow output profit" id="tyProfitCard"><label>Bénéfice</label><strong id="tyRProfit">0 €</strong></div>
+   <div class="tySimIdRow output margin"><label>Rentabilité</label><strong id="tyRMargin">—</strong></div>
+   <div id="tyProduction" class="tySimIdNote"></div>
+  </div>
+  <div id="tyParts" class="tySimRight" aria-label="Fabrication par pièce"></div>
  </div>
- <div class="tySimBody">
-  <div class="tySimFields">
-   <label><span>Nom du projet</span><input id="tyName" maxlength="130" placeholder="Ex. Andorre" oninput="tyField('name',this.value)"></label>
-   <label><span>Source de la commande</span><input id="tySource" maxlength="90" list="tySources" placeholder="Shopify, SumUp, direct…" oninput="tyField('source',this.value)"><datalist id="tySources"><option value="Shopify"></option><option value="SumUp"></option><option value="Direct"></option><option value="Etsy"></option></datalist></label>
-   <label><span>Format</span><select id="tyFormat" onchange="tyField('format',this.value)"><option>Tr</option><option>In</option><option>Ex</option><option>Autre</option></select></label>
-   <label><span>Quantité d'objets</span><input id="tyQuantity" type="number" min="1" step="1" value="1" oninput="tyField('quantity',this.value)"></label>
-   <label><span>CA de l'opération (€)</span><input id="tyCA" type="number" min="0" step="0.01" oninput="tyField('ca',this.value)"></label>
+ <div class="tySimBelow">
+  <div class="tySimGroup">
+   <strong class="tySimGroupTitle">Expédition</strong>
+   <label class="tyMiniField">Carton 1,50 € <input id="tySmallBoxes" type="number" min="0" step="1" oninput="tyField('smallBoxes',this.value)"></label>
+   <label class="tyMiniField">Carton 2,60 € <input id="tyBigBoxes" type="number" min="0" step="1" oninput="tyField('bigBoxes',this.value)"></label>
+   <label class="tyMiniField">Autre € <input id="tyOther" class="wide" type="number" min="0" step="0.01" oninput="tyField('other',this.value)"></label>
   </div>
-  <section class="tySimBox">
-   <div class="tySimBoxHead"><div><h3>Pièces du projet</h3><small>Temps, poids et consommables pour une seule pièce ; les quantités sont appliquées automatiquement.</small></div><button type="button" class="btn small" onclick="tyAddPart()">+ Ajouter une pièce</button></div>
-   <div id="tyParts" class="tySimParts"></div>
-  </section>
-  <div class="tySimCosts">
-   <section class="tySimBox"><div class="tySimBoxHead"><h3>Emballage · commande entière</h3></div><div class="tySimBoxes">
-    <label><span>Petits cartons · 1,50 €</span><input id="tySmallBoxes" type="number" min="0" step="1" oninput="tyField('smallBoxes',this.value)"></label>
-    <label><span>Grands cartons · 2,60 €</span><input id="tyBigBoxes" type="number" min="0" step="1" oninput="tyField('bigBoxes',this.value)"></label>
-    <label><span>Autres frais (€)</span><input id="tyOther" type="number" min="0" step="0.01" oninput="tyField('other',this.value)"></label>
-   </div></section>
-   <section class="tySimBox"><div class="tySimBoxHead"><h3>Frais facultatifs</h3><small>À activer seulement si applicables</small></div>
-    <div class="tySimCheckboxes">
-     <label class="tyCheck"><input id="tyTax" type="checkbox" onchange="tyField('tax',this.checked)">Impôt · 13,4 % du CA</label>
-     <label class="tyCheck"><input id="tySumup" type="checkbox" onchange="tyField('sumup',this.checked)">SumUp · 2,5 % du CA</label>
-     <label class="tyCheck"><input id="tyShip" type="checkbox" onchange="tyField('ship',this.checked)">Livraison</label>
-    </div>
-    <div id="tyShipFields" class="hidden"><div class="tySimShipping">
-     <label><span>Méthode de calcul</span><select id="tyShipMode" onchange="tyField('shipMode',this.value)"><option value="table">Barème poids</option><option value="custom">Montant libre</option></select></label>
-     <label id="tyWeightBox"><span>Poids colis (kg)</span><input id="tyShipWeight" type="number" min="0" step="0.001" placeholder="Poids filament par défaut" oninput="tyField('shipWeight',this.value)"></label>
-     <label id="tyCustomBox" class="hidden"><span>Tarif particulier (€)</span><input id="tyShipCustom" type="number" min="0" step="0.01" oninput="tyField('shipCustom',this.value)"></label>
-    </div><small id="tyShipInfo" class="tySimShipHint"></small></div>
-   </section>
+  <div class="tySimGroup tyOptions">
+   <strong class="tySimGroupTitle">Frais</strong>
+   <label class="tyCheck"><input id="tyTax" type="checkbox" onchange="tyField('tax',this.checked)">Impôt 13,4 %</label>
+   <label class="tyCheck"><input id="tySumup" type="checkbox" onchange="tyField('sumup',this.checked)">SumUp 2,5 %</label>
+   <label class="tyCheck"><input id="tyShip" type="checkbox" onchange="tyField('ship',this.checked)">Livraison</label>
   </div>
-  <div class="tySimKPIs" aria-live="polite">
-   <div class="tySimKPI"><span>Chiffre d'affaires</span><strong id="tyRCA">0 €</strong></div>
-   <div class="tySimKPI"><span>Coût total</span><strong id="tyRCost">0 €</strong></div>
-   <div class="tySimKPI positive" id="tyProfitCard"><span>Bénéfice</span><strong id="tyRProfit">0 €</strong></div>
-   <div class="tySimKPI"><span>Rentabilité · bénéfice / CA</span><strong id="tyRMargin">—</strong></div>
+  <div class="tySimShipLine hidden" id="tyShipFields">
+   <strong class="tySimGroupTitle">Livraison</strong>
+   <label class="tyMiniField">Mode <select id="tyShipMode" onchange="tyField('shipMode',this.value)"><option value="table">Tarifs par poids</option><option value="custom">Prix personnalisé</option></select></label>
+   <label class="tyMiniField" id="tyWeightBox">Poids kg <input id="tyShipWeight" type="number" min="0" step="0.001" placeholder="Auto" oninput="tyField('shipWeight',this.value)"></label>
+   <label class="tyMiniField hidden" id="tyCustomBox">Tarif € <input id="tyShipCustom" type="number" min="0" step="0.01" oninput="tyField('shipCustom',this.value)"></label>
+   <span id="tyShipInfo"></span>
   </div>
-  <section class="tySimBox"><div class="tySimBoxHead"><h3>Détail des coûts</h3><small id="tyProduction"></small></div><div id="tyBreakdown" class="tySimBreakdown"></div><div id="tyWarning" class="tySimWarning hidden"></div></section>
-  <div class="tySimFooter"><small id="tyAutoSave">Enregistrement automatique du projet dans Fortuna.</small><button type="button" class="btn" onclick="tyCopy()">Copier le bilan</button></div>
+  <details class="tySimDetails"><summary>Voir le détail de tous les coûts</summary><div id="tyBreakdown" class="tySimBreakdown"></div></details>
  </div>
+ <div id="tyWarning" class="tySimWarning hidden"></div>
+ <footer class="tySimFooter"><small id="tyAutoSave">Sauvegarde automatique dans Fortuna.</small></footer>
 </section>
+
 
 <section class="apartmentBudget card" id="apartmentBudget" aria-label="Budget de l'appartement">
   <div class="apartmentHeader">
@@ -1509,15 +1556,24 @@ function tyRender(){
 }
 function tyPartsRender(){
  const out=document.getElementById("tyParts");if(!out)return;
- out.innerHTML=(tyCurrent().parts||[]).map((p,i)=>{
- const f=(key,label,val,step)=>'<label><span>'+label+'</span><input type="number" min="0" step="'+step+'" value="'+tyNumber(val)+'" oninput="tyPartField('+i+',\''+key+'\',this.value)"></label>';
- return '<div class="tySimPart"><div class="tySimPartTitle">'+
- '<label><span>Pièce '+(i+1)+'</span><input maxlength="90" value="'+esc(p.name||"")+'" oninput="tyPartField('+i+',\'name\',this.value)"></label>'+
- '<label><span>Qté par objet</span><input type="number" min="1" step="1" value="'+tyWhole(p.qty,1)+'" oninput="tyPartField('+i+',\'qty\',this.value)"></label>'+
- '<button type="button" class="tySimDelete" title="Supprimer la pièce" onclick="tyRemovePart('+i+')">×</button></div>'+
- '<div class="tySimPartFields">'+f("hours","Temps (h)",p.hours,.1)+f("grams","Poids (g)",p.grams,1)+f("bubble","Papier bulle (€)",p.bubble,.01)+f("nfc","NFC (€)",p.nfc,.01)+f("glue","Colle (€)",p.glue,.01)+'</div><div class="tySimPartCalc" id="tyPieceResult'+i+'"></div></div>';
- }).join("")||'<div class="empty">Aucune pièce. Ajoutez une pièce pour commencer.</div>';
+ const parts=tyCurrent().parts||[];
+ const header=parts.map((p,i)=>'<th scope="col"><input class="nameInput" maxlength="90" aria-label="Nom de la pièce '+(i+1)+'" value="'+esc(p.name||"")+'" oninput="tyPartField('+i+',\'name\',this.value)"><button type="button" class="removePart" aria-label="Supprimer pièce '+(i+1)+'" title="Retirer la pièce" onclick="tyRemovePart('+i+')">×</button></th>').join("");
+ const field=(i,k,v,step)=>'<input type="number" min="'+(k==="qty"?1:0)+'" step="'+step+'" aria-label="'+esc(k)+' pièce '+(i+1)+'" value="'+(k==="qty"?tyWhole(v,1):tyNumber(v))+'" oninput="tyPartField('+i+',\''+k+'\',this.value)">';
+ const editable=(label,k,step,unit)=>'<tr><th scope="row">'+label+'</th>'+
+  parts.map((p,i)=>'<td>'+field(i,k,p[k],step)+'</td>').join("")+
+  '<td class="total" id="tyTotal_'+k+'">—</td></tr>';
+ const calc=(label,k,strong=false)=>'<tr'+(strong?' class="strongrow"':'')+'><th scope="row">'+label+'</th>'+
+  parts.map((p,i)=>'<td id="tyPart_'+k+'_'+i+'">0 €</td>').join("")+
+  '<td class="total" id="tyTotal_'+k+'">0 €</td></tr>';
+ out.innerHTML='<table class="tySimTable" aria-label="Coûts de fabrication par pièce">'+
+  '<colgroup><col style="width:101px">'+parts.map(()=>'<col style="width:110px">').join('')+'<col style="width:92px"></colgroup>'+
+  '<thead><tr><th>Fabrication</th>'+header+'<th class="addPartHead"><button type="button" class="btn primary" onclick="tyAddPart()">+ Pièce</button></th></tr></thead><tbody>'+
+  editable('Qté / objet','qty',1)+editable('Temps (h)','hours',.1)+editable('Poids (g)','grams',1)+
+  calc('Électricité','elec')+calc('Matière','matter')+calc('Amortissement','amort')+
+  editable('Papier bulle €','bubble',.01)+editable('NFC €','nfc',.01)+editable('Colle €','glue',.01)+
+  calc('Total pièces','total',true)+'</tbody></table>';
 }
+
 function tySave(){
  const p=tyCurrent();
  if(!tyActive){data.tyliceProjects=data.tyliceProjects||[];data.tyliceProjects.unshift(p);tyActive=p.id;tyDraft=null}
@@ -1561,14 +1617,25 @@ function tyTotals(){
  put("tyProduction",r.units+" objet"+(r.units>1?"s":"")+" · "+r.hours.toLocaleString("fr-FR",{maximumFractionDigits:2})+" h · "+r.grams.toLocaleString("fr-FR",{maximumFractionDigits:0})+" g");
  document.getElementById("tyShipFields").classList.toggle("hidden",!p.ship);
  const custom=p.shipMode==="custom";document.getElementById("tyWeightBox").classList.toggle("hidden",custom);document.getElementById("tyCustomBox").classList.toggle("hidden",!custom);
- put("tyShipInfo",!p.ship?"":custom?"Montant personnalisé, quel que soit le poids.":r.missing?(r.weight>15?"Poids supérieur à 15 kg : saisir un tarif personnalisé.":"Préciser le poids du colis pour calculer la livraison."):"Palier "+r.tier[0]+" kg · "+money(r.shipping)+" pour "+r.weight.toLocaleString("fr-FR",{maximumFractionDigits:3})+" kg"+(tyNumber(p.shipWeight)?"":" (estimation filament seul : emballage exclu)"));
+ put("tyShipInfo",!p.ship?"":custom?"Tarif libre.":r.missing?(r.weight>15?"Au-delà de 15 kg : tarif personnalisé requis.":"Poids du colis requis."):"Palier "+r.tier[0]+" kg : "+money(r.shipping)+" pour "+r.weight.toLocaleString("fr-FR",{maximumFractionDigits:3})+" kg"+(tyNumber(p.shipWeight)?"":" (filament seul, hors emballage)"));
  const rows=[["Électricité · 0,08 €/h",r.elec],["Filament · 0,014 €/g",r.matter],["Amortissement",r.amort],["Papier bulle",r.bubble],["NFC",r.nfc],["Colle",r.glue],["Cartons",r.boxes],["Autres frais",r.other],["Impôt · 13,4 %",r.tax],["SumUp · 2,5 %",r.sumup],["Expédition",r.missing?null:r.shipping]];
  document.getElementById("tyBreakdown").innerHTML=rows.map(a=>'<div><span>'+a[0]+'</span><strong>'+(a[1]===null?"À compléter":money(a[1]))+'</strong></div>').join("");
- r.parts.forEach((x,i)=>{const el=document.getElementById("tyPieceResult"+i);if(el)el.innerHTML='<span>'+x.n+' pièce(s) · '+x.h.toLocaleString("fr-FR",{maximumFractionDigits:2})+' h · '+x.g.toLocaleString("fr-FR")+' g</span><span>Élec. '+money(x.e)+'</span><span>Matière '+money(x.m)+'</span><span>Amorti '+money(x.a)+'</span><span>Assemblage '+money(x.assembly)+'</span><strong>Total '+money(x.total)+'</strong>'});
+ const priceFmt=n=>money(n);
+ r.parts.forEach((x,i)=>{
+  put("tyPart_elec_"+i,priceFmt(x.e));put("tyPart_matter_"+i,priceFmt(x.m));
+  put("tyPart_amort_"+i,priceFmt(x.a));put("tyPart_total_"+i,priceFmt(x.total));
+ });
+ const pt=(k,v,format="money")=>put("tyTotal_"+k,format==="qty"?String(v):format==="hours"?v.toLocaleString("fr-FR",{maximumFractionDigits:2}):format==="grams"?v.toLocaleString("fr-FR",{maximumFractionDigits:0}):money(v));
+ pt("qty",r.parts.reduce((s,x)=>s+x.n,0),"qty");
+ pt("hours",r.hours,"hours");pt("grams",r.grams,"grams");
+ pt("elec",r.elec);pt("matter",r.matter);pt("amort",r.amort);
+ pt("bubble",r.bubble);pt("nfc",r.nfc);pt("glue",r.glue);
+ pt("total",r.elec+r.matter+r.amort+r.bubble+r.nfc+r.glue);
  put("tyWarning",r.missing?"Livraison activée : bénéfice et rentabilité en attente du tarif postal.":"");
  document.getElementById("tyWarning").classList.toggle("hidden",!r.missing);
  put("tyAutoSave",tyActive?"Projet enregistré automatiquement dans Fortuna (synchronisé si Google est connecté).":"Nouveau projet : commencez la saisie pour l’enregistrer.");
 }
+
 function tyCopy(){
  const p=tyCurrent(),r=tyCompute(p);
  const v=['Projet : '+(p.name||"Sans nom"),'Source : '+(p.source||"—"),'Format : '+p.format,'Quantité : '+r.units,
