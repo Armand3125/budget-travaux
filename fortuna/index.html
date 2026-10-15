@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#13231c">
-<title>Fortuna V4R1</title>
+<title>Fortuna V4R2</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#f3f5f0;--card:#fff;--ink:#17221d;--muted:#728078;--line:#dfe5df;--green:#285c46;--green2:#3e7b5f;--soft:#e8efe9;--gold:#c89c45;--red:#bb4c4c;--shadow:0 12px 36px rgba(36,58,46,.08);--radius:18px}
@@ -616,7 +616,7 @@ body.forceMobile .mobileAddSheet{max-width:460px;margin:0 auto}
 .savingLineCalculated .savingLabel small{color:#718C7D;font-size:10px;font-weight:700}
 .savingCalculatedAmount{min-width:108px;text-align:right;padding:8px 10px;border:1px solid #D4E4D9;border-radius:9px;background:#E4F0E8;color:#256046;font-size:12px;font-weight:950;white-space:nowrap}
 
-/* Fortuna V4R1 — mobile : catégories détaillées, trois périodes et sections financières masquées */
+/* Fortuna V4R2 — mobile : catégories détaillées, trois périodes et sections financières masquées */
 .mobileCatRow{width:100%;grid-template-columns:minmax(0,1fr) 52px minmax(68px,84px) 12px;gap:6px;text-align:left;color:var(--ink);font:inherit;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
 .mobileCatRow:active{transform:scale(.99)}
 .mobileCatRow:focus-visible{outline:3px solid var(--green2);outline-offset:2px}
@@ -642,11 +642,18 @@ body.forceMobile .mobileAddSheet{max-width:460px;margin:0 auto}
 body.mobileCategoryOpen{overflow:hidden}
 @media(max-width:620px){.apartmentBudget,.financeGrid{display:none!important}}
 body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!important}
+
+/* V4R2 — édition tactile des dépenses passées */
+.mobileCategoryItemInfo{display:flex;min-width:0;flex:1;flex-direction:column;gap:5px}
+.mobileExpenseEdit{flex:none;min-height:44px;padding:9px 13px;border:1px solid #b6cabe;border-radius:12px;background:#eef5ef;color:#285c46;font-size:13px;font-weight:850;cursor:pointer;touch-action:manipulation}
+.mobileExpenseEdit:focus-visible{outline:3px solid #3e7b5f;outline-offset:2px}
+.mobileAddBackdrop{z-index:110}
+@media(max-width:420px){.mobileExpenseEdit{padding:9px 10px;font-size:12px}.mobileCategoryItem{gap:8px}}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V4R1</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
+<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V4R2</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
 <section id="mobileHome" class="mobileSimple">
   <div class="mobilePeriodTabs">
     <button id="mpDay" class="mobilePeriodBtn active" onclick="setMobilePeriod('day')">Jour</button>
@@ -769,7 +776,7 @@ body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!imp
 <div id="mobileAddBackdrop" class="mobileAddBackdrop" onclick="if(event.target===this)closeMobileAdd()">
   <div class="mobileAddSheet">
     <div class="mobileAddHandle"></div>
-    <div class="mobileAddTitle">Nouvelle dépense</div>
+    <div class="mobileAddTitle" id="mobileAddTitle">Nouvelle dépense</div><input type="hidden" id="mobileEditId" value="">
     <div class="mobileAddGrid">
       <div class="mobileAddField"><label>Montant</label><input id="mobileAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00 €"></div>
       <div class="mobileAddField full"><label>Catégorie</label><select id="mobileCategory" class="categorySelectHidden"></select><div id="mobileCategoryPictos" class="categoryPictos mobileCategoryPictos">
@@ -861,7 +868,7 @@ cats.value="Travail";mc.value="Travail";qc.value="Travail";syncCategoryPicker("e
   document.getElementById("saveEntry").textContent=document.getElementById("editId").value?"Enregistrer":"Ajouter la dépense";
 }
 function openExpenseModal(date=selectedEntryDate,editing=false){
-  if(document.body.classList.contains("forceMobile")||window.matchMedia("(max-width:620px)").matches){openMobileAdd(date);return}
+  if(document.body.classList.contains("forceMobile")||window.matchMedia("(max-width:620px)").matches){openMobileAdd(date,editing?document.getElementById("editId").value:"");return}
   if(!editing)cancelEdit();
   selectedEntryDate=date;
   document.getElementById("entryDate").value=date;
@@ -899,6 +906,7 @@ function editItem(type,id){
   if(type!=="expense")return;
   const x=data.expenses.find(x=>x.id===id);if(!x)return;
   closeDetail();
+  if(document.body.classList.contains("forceMobile")||window.matchMedia("(max-width:620px)").matches){openMobileAdd(x.date,String(id));return}
   document.getElementById("editId").value=id;
   document.getElementById("editOriginalType").value="expense";
   document.getElementById("entryLabel").value=x.label;
@@ -1301,14 +1309,46 @@ function renderMobileCategoryDetails(){
       heading='<div class="mobileCategoryDate">'+esc(parseLocal(item.date).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}))+'</div>';
     }
     previousDate=item.date;
-    return heading+'<div class="mobileCategoryItem"><span class="mobileCategoryItemLabel">'+esc(item.label)+'</span><strong class="mobileCategoryItemAmount">'+money(item.amount)+'</strong></div>';
+    return heading+'<div class="mobileCategoryItem"><div class="mobileCategoryItemInfo"><span class="mobileCategoryItemLabel">'+esc(item.label)+'</span><strong class="mobileCategoryItemAmount">'+money(item.amount)+'</strong></div><button type="button" class="mobileExpenseEdit" aria-label="Modifier '+esc(item.label)+'" onclick="editMobileExpense('+JSON.stringify(String(item.id))+')">✎ Modifier</button></div>';
   });
   document.getElementById("mobileCategoryItems").innerHTML=rows.length?rows.join(""):'<div class="mobileCategoryNone">Aucune dépense pour cette catégorie.</div>';
 }
-function openMobileAdd(date=selectedEntryDate){document.getElementById("mobileAmount").value="";document.getElementById("mobileLabel").value="";document.getElementById("mobileDate").value=date;document.getElementById("mobileCategory").value="Travail";syncCategoryPicker("mobile","Travail");document.getElementById("mobileAddBackdrop").classList.add("open");setTimeout(()=>document.getElementById("mobileAmount").focus(),80)}
-function closeMobileAdd(){document.getElementById("mobileAddBackdrop").classList.remove("open")}
-
-function saveMobileExpense(){const amount=Number(document.getElementById("mobileAmount").value),label=document.getElementById("mobileLabel").value.trim(),category=document.getElementById("mobileCategory").value||"Autre",date=document.getElementById("mobileDate").value;if(!amount||amount<=0||!label||!date){toast("Montant, catégorie, libellé et date requis");return}data.expenses.push({id:uid(),label,amount:Math.round(amount*100)/100,date,category});selectedEntryDate=date;mobileAnchor=parseLocal(date);document.getElementById("entryDate").value=date;markAndSave();closeMobileAdd();toast("Dépense ajoutée")}
+function openMobileAdd(date=selectedEntryDate,editId=""){
+  const item=editId?data.expenses.find(x=>String(x.id)===String(editId)):null;
+  if(editId&&!item){toast("Dépense introuvable");return}
+  document.getElementById("mobileEditId").value=item?String(item.id):"";
+  document.getElementById("mobileAddTitle").textContent=item?"Modifier la dépense":"Nouvelle dépense";
+  document.getElementById("mobileAmount").value=item?item.amount:"";
+  document.getElementById("mobileLabel").value=item?item.label:"";
+  document.getElementById("mobileDate").value=item?item.date:date;
+  const category=item?(CATEGORIES.includes(item.category)?item.category:"Autre"):"Travail";
+  document.getElementById("mobileCategory").value=category;
+  syncCategoryPicker("mobile",category);
+  document.getElementById("mobileAddBackdrop").classList.add("open");
+  setTimeout(()=>document.getElementById(item?"mobileLabel":"mobileAmount").focus(),80);
+}
+function closeMobileAdd(){document.getElementById("mobileAddBackdrop").classList.remove("open");document.getElementById("mobileEditId").value=""}
+function editMobileExpense(id){closeMobileCategoryDetails();openMobileAdd(selectedEntryDate,String(id))}
+function saveMobileExpense(){
+  const amount=Number(document.getElementById("mobileAmount").value);
+  const label=document.getElementById("mobileLabel").value.trim();
+  const category=document.getElementById("mobileCategory").value||"Autre";
+  const date=document.getElementById("mobileDate").value;
+  const editId=document.getElementById("mobileEditId").value;
+  if(!Number.isFinite(amount)||amount<=0||!label||!/^\\d{4}-\\d{2}-\\d{2}$/.test(date)||Number.isNaN(parseLocal(date).getTime())){
+    toast("Montant, catégorie, libellé et date valides requis");return;
+  }
+  if(editId){
+    const item=data.expenses.find(x=>String(x.id)===editId);
+    if(!item){toast("Dépense introuvable");return}
+    Object.assign(item,{label,amount:Math.round(amount*100)/100,date,category});
+  }else data.expenses.push({id:uid(),label,amount:Math.round(amount*100)/100,date,category});
+  selectedEntryDate=date;mobileAnchor=parseLocal(date);
+  selectedMonth=new Date(Number(date.slice(0,4)),Number(date.slice(5,7))-1,1);
+  weekStart=startOfWeek(parseLocal(date));
+  document.getElementById("entryDate").value=date;
+  markAndSave();closeMobileAdd();toast(editId?"Dépense modifiée":"Dépense ajoutée");
+}
 function download(name,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}function exportJSON(){download(`fortuna-${localDate()}.json`,JSON.stringify(data,null,2),"application/json")}function exportCSV(){const rows=[["Date","Type","Libellé","Catégorie","Montant"],...data.expenses.map(x=>[x.date,"Dépense",x.label,x.category||"Autre",x.amount])].sort((a,b)=>a[0]==="Date"?-1:b[0]==="Date"?1:b[0].localeCompare(a[0]));download(`fortuna-${localDate()}.csv`,"\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\n"),"text/csv;charset=utf-8")}function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.expenses)||!Array.isArray(x.incomes))throw 0;if(confirm(`Importer ${x.expenses.length} dépenses ?`)){data={version:206,updatedAt:new Date().toISOString(),expenses:x.expenses,incomes:x.incomes,apartmentBudget:x.apartmentBudget&&Array.isArray(x.apartmentBudget.items)?x.apartmentBudget:undefined,savings:x.savings&&typeof x.savings==="object"?x.savings:undefined,expectedPayments:Array.isArray(x.expectedPayments)?x.expectedPayments:[]};localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud(0);toast("Import enregistré")}}catch(_){alert("Fichier Fortuna invalide.")}e.target.value=""};r.readAsText(f)}function updateAuthUI(){document.getElementById("googleBtn").classList.toggle("hidden",!!firebaseUser);document.getElementById("logoutBtn").classList.toggle("hidden",!firebaseUser)}async function googleLogin(){if(window.firebaseBackend)try{await window.firebaseBackend.login()}catch(e){console.error(e);setSync("Erreur connexion","err")}}async function googleLogout(){if(window.firebaseBackend)await window.firebaseBackend.logout()}function validRemote(x){return x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)}async function handleFirebaseUser(user){firebaseUser=user||null;updateAuthUI();if(!user){setSync("Local");return}setSync("Comparaison…","work");try{const snap=await window.firebaseBackend.read(user.uid),remote=snap.exists()?snap.data().fortuna:null;if(!validRemote(remote)){await pushCloud();return}const localHas=data.expenses.length||data.incomes.length,remoteHas=remote.expenses.length||remote.incomes.length;if(!localHas&&remoteHas){saveRemoteCopy(remote);setSync("Synchronisé","ok");return}if(localHas&&!remoteHas){await pushCloud();return}const lt=Date.parse(data.updatedAt||0)||0,rt=Date.parse(remote.updatedAt||0)||0,dirty=localStorage.getItem(DIRTY_KEY)==="1";if(rt>lt+1000){saveRemoteCopy(remote);setSync("Synchronisé","ok");toast("Version en ligne récupérée")}else if(lt>rt+1000||dirty){await pushCloud()}else if(JSON.stringify(remote)!==JSON.stringify(data)){saveRemoteCopy(remote);setSync("Synchronisé","ok")}else{localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}}catch(e){console.error(e);setSync("Sync indisponible","err")}}async function pushCloud(){if(!firebaseUser||!window.firebaseBackend||syncInProgress)return;syncInProgress=true;setSync("Enregistrement…","work");try{await window.firebaseBackend.write(firebaseUser.uid,data);localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}catch(e){console.error(e);setSync("Erreur sync","err");throw e}finally{syncInProgress=false}}function scheduleCloud(delay=600){if(!firebaseUser||!window.firebaseBackend)return;setSync("Enregistrement…","work");clearTimeout(syncTimer);syncTimer=setTimeout(()=>pushCloud().catch(()=>{}),delay)}async function manualSync(){if(!firebaseUser){setSync("Connexion Google…","work");await googleLogin();return}await pushCloud();toast("Synchronisation terminée")}window.handleFirebaseUser=handleFirebaseUser;init();
 </script>
 <script type="module">import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";const firebaseConfig={apiKey:"AIzaSyCExYF7ivk5gJ8vcQpktPs2QV-Z1g-hkSM",authDomain:"budget-travaux-4993c.firebaseapp.com",projectId:"budget-travaux-4993c",storageBucket:"budget-travaux-4993c.firebasestorage.app",messagingSenderId:"875990842282",appId:"1:875990842282:web:827e4b96895a7efab949d3"};try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),budgetDoc=uid=>doc(db,"users",uid,"budgets","main");window.firebaseBackend={login:()=>signInWithPopup(auth,new GoogleAuthProvider()),logout:()=>signOut(auth),read:uid=>getDoc(budgetDoc(uid)),write:(uid,fortuna)=>setDoc(budgetDoc(uid),{fortuna},{merge:true})};onAuthStateChanged(auth,user=>window.handleFirebaseUser?.(user))}catch(e){console.error(e);document.getElementById("syncStatus")?.classList.add("err")}</script>
