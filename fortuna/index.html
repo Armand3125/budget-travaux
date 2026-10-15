@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#13231c">
-<title>Fortuna V4R6</title>
+<title>Fortuna V4R7</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#f3f5f0;--card:#fff;--ink:#17221d;--muted:#728078;--line:#dfe5df;--green:#285c46;--green2:#3e7b5f;--soft:#e8efe9;--gold:#c89c45;--red:#bb4c4c;--shadow:0 12px 36px rgba(36,58,46,.08);--radius:18px}
@@ -656,11 +656,37 @@ body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!imp
 .mobileExpenseEdit{display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;font-size:20px;line-height:1}
 /* V4R4 : comptabilité Tylice séparée */
 .tyliceSection{margin:18px 0}.tyliceSection .cardHead{flex-wrap:wrap}.tyliceSection .cardHead small{display:block;color:var(--muted);margin-top:5px}.tyliceHeadActions{display:flex;align-items:center;gap:12px}.tyliceHeadActions strong{white-space:nowrap;color:#9333ea}.tyliceItems{padding:4px 15px;max-height:350px;overflow:auto}.tyliceRow{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(80px,auto);gap:10px;align-items:center;min-height:54px;border-bottom:1px solid var(--line);font-size:13px}.tyliceRow:last-child{border-bottom:0}.tyliceDesc{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:750}.tyliceDesc small{display:block;color:var(--muted);font-weight:500;margin-top:3px}.tyliceRow strong{text-align:right;white-space:nowrap}.tyliceSection .mobileExpenseEdit{width:44px;height:44px}@media(max-width:620px){.tyliceSection{margin-top:18px}.tyliceSection .cardHead{padding:13px}.tyliceHeadActions{width:100%;justify-content:space-between}.tyliceItems{padding:4px 12px}}
+
+/* Fortuna V4R7 — simulateur Tylice, réservé au bureau */
+.tySim{margin:18px 0;overflow:hidden}.tySimHeader{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:20px 23px;border-bottom:1px solid var(--line)}
+.tySimHeader h2{font-size:21px;margin:3px 0 6px}.tySimHeader p{font-size:12px;color:var(--muted);margin:0}.tySimActions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tySim input,.tySim select{width:100%;min-width:0;border:1px solid #cbd8ce;border-radius:10px;background:#fff;padding:9px 10px;min-height:40px;font:inherit;font-size:13px;color:var(--ink)}
+.tySim input[type=checkbox]{width:17px;min-height:17px;height:17px;accent-color:#8152c5}.tySim input:focus-visible,.tySim select:focus-visible{outline:2px solid #9775b5;outline-offset:1px}
+.tySimBody{display:flex;flex-direction:column;gap:17px;padding:20px 23px 23px}.tySim label:not(.tyCheck){display:flex;flex-direction:column;gap:6px;min-width:0}
+.tySim label span{font-size:11px;font-weight:850;color:#617267}.tySimFields{display:grid;grid-template-columns:2fr 1.3fr .7fr .8fr 1fr;gap:10px}
+.tySimBox{background:#fbfcfa;border:1px solid #e1e7e1;border-radius:14px;padding:15px}.tySimBoxHead{display:flex;align-items:center;justify-content:space-between;gap:13px;flex-wrap:wrap;margin-bottom:12px}
+.tySimBoxHead h3{margin:0;font-size:15px}.tySimBoxHead small{font-size:11px;color:var(--muted)}
+.tySimParts{display:grid;gap:9px}.tySimPart{background:white;border:1px solid #e1e6e1;border-radius:12px;padding:12px}
+.tySimPartTitle{display:grid;grid-template-columns:minmax(180px,1fr) 115px 40px;gap:9px;align-items:end;margin-bottom:10px}
+.tySimPartFields{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}.tySimPartCalc{display:flex;gap:8px 16px;flex-wrap:wrap;justify-content:flex-end;border-top:1px solid #eef2ee;margin-top:10px;padding-top:10px;font-size:11px;color:var(--muted)}
+.tySimPartCalc strong{color:var(--ink);font-size:13px}.tySimDelete{border:1px solid #efd8d8;background:#fff4f4;color:#a84747;border-radius:10px;height:40px;cursor:pointer;font-size:20px}
+.tySimCosts{display:grid;grid-template-columns:1fr 1.5fr;gap:13px}.tySimBoxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.tySimCheckboxes{display:flex;gap:9px 18px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.tySim label.tyCheck{display:inline-flex;flex-direction:row;align-items:center;gap:7px;cursor:pointer;font-size:12px;font-weight:800}
+.tySimShipping{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.tySimShipHint{display:block;margin-top:9px;font-size:11px;line-height:1.5;color:var(--muted)}
+.tySimKPIs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}.tySimKPI{display:flex;flex-direction:column;gap:7px;border:1px solid #e0e9e2;background:#f2f6f2;border-radius:13px;padding:14px}
+.tySimKPI span{font-size:11px;color:var(--muted);font-weight:800}.tySimKPI strong{font-size:23px;font-weight:950;white-space:nowrap;color:var(--ink)}
+.tySimKPI.positive{background:#eaf4ee}.tySimKPI.positive strong{color:#256c48}.tySimKPI.negative{background:#fff0f0}.tySimKPI.negative strong{color:#b44141}
+.tySimBreakdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px 16px}.tySimBreakdown>div{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid #e5eae5;font-size:12px}
+.tySimBreakdown strong{white-space:nowrap}.tySimWarning{font-size:12px;color:#a34d35;font-weight:800;margin-top:8px}.tySimFooter{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tySimFooter small{font-size:11px;color:var(--muted)}
+@media(max-width:1150px){.tySimFields{grid-template-columns:repeat(3,minmax(0,1fr))}.tySimCosts{grid-template-columns:1fr}.tySimBreakdown{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){#tySimSection{display:none!important}}body.forceMobile #tySimSection{display:none!important}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V4R6</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
+<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V4R7</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
 <section id="mobileHome" class="mobileSimple">
   <div class="mobilePeriodTabs">
     <button id="mpDay" class="mobilePeriodBtn active" onclick="setMobilePeriod('day')">Jour</button>
@@ -731,6 +757,54 @@ body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!imp
 </div>
 
 <section class="tyliceSection card" aria-label="Suivi des dépenses Tylice"><div class="cardHead"><div><h2>🟣 Tylice · dépenses professionnelles</h2><small id="tyliceCount"></small></div><div class="tyliceHeadActions"><strong id="tyliceTotal">0 €</strong><button type="button" class="btn primary" onclick="addTylice()">+ Dépense</button></div></div><div id="tyliceItems" class="tyliceItems"></div></section>
+
+<section class="tySim card" id="tySimSection" aria-label="Rentabilité des projets Tylice">
+ <div class="tySimHeader">
+  <div><h2>🧮 Tylice · rentabilité d'un projet</h2><p>Coûts d'impression 3D, assemblage, expédition et bénéfice · indépendant des dépenses courantes</p></div>
+  <div class="tySimActions"><select id="tySel" aria-label="Projet" onchange="tySelect(this.value)"></select><button type="button" class="btn primary" onclick="tyNew()">+ Projet</button><button type="button" class="btn danger" onclick="tyDelete()">Supprimer</button></div>
+ </div>
+ <div class="tySimBody">
+  <div class="tySimFields">
+   <label><span>Nom du projet</span><input id="tyName" maxlength="130" placeholder="Ex. Andorre" oninput="tyField('name',this.value)"></label>
+   <label><span>Source de la commande</span><input id="tySource" maxlength="90" list="tySources" placeholder="Shopify, SumUp, direct…" oninput="tyField('source',this.value)"><datalist id="tySources"><option value="Shopify"></option><option value="SumUp"></option><option value="Direct"></option><option value="Etsy"></option></datalist></label>
+   <label><span>Format</span><select id="tyFormat" onchange="tyField('format',this.value)"><option>Tr</option><option>In</option><option>Ex</option><option>Autre</option></select></label>
+   <label><span>Quantité d'objets</span><input id="tyQuantity" type="number" min="1" step="1" value="1" oninput="tyField('quantity',this.value)"></label>
+   <label><span>CA de l'opération (€)</span><input id="tyCA" type="number" min="0" step="0.01" oninput="tyField('ca',this.value)"></label>
+  </div>
+  <section class="tySimBox">
+   <div class="tySimBoxHead"><div><h3>Pièces du projet</h3><small>Temps, poids et consommables pour une seule pièce ; les quantités sont appliquées automatiquement.</small></div><button type="button" class="btn small" onclick="tyAddPart()">+ Ajouter une pièce</button></div>
+   <div id="tyParts" class="tySimParts"></div>
+  </section>
+  <div class="tySimCosts">
+   <section class="tySimBox"><div class="tySimBoxHead"><h3>Emballage · commande entière</h3></div><div class="tySimBoxes">
+    <label><span>Petits cartons · 1,50 €</span><input id="tySmallBoxes" type="number" min="0" step="1" oninput="tyField('smallBoxes',this.value)"></label>
+    <label><span>Grands cartons · 2,60 €</span><input id="tyBigBoxes" type="number" min="0" step="1" oninput="tyField('bigBoxes',this.value)"></label>
+    <label><span>Autres frais (€)</span><input id="tyOther" type="number" min="0" step="0.01" oninput="tyField('other',this.value)"></label>
+   </div></section>
+   <section class="tySimBox"><div class="tySimBoxHead"><h3>Frais facultatifs</h3><small>À activer seulement si applicables</small></div>
+    <div class="tySimCheckboxes">
+     <label class="tyCheck"><input id="tyTax" type="checkbox" onchange="tyField('tax',this.checked)">Impôt · 13,4 % du CA</label>
+     <label class="tyCheck"><input id="tySumup" type="checkbox" onchange="tyField('sumup',this.checked)">SumUp · 2,5 % du CA</label>
+     <label class="tyCheck"><input id="tyShip" type="checkbox" onchange="tyField('ship',this.checked)">Livraison</label>
+    </div>
+    <div id="tyShipFields" class="hidden"><div class="tySimShipping">
+     <label><span>Méthode de calcul</span><select id="tyShipMode" onchange="tyField('shipMode',this.value)"><option value="table">Barème poids</option><option value="custom">Montant libre</option></select></label>
+     <label id="tyWeightBox"><span>Poids colis (kg)</span><input id="tyShipWeight" type="number" min="0" step="0.001" placeholder="Poids filament par défaut" oninput="tyField('shipWeight',this.value)"></label>
+     <label id="tyCustomBox" class="hidden"><span>Tarif particulier (€)</span><input id="tyShipCustom" type="number" min="0" step="0.01" oninput="tyField('shipCustom',this.value)"></label>
+    </div><small id="tyShipInfo" class="tySimShipHint"></small></div>
+   </section>
+  </div>
+  <div class="tySimKPIs" aria-live="polite">
+   <div class="tySimKPI"><span>Chiffre d'affaires</span><strong id="tyRCA">0 €</strong></div>
+   <div class="tySimKPI"><span>Coût total</span><strong id="tyRCost">0 €</strong></div>
+   <div class="tySimKPI positive" id="tyProfitCard"><span>Bénéfice</span><strong id="tyRProfit">0 €</strong></div>
+   <div class="tySimKPI"><span>Rentabilité · bénéfice / CA</span><strong id="tyRMargin">—</strong></div>
+  </div>
+  <section class="tySimBox"><div class="tySimBoxHead"><h3>Détail des coûts</h3><small id="tyProduction"></small></div><div id="tyBreakdown" class="tySimBreakdown"></div><div id="tyWarning" class="tySimWarning hidden"></div></section>
+  <div class="tySimFooter"><small id="tyAutoSave">Enregistrement automatique du projet dans Fortuna.</small><button type="button" class="btn" onclick="tyCopy()">Copier le bilan</button></div>
+ </div>
+</section>
+
 <section class="apartmentBudget card" id="apartmentBudget" aria-label="Budget de l'appartement">
   <div class="apartmentHeader">
     <div class="apartmentHeaderTitle">
@@ -861,10 +935,10 @@ body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!imp
 </div>
 <script>
 const CATEGORIES=["Travail","Course","Création","Tylice","Soirée","Weekend","Autre"],COLORS={Travail:"#2563EB",Course:"#16A34A",Création:"#9333EA",Tylice:"#8052c8",Soirée:"#EA580C",Weekend:"#0891B2",Autre:"#64748B"},STORAGE_KEY="fortunaV1",DIRTY_KEY="fortunaV1Dirty";let data=loadData(),selectedMonth=new Date(),weekStart=startOfWeek(new Date()),trendComparisonMonths=0,entryType="expense",selectedEntryDate=localDate(),firebaseUser=null,syncTimer=null,syncInProgress=false,detailContext=null,mobilePeriod="day",mobileAnchor=new Date(),mobileDetailCategory=null;selectedMonth.setDate(1);
-function freshData(){return{version:208,updatedAt:new Date(0).toISOString(),expenses:[],tyliceExpenses:[],tyliceResetV4R6:true,incomes:[]}}
+function freshData(){return{version:208,updatedAt:new Date(0).toISOString(),expenses:[],tyliceExpenses:[],tyliceProjects:[],tyliceResetV4R6:true,incomes:[]}}
 function normalizeTylice(d){
  if(!d||!Array.isArray(d.expenses))return d;
- d.tyliceExpenses=Array.isArray(d.tyliceExpenses)?d.tyliceExpenses:[];
+ d.tyliceExpenses=Array.isArray(d.tyliceExpenses)?d.tyliceExpenses:[];d.tyliceProjects=Array.isArray(d.tyliceProjects)?d.tyliceProjects:[];
  // Migration unique : restaurer les anciennes écritures dans Création,
  // sans repeupler Tylice lors des prochains chargements.
  if(!d.tyliceResetV4R6){
@@ -892,7 +966,7 @@ function renderTylice(){
  el.innerHTML=list.length?list.map(x=>'<div class="tyliceRow"><span class="tyliceDesc">'+esc(x.label)+'<small>'+esc(x.date)+'</small></span><button type="button" class="mobileExpenseEdit" title="Modifier" aria-label="Modifier '+esc(x.label)+'" data-id="'+esc(x.id)+'" onclick="editItem(\'expense\',this.dataset.id)">✏️</button><strong>'+money(x.amount)+'</strong></div>').join(""):'<div class="empty">Aucune dépense Tylice.</div>';
 }
 function addTylice(){if(document.body.classList.contains("forceMobile")||window.matchMedia("(max-width:620px)").matches){openMobileAdd(localDate());chooseCategory("mobile","Tylice")}else{openExpenseModal(localDate());chooseCategory("entry","Tylice")}}
-function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)){const migrated=!x.tyliceResetV4R6;const result=normalizeTylice(x);if(migrated){localStorage.setItem(STORAGE_KEY,JSON.stringify(result));localStorage.setItem(DIRTY_KEY,"1")}return result}}catch(e){}return freshData()}function markAndSave(){normalizeTylice(data);data.version=208;data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud()}function saveRemoteCopy(remote){data=normalizeTylice(remote);data.version=208;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.removeItem(DIRTY_KEY);renderAll()}function money(n){return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(Number(n)||0)}function localDate(d=new Date()){const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)}function parseLocal(s){const[a,b,c]=String(s).split("-").map(Number);return new Date(a,b-1,c)}function uid(){return crypto?.randomUUID?.()||("f"+Date.now()+Math.random().toString(16).slice(2))}function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}function monthKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}function itemMonth(x){return String(x.date||"").slice(0,7)}function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1800)}function setSync(text,state=""){const el=document.getElementById("syncStatus");el.className=`sync ${state}`;el.querySelector("span:last-child").textContent=text}function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()),day=x.getDay()||7;x.setDate(x.getDate()-day+1);x.setHours(0,0,0,0);return x}function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}function sum(a){return a.reduce((s,x)=>s+Number(x.amount||0),0)}
+function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)){const migrated=!x.tyliceResetV4R6;const result=normalizeTylice(x);if(migrated){localStorage.setItem(STORAGE_KEY,JSON.stringify(result));localStorage.setItem(DIRTY_KEY,"1")}return result}}catch(e){}return freshData()}function markAndSave(){normalizeTylice(data);data.version=208;data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud()}function saveRemoteCopy(remote){data=normalizeTylice(remote);data.version=208;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.removeItem(DIRTY_KEY);renderAll();tyRender()}function money(n){return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(Number(n)||0)}function localDate(d=new Date()){const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)}function parseLocal(s){const[a,b,c]=String(s).split("-").map(Number);return new Date(a,b-1,c)}function uid(){return crypto?.randomUUID?.()||("f"+Date.now()+Math.random().toString(16).slice(2))}function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}function monthKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}function itemMonth(x){return String(x.date||"").slice(0,7)}function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1800)}function setSync(text,state=""){const el=document.getElementById("syncStatus");el.className=`sync ${state}`;el.querySelector("span:last-child").textContent=text}function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()),day=x.getDay()||7;x.setDate(x.getDate()-day+1);x.setHours(0,0,0,0);return x}function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}function sum(a){return a.reduce((s,x)=>s+Number(x.amount||0),0)}
 function openDatePicker(id){const el=document.getElementById(id);if(!el)return;try{el.showPicker?el.showPicker():el.focus()}catch(_){el.focus()}}
 function chooseCategory(target,category){const select=document.getElementById(target==="mobile"?"mobileCategory":"entryCategory");if(select)select.value=category;syncCategoryPicker(target,category)}
 function syncCategoryPicker(target,category){const box=document.getElementById(target==="mobile"?"mobileCategoryPictos":"entryCategoryPictos");if(!box)return;box.querySelectorAll(".categoryPicto").forEach(b=>b.classList.toggle("active",b.dataset.cat===category))}
@@ -901,7 +975,7 @@ const icons={Travail:"💼",Course:"🛒",Tylice:"🎨",Soirée:"🍸",Weekend:"
 CATEGORIES.forEach(c=>{cats.add(new Option(c,c));mc.add(new Option(c,c));qc.add(new Option(c,c))});
 document.getElementById("quickCategoryPictos").innerHTML=CATEGORIES.map(c=>`<button type="button" class="categoryPicto" style="--cat:${COLORS[c]}" data-cat="${c}"><span class="categoryPictoIcon">${icons[c]}</span><span class="categoryPictoName">${c}</span></button>`).join("");
 document.querySelectorAll("#quickCategoryPictos .categoryPicto").forEach(button=>button.addEventListener("click",()=>syncQuickCategory(button.dataset.cat)));
-cats.value="Travail";mc.value="Travail";qc.value="Travail";syncCategoryPicker("entry","Travail");syncCategoryPicker("mobile","Travail");syncQuickCategory("Travail");renderAll()}function shiftMonth(n){selectedMonth=new Date(selectedMonth.getFullYear(),selectedMonth.getMonth()+n,1);renderDashboard();renderCategory();renderWeightedTrend()}function shiftWeek(n){weekStart=addDays(weekStart,n*7);renderWeek()}function goCurrentWeek(){weekStart=startOfWeek(new Date());renderWeek()}function setEntryType(){
+cats.value="Travail";mc.value="Travail";qc.value="Travail";syncCategoryPicker("entry","Travail");syncCategoryPicker("mobile","Travail");syncQuickCategory("Travail");renderAll();tyRender()}function shiftMonth(n){selectedMonth=new Date(selectedMonth.getFullYear(),selectedMonth.getMonth()+n,1);renderDashboard();renderCategory();renderWeightedTrend()}function shiftWeek(n){weekStart=addDays(weekStart,n*7);renderWeek()}function goCurrentWeek(){weekStart=startOfWeek(new Date());renderWeek()}function setEntryType(){
   entryType="expense";
   document.getElementById("categoryField").classList.remove("hidden");
   document.getElementById("labelCaption").textContent="Libellé";
@@ -1389,7 +1463,125 @@ function saveMobileExpense(){
   document.getElementById("entryDate").value=date;
   markAndSave();closeMobileAdd();toast(editId?"Dépense modifiée":"Dépense ajoutée");
 }
-function download(name,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}function exportJSON(){download(`fortuna-${localDate()}.json`,JSON.stringify(data,null,2),"application/json")}function exportCSV(){const rows=[["Date","Type","Libellé","Catégorie","Montant"],...data.expenses.map(x=>[x.date,"Dépense",x.label,x.category||"Autre",x.amount])].sort((a,b)=>a[0]==="Date"?-1:b[0]==="Date"?1:b[0].localeCompare(a[0]));download(`fortuna-${localDate()}.csv`,"\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\n"),"text/csv;charset=utf-8")}function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.expenses)||!Array.isArray(x.incomes))throw 0;if(confirm(`Importer ${x.expenses.length} dépenses ?`)){data={version:208,updatedAt:new Date().toISOString(),expenses:x.expenses,tyliceExpenses:Array.isArray(x.tyliceExpenses)?x.tyliceExpenses:[],tyliceResetV4R6:true,incomes:x.incomes,apartmentBudget:x.apartmentBudget&&Array.isArray(x.apartmentBudget.items)?x.apartmentBudget:undefined,savings:x.savings&&typeof x.savings==="object"?x.savings:undefined,expectedPayments:Array.isArray(x.expectedPayments)?x.expectedPayments:[]};normalizeTylice(data);localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud(0);toast("Import enregistré")}}catch(_){alert("Fichier Fortuna invalide.")}e.target.value=""};r.readAsText(f)}function updateAuthUI(){document.getElementById("googleBtn").classList.toggle("hidden",!!firebaseUser);document.getElementById("logoutBtn").classList.toggle("hidden",!firebaseUser)}async function googleLogin(){if(window.firebaseBackend)try{await window.firebaseBackend.login()}catch(e){console.error(e);setSync("Erreur connexion","err")}}async function googleLogout(){if(window.firebaseBackend)await window.firebaseBackend.logout()}function validRemote(x){return x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)}async function handleFirebaseUser(user){firebaseUser=user||null;updateAuthUI();if(!user){setSync("Local");return}setSync("Comparaison…","work");try{const snap=await window.firebaseBackend.read(user.uid),remote=snap.exists()?snap.data().fortuna:null;if(!validRemote(remote)){await pushCloud();return}normalizeTylice(remote);const localHas=data.expenses.length||(data.tyliceExpenses||[]).length||data.incomes.length,remoteHas=remote.expenses.length||(remote.tyliceExpenses||[]).length||remote.incomes.length;if(!localHas&&remoteHas){saveRemoteCopy(remote);setSync("Synchronisé","ok");return}if(localHas&&!remoteHas){await pushCloud();return}const lt=Date.parse(data.updatedAt||0)||0,rt=Date.parse(remote.updatedAt||0)||0,dirty=localStorage.getItem(DIRTY_KEY)==="1";if(rt>lt+1000){saveRemoteCopy(remote);setSync("Synchronisé","ok");toast("Version en ligne récupérée")}else if(lt>rt+1000||dirty){await pushCloud()}else if(JSON.stringify(remote)!==JSON.stringify(data)){saveRemoteCopy(remote);setSync("Synchronisé","ok")}else{localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}}catch(e){console.error(e);setSync("Sync indisponible","err")}}async function pushCloud(){if(!firebaseUser||!window.firebaseBackend||syncInProgress)return;syncInProgress=true;setSync("Enregistrement…","work");try{await window.firebaseBackend.write(firebaseUser.uid,data);localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}catch(e){console.error(e);setSync("Erreur sync","err");throw e}finally{syncInProgress=false}}function scheduleCloud(delay=600){if(!firebaseUser||!window.firebaseBackend)return;setSync("Enregistrement…","work");clearTimeout(syncTimer);syncTimer=setTimeout(()=>pushCloud().catch(()=>{}),delay)}async function manualSync(){if(!firebaseUser){setSync("Connexion Google…","work");await googleLogin();return}await pushCloud();toast("Synchronisation terminée")}window.handleFirebaseUser=handleFirebaseUser;init();
+
+/* Fortuna V4R7 : projets Tylice */
+const TY_RATES=[[0.25,5.25],[0.5,7.35],[0.75,8.65],[1,9.40],[2,10.70],[5,16.60],[10,24.20],[15,30.55]];
+let tyActive=null,tyDraft=null;
+function tyNumber(x){const n=Number(String(x??"").replace(",","."));return Number.isFinite(n)?Math.max(0,n):0}
+function tyWhole(x,min=0){return Math.min(10000,Math.max(min,Math.floor(tyNumber(x))))}
+function tyPart(name="Pièce"){return{name,qty:1,hours:0,grams:0,bubble:0,nfc:0,glue:0}}
+function tyBlank(){return{id:uid(),name:"",source:"",format:"In",quantity:1,ca:0,
+ parts:[tyPart("Topographie"),tyPart("Cadre"),tyPart("Titre / dos")],
+ smallBoxes:0,bigBoxes:0,other:0,tax:false,sumup:false,ship:false,shipMode:"table",shipWeight:"",shipCustom:0}}
+function tyCurrent(){const p=(data.tyliceProjects||[]).find(x=>x.id===tyActive);if(p)return p;if(!tyDraft)tyDraft=tyBlank();return tyDraft}
+function tyCompute(p){
+ const units=tyWhole(p.quantity,1),ca=tyNumber(p.ca);
+ let hours=0,grams=0,elec=0,matter=0,amort=0,bubble=0,nfc=0,glue=0;
+ const parts=(Array.isArray(p.parts)?p.parts:[]).map(x=>{
+  const n=units*tyWhole(x.qty,1),h=tyNumber(x.hours)*n,g=tyNumber(x.grams)*n,
+   e=h*.08,m=g*.014,a=e+m,b=tyNumber(x.bubble)*n,f=tyNumber(x.nfc)*n,c=tyNumber(x.glue)*n;
+  hours+=h;grams+=g;elec+=e;matter+=m;amort+=a;bubble+=b;nfc+=f;glue+=c;
+  return{n,h,g,e,m,a,assembly:b+f+c,total:e+m+a+b+f+c};
+ });
+ const boxes=tyWhole(p.smallBoxes)*1.5+tyWhole(p.bigBoxes)*2.6,other=tyNumber(p.other);
+ const tax=p.tax?ca*.134:0,sumup=p.sumup?ca*.025:0;
+ const weight=tyNumber(p.shipWeight)>0?tyNumber(p.shipWeight):grams/1000;
+ const tier=weight>0?TY_RATES.find(t=>weight<=t[0]+1e-9):null;
+ const missing=!!p.ship&&p.shipMode!=="custom"&&!tier;
+ const shipping=!p.ship?0:p.shipMode==="custom"?tyNumber(p.shipCustom):tier?tier[1]:0;
+ const cost=elec+matter+amort+bubble+nfc+glue+boxes+other+tax+sumup+shipping,profit=ca-cost;
+ return{units,ca,parts,hours,grams,elec,matter,amort,bubble,nfc,glue,boxes,other,tax,sumup,weight,tier,missing,shipping,cost,profit,margin:ca?100*profit/ca:null};
+}
+function tySelector(){
+ const el=document.getElementById("tySel");if(!el)return;
+ el.innerHTML='<option value="">— Nouveau projet —</option>'+(data.tyliceProjects||[]).map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name||"Projet sans nom")+' · '+esc(p.format||"In")+'</option>').join("");
+ el.value=tyActive||"";
+}
+function tyRender(){
+ if(!document.getElementById("tySimSection"))return;
+ if(tyActive&&!(data.tyliceProjects||[]).some(p=>p.id===tyActive))tyActive=null;
+ if(!tyActive&&!tyDraft&&data.tyliceProjects?.length)tyActive=data.tyliceProjects[0].id;
+ const p=tyCurrent();tySelector();
+ const fields={tyName:p.name,tySource:p.source,tyFormat:p.format||"In",tyQuantity:p.quantity,tyCA:p.ca,tySmallBoxes:p.smallBoxes,tyBigBoxes:p.bigBoxes,tyOther:p.other,tyShipMode:p.shipMode||"table",tyShipWeight:p.shipWeight??"",tyShipCustom:p.shipCustom};
+ for(const [k,v]of Object.entries(fields))document.getElementById(k).value=v??"";
+ for(const [k,v]of Object.entries({tyTax:p.tax,tySumup:p.sumup,tyShip:p.ship}))document.getElementById(k).checked=!!v;
+ tyPartsRender();tyTotals();
+}
+function tyPartsRender(){
+ const out=document.getElementById("tyParts");if(!out)return;
+ out.innerHTML=(tyCurrent().parts||[]).map((p,i)=>{
+ const f=(key,label,val,step)=>'<label><span>'+label+'</span><input type="number" min="0" step="'+step+'" value="'+tyNumber(val)+'" oninput="tyPartField('+i+',\''+key+'\',this.value)"></label>';
+ return '<div class="tySimPart"><div class="tySimPartTitle">'+
+ '<label><span>Pièce '+(i+1)+'</span><input maxlength="90" value="'+esc(p.name||"")+'" oninput="tyPartField('+i+',\'name\',this.value)"></label>'+
+ '<label><span>Qté par objet</span><input type="number" min="1" step="1" value="'+tyWhole(p.qty,1)+'" oninput="tyPartField('+i+',\'qty\',this.value)"></label>'+
+ '<button type="button" class="tySimDelete" title="Supprimer la pièce" onclick="tyRemovePart('+i+')">×</button></div>'+
+ '<div class="tySimPartFields">'+f("hours","Temps (h)",p.hours,.1)+f("grams","Poids (g)",p.grams,1)+f("bubble","Papier bulle (€)",p.bubble,.01)+f("nfc","NFC (€)",p.nfc,.01)+f("glue","Colle (€)",p.glue,.01)+'</div><div class="tySimPartCalc" id="tyPieceResult'+i+'"></div></div>';
+ }).join("")||'<div class="empty">Aucune pièce. Ajoutez une pièce pour commencer.</div>';
+}
+function tySave(){
+ const p=tyCurrent();
+ if(!tyActive){data.tyliceProjects=data.tyliceProjects||[];data.tyliceProjects.unshift(p);tyActive=p.id;tyDraft=null}
+ p.updatedAt=new Date().toISOString();data.updatedAt=new Date().toISOString();
+ localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");
+ tySelector();tyTotals();scheduleCloud();
+}
+function tyField(k,v){
+ const p=tyCurrent();
+ if(["tax","sumup","ship"].includes(k))p[k]=!!v;
+ else if(["name","source","format","shipMode"].includes(k))p[k]=String(v);
+ else if(k==="shipWeight")p[k]=v===""?"":tyNumber(v);
+ else if(["quantity","smallBoxes","bigBoxes"].includes(k))p[k]=tyWhole(v,k==="quantity"?1:0);
+ else p[k]=tyNumber(v);
+ tySave();
+}
+function tyPartField(i,k,v){
+ const p=tyCurrent().parts?.[i];if(!p)return;
+ p[k]=k==="name"?String(v):k==="qty"?tyWhole(v,1):tyNumber(v);
+ tySave();
+}
+function tyAddPart(){tyCurrent().parts.push(tyPart("Nouvelle pièce"));tySave();tyPartsRender();tyTotals()}
+function tyRemovePart(i){tyCurrent().parts.splice(i,1);tySave();tyPartsRender();tyTotals()}
+function tyNew(){tyActive=null;tyDraft=tyBlank();tyRender();document.getElementById("tyName")?.focus()}
+function tySelect(id){tyActive=id||null;tyDraft=tyActive?null:tyBlank();tyRender()}
+function tyDelete(){
+ if(!tyActive){tyNew();return}
+ if(!confirm("Supprimer définitivement ce projet Tylice ?"))return;
+ data.tyliceProjects=(data.tyliceProjects||[]).filter(p=>p.id!==tyActive);
+ tyActive=data.tyliceProjects[0]?.id||null;tyDraft=tyActive?null:tyBlank();
+ data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+ localStorage.setItem(DIRTY_KEY,"1");scheduleCloud();tyRender();toast("Projet supprimé");
+}
+function tyTotals(){
+ const p=tyCurrent(),r=tyCompute(p);
+ const put=(id,s)=>{const el=document.getElementById(id);if(el)el.textContent=s};
+ put("tyRCA",money(r.ca));put("tyRCost",r.missing?"À compléter":money(r.cost));put("tyRProfit",r.missing?"À compléter":money(r.profit));
+ put("tyRMargin",r.missing||r.margin===null?"—":r.margin.toLocaleString("fr-FR",{maximumFractionDigits:1})+" %");
+ document.getElementById("tyProfitCard").classList.toggle("negative",r.profit<0&&!r.missing);
+ document.getElementById("tyProfitCard").classList.toggle("positive",r.profit>=0&&!r.missing);
+ put("tyProduction",r.units+" objet"+(r.units>1?"s":"")+" · "+r.hours.toLocaleString("fr-FR",{maximumFractionDigits:2})+" h · "+r.grams.toLocaleString("fr-FR",{maximumFractionDigits:0})+" g");
+ document.getElementById("tyShipFields").classList.toggle("hidden",!p.ship);
+ const custom=p.shipMode==="custom";document.getElementById("tyWeightBox").classList.toggle("hidden",custom);document.getElementById("tyCustomBox").classList.toggle("hidden",!custom);
+ put("tyShipInfo",!p.ship?"":custom?"Montant personnalisé, quel que soit le poids.":r.missing?(r.weight>15?"Poids supérieur à 15 kg : saisir un tarif personnalisé.":"Préciser le poids du colis pour calculer la livraison."):"Palier "+r.tier[0]+" kg · "+money(r.shipping)+" pour "+r.weight.toLocaleString("fr-FR",{maximumFractionDigits:3})+" kg"+(tyNumber(p.shipWeight)?"":" (estimation filament seul : emballage exclu)"));
+ const rows=[["Électricité · 0,08 €/h",r.elec],["Filament · 0,014 €/g",r.matter],["Amortissement",r.amort],["Papier bulle",r.bubble],["NFC",r.nfc],["Colle",r.glue],["Cartons",r.boxes],["Autres frais",r.other],["Impôt · 13,4 %",r.tax],["SumUp · 2,5 %",r.sumup],["Expédition",r.missing?null:r.shipping]];
+ document.getElementById("tyBreakdown").innerHTML=rows.map(a=>'<div><span>'+a[0]+'</span><strong>'+(a[1]===null?"À compléter":money(a[1]))+'</strong></div>').join("");
+ r.parts.forEach((x,i)=>{const el=document.getElementById("tyPieceResult"+i);if(el)el.innerHTML='<span>'+x.n+' pièce(s) · '+x.h.toLocaleString("fr-FR",{maximumFractionDigits:2})+' h · '+x.g.toLocaleString("fr-FR")+' g</span><span>Élec. '+money(x.e)+'</span><span>Matière '+money(x.m)+'</span><span>Amorti '+money(x.a)+'</span><span>Assemblage '+money(x.assembly)+'</span><strong>Total '+money(x.total)+'</strong>'});
+ put("tyWarning",r.missing?"Livraison activée : bénéfice et rentabilité en attente du tarif postal.":"");
+ document.getElementById("tyWarning").classList.toggle("hidden",!r.missing);
+ put("tyAutoSave",tyActive?"Projet enregistré automatiquement dans Fortuna (synchronisé si Google est connecté).":"Nouveau projet : commencez la saisie pour l’enregistrer.");
+}
+function tyCopy(){
+ const p=tyCurrent(),r=tyCompute(p);
+ const v=['Projet : '+(p.name||"Sans nom"),'Source : '+(p.source||"—"),'Format : '+p.format,'Quantité : '+r.units,
+ 'CA : '+money(r.ca),'Électricité : '+money(r.elec),'Matière : '+money(r.matter),'Amortissement : '+money(r.amort),
+ 'Assemblage : '+money(r.bubble+r.nfc+r.glue),'Cartons : '+money(r.boxes),'Autres : '+money(r.other),
+ 'Impôt : '+money(r.tax),'SumUp : '+money(r.sumup),'Livraison : '+(r.missing?"À compléter":money(r.shipping)),
+ 'Coût : '+(r.missing?"À compléter":money(r.cost)),'Bénéfice : '+(r.missing?"À compléter":money(r.profit)),
+ 'Rentabilité : '+(r.missing||r.margin===null?"—":r.margin.toFixed(1)+" %")].join("\n");
+ if(navigator.clipboard?.writeText)navigator.clipboard.writeText(v).then(()=>toast("Bilan copié")).catch(()=>toast("Copie refusée"));
+ else{const t=document.createElement("textarea");t.value=v;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();toast("Bilan copié")}
+}
+
+function download(name,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}function exportJSON(){download(`fortuna-${localDate()}.json`,JSON.stringify(data,null,2),"application/json")}function exportCSV(){const rows=[["Date","Type","Libellé","Catégorie","Montant"],...data.expenses.map(x=>[x.date,"Dépense",x.label,x.category||"Autre",x.amount])].sort((a,b)=>a[0]==="Date"?-1:b[0]==="Date"?1:b[0].localeCompare(a[0]));download(`fortuna-${localDate()}.csv`,"\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\n"),"text/csv;charset=utf-8")}function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.expenses)||!Array.isArray(x.incomes))throw 0;if(confirm(`Importer ${x.expenses.length} dépenses ?`)){data={version:208,updatedAt:new Date().toISOString(),expenses:x.expenses,tyliceExpenses:Array.isArray(x.tyliceExpenses)?x.tyliceExpenses:[],tyliceResetV4R6:true,tyliceProjects:Array.isArray(x.tyliceProjects)?x.tyliceProjects:[],incomes:x.incomes,apartmentBudget:x.apartmentBudget&&Array.isArray(x.apartmentBudget.items)?x.apartmentBudget:undefined,savings:x.savings&&typeof x.savings==="object"?x.savings:undefined,expectedPayments:Array.isArray(x.expectedPayments)?x.expectedPayments:[]};normalizeTylice(data);localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();tyRender();scheduleCloud(0);toast("Import enregistré")}}catch(_){alert("Fichier Fortuna invalide.")}e.target.value=""};r.readAsText(f)}function updateAuthUI(){document.getElementById("googleBtn").classList.toggle("hidden",!!firebaseUser);document.getElementById("logoutBtn").classList.toggle("hidden",!firebaseUser)}async function googleLogin(){if(window.firebaseBackend)try{await window.firebaseBackend.login()}catch(e){console.error(e);setSync("Erreur connexion","err")}}async function googleLogout(){if(window.firebaseBackend)await window.firebaseBackend.logout()}function validRemote(x){return x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)}async function handleFirebaseUser(user){firebaseUser=user||null;updateAuthUI();if(!user){setSync("Local");return}setSync("Comparaison…","work");try{const snap=await window.firebaseBackend.read(user.uid),remote=snap.exists()?snap.data().fortuna:null;if(!validRemote(remote)){await pushCloud();return}normalizeTylice(remote);const localHas=data.expenses.length||(data.tyliceExpenses||[]).length||(data.tyliceProjects||[]).length||data.incomes.length,remoteHas=remote.expenses.length||(remote.tyliceExpenses||[]).length||(remote.tyliceProjects||[]).length||remote.incomes.length;if(!localHas&&remoteHas){saveRemoteCopy(remote);setSync("Synchronisé","ok");return}if(localHas&&!remoteHas){await pushCloud();return}const lt=Date.parse(data.updatedAt||0)||0,rt=Date.parse(remote.updatedAt||0)||0,dirty=localStorage.getItem(DIRTY_KEY)==="1";if(rt>lt+1000){saveRemoteCopy(remote);setSync("Synchronisé","ok");toast("Version en ligne récupérée")}else if(lt>rt+1000||dirty){await pushCloud()}else if(JSON.stringify(remote)!==JSON.stringify(data)){saveRemoteCopy(remote);setSync("Synchronisé","ok")}else{localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}}catch(e){console.error(e);setSync("Sync indisponible","err")}}async function pushCloud(){if(!firebaseUser||!window.firebaseBackend||syncInProgress)return;syncInProgress=true;setSync("Enregistrement…","work");try{await window.firebaseBackend.write(firebaseUser.uid,data);localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}catch(e){console.error(e);setSync("Erreur sync","err");throw e}finally{syncInProgress=false}}function scheduleCloud(delay=600){if(!firebaseUser||!window.firebaseBackend)return;setSync("Enregistrement…","work");clearTimeout(syncTimer);syncTimer=setTimeout(()=>pushCloud().catch(()=>{}),delay)}async function manualSync(){if(!firebaseUser){setSync("Connexion Google…","work");await googleLogin();return}await pushCloud();toast("Synchronisation terminée")}window.handleFirebaseUser=handleFirebaseUser;init();
 </script>
 <script type="module">import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";const firebaseConfig={apiKey:"AIzaSyCExYF7ivk5gJ8vcQpktPs2QV-Z1g-hkSM",authDomain:"budget-travaux-4993c.firebaseapp.com",projectId:"budget-travaux-4993c",storageBucket:"budget-travaux-4993c.firebasestorage.app",messagingSenderId:"875990842282",appId:"1:875990842282:web:827e4b96895a7efab949d3"};try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),budgetDoc=uid=>doc(db,"users",uid,"budgets","main");window.firebaseBackend={login:()=>signInWithPopup(auth,new GoogleAuthProvider()),logout:()=>signOut(auth),read:uid=>getDoc(budgetDoc(uid)),write:(uid,fortuna)=>setDoc(budgetDoc(uid),{fortuna},{merge:true})};onAuthStateChanged(auth,user=>window.handleFirebaseUser?.(user))}catch(e){console.error(e);document.getElementById("syncStatus")?.classList.add("err")}</script>
 </body></html>
