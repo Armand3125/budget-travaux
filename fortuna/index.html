@@ -660,7 +660,7 @@ body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!imp
 
 
 
-/* Fortuna V4R10 — tableau unique inspiré du fichier Excel Tylice */
+/* Fortuna V5R1 — rentabilité allégée et tableau détaillé facultatif */
 .tyExcel{margin:17px auto 21px;max-width:1360px;border-radius:14px;overflow:hidden;border:1px solid #bfcac1}
 .tyExcel *{box-sizing:border-box}
 .tyExcel .tyExcelHead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:11px 15px;background:#f8faf8;border-bottom:1px solid #c5d0c8}
@@ -734,6 +734,22 @@ body.forceMobile #tySimSection{display:none!important}
 .futureRows{display:flex;flex-direction:column;gap:8px;max-height:390px;overflow:auto;padding:0 20px}.futureRow{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,2.5fr);gap:10px;align-items:center;padding:9px;border:1px solid #e0e9e2;border-radius:10px;background:#fbfcfb}.futureRow.late{background:#fff8f5;border-color:#e8bda9}.futureName{width:100%;min-width:0;padding:8px;border:0;background:transparent;font-size:13px;font-weight:850}.futureRowControls{display:grid;grid-template-columns:minmax(75px,.8fr) minmax(130px,1fr) minmax(106px,1fr) auto 27px;gap:7px;align-items:center}
 .futureRowControls input,.futureRowControls select,.futureFormGrid input,.futureFormGrid select{width:100%;min-width:0;min-height:36px;padding:6px 8px;border-radius:8px;border:1px solid #d8e2db;background:white;font:inherit;font-size:12px}.futurePay{min-height:36px;padding:7px 10px;white-space:nowrap;border:1px solid #b4d9c2;border-radius:8px;background:#e6f5eb;color:#286e46;font-size:12px;font-weight:900;cursor:pointer}.futureDelete{border:0;background:transparent;color:#ae706a;font-size:22px;cursor:pointer}.futureForm{margin:15px 20px 20px;padding-top:14px;border-top:1px solid var(--line)}.futureForm>label{display:block;margin-bottom:8px;color:var(--muted);font-size:12px;font-weight:850}.futureFormGrid{display:grid;grid-template-columns:minmax(160px,2fr) minmax(105px,1fr) minmax(130px,1fr) minmax(100px,1fr) auto;gap:8px}.futureHint{margin:9px 0 0;font-size:11px;color:#7d8d80}
 @media(max-width:760px){.futureRow{grid-template-columns:1fr}.futureRowControls{grid-template-columns:1fr 1fr}.futureRowControls .futurePay{grid-column:1}.futureRowControls .futureDelete{grid-column:2;justify-self:end}.futureFormGrid{grid-template-columns:1fr 1fr}.futureFormGrid>input:first-child{grid-column:1/-1}.futureFormGrid>button{grid-column:1/-1}.futureSummary,.futureForm{margin-left:12px;margin-right:12px}.futureRows{padding:0 12px}}
+
+
+/* V5R1 - rentabilité Tylice simplifiée */
+#tySimSection{max-width:1160px;border:1px solid #dbe7dc}.tyExcel .tyExcelHead{padding:14px 19px}.tyExcel .tyExcelHead h2{font-size:20px}.tyExcel .tyExcelNav>select{width:190px;height:35px}
+.tyLiteKPIs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:16px 19px 3px}.tyLiteKPIs>div{display:flex;flex-direction:column;gap:7px;padding:13px 15px;border:1px solid #e1e9e1;background:#f6faf7;border-radius:12px;min-width:0}.tyLiteKPIs span{color:#6f8574;font-size:11px;font-weight:850}.tyLiteKPIs strong{color:#315d42;font-size:23px;font-weight:950;white-space:nowrap}
+.tyLiteKPIs .tyLiteProfit{background:#e5f3e9;border-color:#cee5d4}.tyLiteKPIs .tyLiteProfit strong{color:#1c6a40}.tyLiteKPIs .tyLiteProfit.negative{background:#fff0ed;border-color:#f0c7c2}.tyLiteKPIs .tyLiteProfit.negative strong{color:#ba3f39}
+.tyLiteForm{padding:13px 19px}.tyLitePanels{display:grid;grid-template-columns:.85fr 1.15fr;gap:12px}.tyLitePanel{min-width:0;padding:15px;border:1px solid #e3ebe4;border-radius:12px;background:#fff}
+.tyLitePanel h3{margin:0 0 12px;color:#3a5a42;font-weight:950;font-size:15px}.tyLitePanelHead{display:flex;align-items:center;justify-content:space-between;gap:8px}.tyLitePanelHead h3{margin:0}
+.tyLiteField{display:flex;flex-direction:column;gap:5px;min-width:0;margin:10px 0;font-size:11px;color:#647d69;font-weight:850}.tyLiteTwo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.tyExcel .tyLiteField input,.tyExcel .tyLiteField select{height:38px;padding:6px 10px;font-size:13px;text-align:left}.tyExcel .tyLiteField input[type=number]{text-align:right}
+.tyLitePanel details>summary{cursor:pointer;font-size:11px;color:#4d7a5b;font-weight:800;margin-top:12px}.tyLiteHelp{margin:8px 0 12px;color:#819386;font-size:11px;line-height:1.5}
+.tyLitePartList{display:flex;flex-direction:column;gap:8px}.tyLitePart{display:grid;grid-template-columns:minmax(0,1.3fr) 85px 85px 25px;gap:7px;align-items:end}.tyLitePart label{display:flex;flex-direction:column;gap:5px;min-width:0;color:#738775;font-size:10px;font-weight:850}.tyExcel .tyLitePart input{height:36px;font-size:12px}.tyLitePart button{border:0;background:none;color:#b87971;font-size:21px;height:36px;cursor:pointer}
+.tyLitePrintTotal{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:11px;border-top:1px solid #e7eee8;color:#5a7461;font-size:12px}.tyLitePrintTotal strong{font-size:17px;color:#2d7750}.tyLitePrintTotal small{color:#819587;font-size:11px}
+.tyLiteFees{margin-top:12px;border:1px solid #dfeadf;border-radius:11px;overflow:hidden}.tyLiteFees>summary{cursor:pointer;padding:14px 16px;background:#f5faf6;font-weight:900;font-size:13px;color:#3b6245}.tyLiteFees>summary small{color:#87998b;font-weight:500;margin-left:9px}.tyLiteFeesInner{padding:12px 16px}.tyLiteChecks{display:flex;gap:18px;flex-wrap:wrap}.tyLiteCheck{display:flex;align-items:center;gap:6px;font-weight:800;font-size:12px;color:#526d58}.tyLiteCheck input{accent-color:#2c7a50}#tyLiteShipping{font-size:12px;color:#506955}
+.tyLiteAdvanced{margin:0 19px 15px;border:1px solid #e2eae3;border-radius:9px;overflow:hidden}.tyLiteAdvanced>summary{padding:12px 15px;background:#f9fbf9;color:#54745a;font-size:12px;font-weight:800;cursor:pointer}
+@media(max-width:920px){#tySimSection{display:block!important}.tyLitePanels{grid-template-columns:1fr}.tyLiteKPIs{grid-template-columns:repeat(2,minmax(0,1fr))}}body.forceMobile #tySimSection{display:block!important}
+@media(max-width:760px){.tyLiteKPIs{padding:12px;gap:7px}.tyLiteKPIs>div{padding:10px}.tyLiteKPIs strong{font-size:20px}.tyLiteForm{padding:10px 12px}.tyLitePanel{padding:12px}.tyLitePart{grid-template-columns:minmax(0,1.4fr) minmax(63px,.7fr) minmax(63px,.7fr) 22px;gap:5px}.tyLiteAdvanced{margin:0 12px 12px}.tyExcel .tyExcelNav>select{width:140px}}
 
 </style>
 </head>
@@ -816,18 +832,28 @@ body.forceMobile #tySimSection{display:none!important}
 
 <section class="tyExcel card" id="tySimSection" aria-label="Calculateur de bénéfice des projets Tylice">
  <header class="tyExcelHead">
-  <div><h2>🟣 Tylice · rentabilité</h2><small>Tableau des coûts par commande</small></div>
+  <div><h2>🟣 Tylice · rentabilité</h2><small>Commande, impression et bénéfice en un coup d’œil</small></div>
   <nav class="tyExcelNav" aria-label="Gestion des projets">
    <select id="tySel" aria-label="Choisir un projet" onchange="tySelect(this.value)"></select>
    <button type="button" class="btn primary" onclick="tyNew()">+ Projet</button>
-   <button type="button" class="btn" onclick="tyAddPart()">+ Pièce</button>
-   <button type="button" class="btn" onclick="tyCopy()">Copier</button>
+   
+   <button type="button" class="btn" onclick="tyCopy()">Copier le bilan</button>
    <button type="button" class="btn danger" onclick="tyDelete()">Supprimer</button>
   </nav>
  </header>
- <div id="tyParts" class="tyExcelScroll" aria-label="Tableau de fabrication, assemblage et frais"></div>
+ <div class="tyLiteKPIs" aria-label="Bilan rentabilité">
+  <div><span>Chiffre d’affaires</span><strong id="tyLiteRevenue">0 €</strong></div>
+  <div><span>Coûts</span><strong id="tyLiteCost">0 €</strong></div>
+  <div class="tyLiteProfit"><span>Bénéfice estimé</span><strong id="tyLiteProfit">0 €</strong></div>
+  <div><span>Marge</span><strong id="tyLiteMargin">—</strong></div>
+ </div>
+ <div class="tyLiteForm" id="tySimpleUI"></div>
+ <details class="tyLiteAdvanced" ontoggle="if(this.open){tyPartsRender();tyTotals()}">
+  <summary>Afficher le tableau de calcul complet</summary>
+  <div id="tyParts" class="tyExcelScroll" aria-label="Tableau détaillé de calcul"></div>
+ </details>
  <div id="tyWarning" class="tyExcelWarning hidden"></div>
- <div class="tyExcelBottom"><span id="tyAutoSave">Les projets sont enregistrés automatiquement dans Fortuna.</span><span class="tyExcelFormula">Électricité 0,08 €/h · Matière 0,014 €/g · Amortissement = électricité + matière</span></div>
+ <div class="tyExcelBottom"><span id="tyAutoSave">Les projets sont enregistrés automatiquement dans Fortuna.</span><span class="tyExcelFormula">Tarifs conservés : 0,08 €/h, 0,014 €/g · amortissement = électricité + matière</span></div>
 </section>
 
 
@@ -1601,9 +1627,51 @@ function tyRender(){
  if(!document.getElementById("tySimSection"))return;
  if(tyActive&&!(data.tyliceProjects||[]).some(p=>p.id===tyActive))tyActive=null;
  if(!tyActive&&!tyDraft&&data.tyliceProjects?.length)tyActive=data.tyliceProjects[0].id;
- tyCurrent();tySelector();tyPartsRender();tyTotals();
+ tyCurrent();tySelector();tyPartsRender();tySimpleRender();tyTotals();
 }
 
+function tySimpleRender(){
+ const target=document.getElementById("tySimpleUI");if(!target)return;const p=tyCurrent();
+ const field=(label,k,val,opt="")=>`<label class="tyLiteField"><span>${label}</span><input ${opt} value="${esc(val??"")}" oninput="tyField('${k}',this.value)"></label>`;
+ const checkbox=(k,label)=>`<label class="tyLiteCheck"><input type="checkbox" ${p[k]?"checked":""} onchange="tyField('${k}',this.checked)">${label}</label>`;
+ const pieces=p.parts.map((x,i)=>`<div class="tyLitePart">
+  <input type="text" maxlength="90" aria-label="Nom de la pièce" value="${esc(x.name)}" placeholder="Pièce" oninput="tyPartField(${i},'name',this.value)">
+  <label><span>Heures</span><input type="number" min="0" step="0.01" value="${esc(x.hours)}" oninput="tyPartField(${i},'hours',this.value)"></label>
+  <label><span>Grammes</span><input type="number" min="0" step="0.1" value="${esc(x.grams)}" oninput="tyPartField(${i},'grams',this.value)"></label>
+  <button type="button" title="Retirer cette pièce" aria-label="Retirer cette pièce" onclick="tyRemovePart(${i})">×</button>
+ </div>`).join("");
+ target.innerHTML=`<div class="tyLitePanels">
+  <section class="tyLitePanel"><h3>1 · Commande</h3>
+   ${field("Nom du projet / client","name",p.name,'type="text" maxlength="130" placeholder="Ex. Trophées trail"')}
+   <div class="tyLiteTwo">${field("Vente totale (€)","ca",p.ca,'type="number" min="0" step="0.01"')}
+   ${field("Quantité","quantity",p.quantity,'type="number" min="1" step="1"')}</div>
+   <details><summary>Source et format (facultatif)</summary>
+    <div class="tyLiteTwo">${field("Canal de vente","source",p.source,'type="text" maxlength="90" placeholder="Direct, SumUp..."')}
+     <label class="tyLiteField"><span>Format</span><select onchange="tyField('format',this.value)">${["Tr","In","Ex","Autre"].map(x=>`<option value="${x}"${p.format===x?" selected":""}>${x}</option>`).join("")}</select></label>
+    </div></details>
+  </section>
+  <section class="tyLitePanel"><div class="tyLitePanelHead"><h3>2 · Fabrication 3D</h3><button type="button" class="btn small" onclick="tyAddPart()">+ Pièce</button></div>
+   <p class="tyLiteHelp">Heures et filament <b>par objet</b> : la quantité est appliquée automatiquement.</p>
+   <div class="tyLitePartList">${pieces||'<p class="tyLiteHelp">Aucune pièce.</p>'}</div>
+   <div class="tyLitePrintTotal">Coût fabrication <strong id="tyLiteManufacturing">0 €</strong><small id="tyLiteHours"></small></div>
+  </section></div>
+  <details class="tyLiteFees"><summary>3 · Frais et livraison <small>Facultatif</small></summary>
+   <div class="tyLiteFeesInner">
+    <div class="tyLiteChecks">${checkbox("tax","Impôt 13,4 %")}${checkbox("sumup","SumUp 2,5 %")}${checkbox("ship","Livraison")}</div>
+    <div class="tyLiteTwo">
+     ${field("Papier bulle / objet (€)","bubble",p.assembly.bubble,'type="number" min="0" step="0.01" data-assembly="bubble"')}
+     ${field("NFC / objet (€)","nfc",p.assembly.nfc,'type="number" min="0" step="0.01" data-assembly="nfc"')}
+     ${field("Colle / objet (€)","glue",p.assembly.glue,'type="number" min="0" step="0.01" data-assembly="glue"')}
+     ${field("Petits cartons (nb)","smallBoxes",p.smallBoxes,'type="number" min="0" step="1"')}
+     ${field("Grands cartons (nb)","bigBoxes",p.bigBoxes,'type="number" min="0" step="1"')}
+     ${field("Autres frais (€)","other",p.other,'type="number" min="0" step="0.01"')}
+    </div>
+    <p class="tyLiteHelp">Pour renseigner un tarif ou un poids de livraison particulier, ouvrir le tableau complet ci-dessous.</p>
+    <strong id="tyLiteShipping">Livraison non comptée</strong>
+   </div>
+  </details>`;
+ target.querySelectorAll("input[data-assembly]").forEach(input=>input.oninput=()=>tyAssembly(input.dataset.assembly,input.value));
+}
 function tyPartsRender(){
  const out=document.getElementById("tyParts");if(!out)return;
  const p=tyCurrent(),parts=p.parts,slots=Math.max(3,parts.length),unitCols=slots-2,totalCols=slots+4;
@@ -1700,8 +1768,8 @@ function tyField(k,v){
 }
 function tyAssembly(k,v){if(!["bubble","nfc","glue"].includes(k))return;tyCurrent().assembly[k]=tyNumber(v);tySave()}
 function tyPartField(i,k,v){const p=tyCurrent().parts?.[i];if(!p||!["name","hours","grams"].includes(k))return;p[k]=k==="name"?String(v):tyNumber(v);tySave()}
-function tyAddPart(){tyCurrent().parts.push(tyPart("Nouvelle pièce"));tySave();tyPartsRender();tyTotals()}
-function tyRemovePart(i){tyCurrent().parts.splice(i,1);tySave();tyPartsRender();tyTotals()}
+function tyAddPart(){tyCurrent().parts.push(tyPart("Nouvelle pièce"));tySave();tyPartsRender();tySimpleRender();tyTotals()}
+function tyRemovePart(i){tyCurrent().parts.splice(i,1);tySave();tyPartsRender();tySimpleRender();tyTotals()}
 function tyNew(){tyActive=null;tyDraft=tyBlank();tyRender();document.getElementById("tyName")?.focus()}
 function tySelect(id){tyActive=id||null;tyDraft=tyActive?null:tyBlank();tyRender()}
 function tyDelete(){
@@ -1714,7 +1782,7 @@ function tyDelete(){
 }
 function tyTotals(){
  const p=tyCurrent(),r=tyCompute(p),put=(id,s)=>{const e=document.getElementById(id);if(e)e.textContent=s};
- put("tyRCA",money(r.ca));put("tyRCost",r.missing?"À compléter":money(r.cost));put("tyRProfit",r.missing?"À compléter":money(r.profit));
+ put("tyLiteRevenue",money(r.ca));put("tyLiteCost",r.missing?"À compléter":money(r.cost));put("tyLiteProfit",r.missing?"À compléter":money(r.profit));put("tyLiteMargin",r.missing||r.margin===null?"—":r.margin.toLocaleString("fr-FR",{maximumFractionDigits:1})+" %");document.querySelector(".tyLiteProfit")?.classList.toggle("negative",r.profit<0&&!r.missing);put("tyLiteManufacturing",money(r.elec+r.matter+r.amort));put("tyLiteHours",r.hours.toLocaleString("fr-FR",{maximumFractionDigits:2})+" h · "+r.grams.toLocaleString("fr-FR",{maximumFractionDigits:1})+" g");put("tyLiteShipping",!p.ship?"Livraison non comptée":r.missing?"Livraison à compléter":"Livraison : "+money(r.shipping));put("tyRCA",money(r.ca));put("tyRCost",r.missing?"À compléter":money(r.cost));put("tyRProfit",r.missing?"À compléter":money(r.profit));
  put("tyRMargin",r.missing||r.margin===null?"—":r.margin.toLocaleString("fr-FR",{maximumFractionDigits:1})+" %");
  document.getElementById("tyProfitCard").classList.toggle("negative",r.profit<0&&!r.missing);
  document.getElementById("tyRCost").classList.toggle("needsValue",r.missing);
