@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#13231c">
-<title>Fortuna V5R3</title>
+<title>Fortuna V5R4</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#f3f5f0;--card:#fff;--ink:#17221d;--muted:#728078;--line:#dfe5df;--green:#285c46;--green2:#3e7b5f;--soft:#e8efe9;--gold:#c89c45;--red:#bb4c4c;--shadow:0 12px 36px rgba(36,58,46,.08);--radius:18px}
@@ -660,96 +660,11 @@ body.forceMobile .apartmentBudget,body.forceMobile .financeGrid{display:none!imp
 
 
 
-/* Fortuna V5R1 — rentabilité allégée et tableau détaillé facultatif */
-.tyExcel{margin:17px auto 21px;max-width:1360px;border-radius:14px;overflow:hidden;border:1px solid #bfcac1}
-.tyExcel *{box-sizing:border-box}
-.tyExcel .tyExcelHead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:11px 15px;background:#f8faf8;border-bottom:1px solid #c5d0c8}
-.tyExcel .tyExcelHead h2{font-size:17px;font-weight:950;margin:0}
-.tyExcel .tyExcelHead small{font-size:11px;color:#768679}
-.tyExcel .tyExcelNav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.tyExcel .tyExcelNav>select{width:195px}
-.tyExcel .btn{font-size:12px;padding:7px 10px;border-radius:8px;min-height:32px}
-.tyExcel input:not([type=checkbox]),.tyExcel select{min-width:0;width:100%;height:29px;border:1px solid #c8d7c9;border-radius:5px;padding:4px 7px;background:#fff;color:var(--ink);font:inherit;font-size:13px}
-.tyExcel input[type=number]{text-align:right;font-variant-numeric:tabular-nums}
-.tyExcel input:focus,.tyExcel select:focus{outline:2px solid #9ac9a9;outline-offset:0;border-color:#387c56}
-.tyExcel input[type=checkbox]{width:16px;height:16px;accent-color:#2b7952;cursor:pointer}
-.tyExcel .tyExcelScroll{width:100%;overflow-x:auto;background:#fff;overscroll-behavior-x:contain}
-.tyExcel .tySheet{width:100%;table-layout:fixed;border-collapse:collapse;color:#25362b;font-size:13px;font-variant-numeric:tabular-nums}
-.tyExcel .tySheet th,.tyExcel .tySheet td{border:1px solid #acbbb0;padding:5px 7px;line-height:1.2;height:36px;vertical-align:middle}
-.tyExcel .tySheet tr>*:first-child{border-left:0}
-.tyExcel .tySheet tr>*:last-child{border-right:0}
-.tyExcel .tySheet thead tr>*{border-top:0}
-.tyExcel .tySheet th{font-size:12px;text-align:left;font-weight:900;color:#334c3c;background:#eef3ee}
-.tyExcel .tySheet .tyExcelFabric{background:#e5eee7;color:#245236;text-transform:uppercase;font-size:12px}
-.tyExcel .tySheet .tyExcelPartHead{background:#edf4ee;padding:4px 6px}
-.tyExcel .tyExcelPartEntry{display:flex;gap:4px;align-items:center}
-.tyExcel .tyExcelPartEntry input{height:27px!important;padding:4px 5px!important;font-size:12px!important;font-weight:850;text-align:center}
-.tyExcel .tyExcelPartEntry button{padding:0;border:0;background:none;color:#a96060;font-weight:950;font-size:17px;cursor:pointer;flex:none}
-.tyExcel .tySheet .tyExcelTotalHead{background:#d8e7dc;text-align:right;font-size:12px}
-.tyExcel .tySheet .tyExcelRowLabel{background:#f0f4f0;font-size:12px;font-weight:850;color:#4a6050;text-align:left}
-.tyExcel .tySheet .tyExcelNum{text-align:right;font-weight:700}
-.tyExcel .tySheet .tyExcelInputCell{padding:3px 6px}
-.tyExcel .tySheet .tyExcelCellEmpty{text-align:center;color:#9aa59c}
-.tyExcel .tySheet .tyExcelSum{text-align:right;background:#edf6ef;font-weight:950;color:#215d3c}
-.tyExcel .tySheet .tyExcelSumStrong{background:#dcecdf;font-weight:950;color:#195734}
-.tyExcel .tyExcelSourceLabel{background:#e8f0ea!important}
-.tyExcel .tyExcelIdentity{background:#c17633!important;border-color:#945a26!important}
-.tyExcel .tyExcelIdentity input{background:#fff8f1!important;border-color:#f0d8bf!important;font-size:15px!important;font-weight:950!important;text-align:center}
-.tyExcel .tySheet .tyExcelMetricLabel{background:#f9faf9;font-weight:850;font-size:12px}
-.tyExcel .tySheet .tyExcelGreen{background:#dceee0;color:#1c613e;font-weight:950;text-align:right}
-.tyExcel .tySheet .tyExcelGreen input{border-color:#aed4bb;background:#f7fcf8;font-weight:950;color:#1c6d44}
-.tyExcel .tySheet .tyExcelBlue{background:#d9e9f6;color:#156b9c;font-size:16px;font-weight:950;text-align:right}
-.tyExcel .tySheet .tyExcelBlue.negative{background:#ffe7e7;color:#b34343}
-.tyExcel .tySheet .tyExcelPct{background:#dcf0e2;color:#286e3e;font-size:16px;font-weight:950;text-align:right}
-.tyExcel .tySheet .tyExcelQty{background:#e7f0e9}
-.tyExcel .tySheet .tyExcelQty input{font-size:14px;font-weight:950}
-.tyExcel .tySheet .tyExcelGroupStart>*{border-top:2px solid #738979}
-.tyExcel .tySheet .tyExcelGroupTitle{font-size:12px;font-weight:950;letter-spacing:.025em;background:#f2d8d3;color:#653c36}
-.tyExcel .tySheet .tyExcelGroupTitle.pack{background:#eadce0;color:#633d50}
-.tyExcel .tySheet .tyExcelGroupTitle.other{background:#e4dfd8;color:#524535}
-.tyExcel .tySheet .tyExcelSubhead{background:#f7f8f6;font-size:12px;text-align:center;font-weight:850;color:#536856}
-.tyExcel .tySheet .tyExcelLeftSubtotal{background:#fae9e5;text-align:right;font-size:15px;font-weight:950;color:#743f3d}
-.tyExcel .tySheet .tyExcelLeftSubtotal.pack{background:#f5e8ee;color:#774359}
-.tyExcel .tySheet .tyExcelLeftSubtotal.other{background:#eee8dc;color:#605036}
-.tyExcel .tySheet .tyExcelFooterSum{background:#f0f6ee;font-weight:950;text-align:right;color:#2e6441}
-.tyExcel .tySheet .tyExcelRed{background:#c42629;color:#fff;text-align:right;font-weight:950;font-size:17px}
-.tyExcel .tySheet .tyExcelRed.needsValue{background:#bc753f}
-.tyExcel .tyExcelSmallCheck{display:flex;align-items:center;justify-content:space-between;gap:6px;white-space:nowrap;font-size:12px}
-.tyExcel .tyExcelSmallCheck strong{font-size:13px;white-space:nowrap}
-.tyExcel .tyExcelCentered{text-align:center}
-.tyExcel .tyExcelSubValue{text-align:right;color:#48604e;font-weight:850}
-.tyExcel .tyShipOptions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:5px 6px}
-.tyExcel .tyShipOptions label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#4a634f}
-.tyExcel .tyShipOptions select{width:158px}.tyExcel .tyShipOptions input{width:115px}
-.tyExcel .tyShipOptions #tyShipInfo{font-size:11px;color:#607868;flex:1}
-.tyExcel .tyExcelWarning{padding:7px 13px;color:#a95135;font-size:12px;font-weight:850;background:#fff8f2}
-.tyExcel .tyExcelBottom{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:7px 13px;background:#f9fbf9;color:#849085;font-size:11px}
-.tyExcel .tyExcelFormula{color:#6d7e70}
-@media(max-width:920px){#tySimSection{display:none!important}}
-body.forceMobile #tySimSection{display:none!important}
-
-
 /* V5R1 : calendrier des dépenses futures */
 .futureCard{grid-column:1/-1}.futureSummary{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:15px 20px;padding:15px 18px;border:1px solid #efd9c9;background:#fff7f1;border-radius:13px}.futureSummary>div{display:flex;flex-direction:column;gap:4px}.futureSummary span{font-size:11px;font-weight:850;color:#98785d}.futureSummary strong{font-size:26px;font-weight:950;color:#a45d30}.futureSummary small{font-size:11px;color:#997f6a}
 .futureRows{display:flex;flex-direction:column;gap:8px;max-height:390px;overflow:auto;padding:0 20px}.futureRow{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,2.5fr);gap:10px;align-items:center;padding:9px;border:1px solid #e0e9e2;border-radius:10px;background:#fbfcfb}.futureRow.late{background:#fff8f5;border-color:#e8bda9}.futureName{width:100%;min-width:0;padding:8px;border:0;background:transparent;font-size:13px;font-weight:850}.futureRowControls{display:grid;grid-template-columns:minmax(75px,.8fr) minmax(130px,1fr) minmax(106px,1fr) auto 27px;gap:7px;align-items:center}
 .futureRowControls input,.futureRowControls select,.futureFormGrid input,.futureFormGrid select{width:100%;min-width:0;min-height:36px;padding:6px 8px;border-radius:8px;border:1px solid #d8e2db;background:white;font:inherit;font-size:12px}.futurePay{min-height:36px;padding:7px 10px;white-space:nowrap;border:1px solid #b4d9c2;border-radius:8px;background:#e6f5eb;color:#286e46;font-size:12px;font-weight:900;cursor:pointer}.futureDelete{border:0;background:transparent;color:#ae706a;font-size:22px;cursor:pointer}.futureForm{margin:15px 20px 20px;padding-top:14px;border-top:1px solid var(--line)}.futureForm>label{display:block;margin-bottom:8px;color:var(--muted);font-size:12px;font-weight:850}.futureFormGrid{display:grid;grid-template-columns:minmax(160px,2fr) minmax(105px,1fr) minmax(130px,1fr) minmax(100px,1fr) auto;gap:8px}.futureHint{margin:9px 0 0;font-size:11px;color:#7d8d80}
 @media(max-width:760px){.futureRow{grid-template-columns:1fr}.futureRowControls{grid-template-columns:1fr 1fr}.futureRowControls .futurePay{grid-column:1}.futureRowControls .futureDelete{grid-column:2;justify-self:end}.futureFormGrid{grid-template-columns:1fr 1fr}.futureFormGrid>input:first-child{grid-column:1/-1}.futureFormGrid>button{grid-column:1/-1}.futureSummary,.futureForm{margin-left:12px;margin-right:12px}.futureRows{padding:0 12px}}
-
-
-/* V5R1 - rentabilité Tylice simplifiée */
-#tySimSection{max-width:1160px;border:1px solid #dbe7dc}.tyExcel .tyExcelHead{padding:14px 19px}.tyExcel .tyExcelHead h2{font-size:20px}.tyExcel .tyExcelNav>select{width:190px;height:35px}
-.tyLiteKPIs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:16px 19px 3px}.tyLiteKPIs>div{display:flex;flex-direction:column;gap:7px;padding:13px 15px;border:1px solid #e1e9e1;background:#f6faf7;border-radius:12px;min-width:0}.tyLiteKPIs span{color:#6f8574;font-size:11px;font-weight:850}.tyLiteKPIs strong{color:#315d42;font-size:23px;font-weight:950;white-space:nowrap}
-.tyLiteKPIs .tyLiteProfit{background:#e5f3e9;border-color:#cee5d4}.tyLiteKPIs .tyLiteProfit strong{color:#1c6a40}.tyLiteKPIs .tyLiteProfit.negative{background:#fff0ed;border-color:#f0c7c2}.tyLiteKPIs .tyLiteProfit.negative strong{color:#ba3f39}
-.tyLiteForm{padding:13px 19px}.tyLitePanels{display:grid;grid-template-columns:.85fr 1.15fr;gap:12px}.tyLitePanel{min-width:0;padding:15px;border:1px solid #e3ebe4;border-radius:12px;background:#fff}
-.tyLitePanel h3{margin:0 0 12px;color:#3a5a42;font-weight:950;font-size:15px}.tyLitePanelHead{display:flex;align-items:center;justify-content:space-between;gap:8px}.tyLitePanelHead h3{margin:0}
-.tyLiteField{display:flex;flex-direction:column;gap:5px;min-width:0;margin:10px 0;font-size:11px;color:#647d69;font-weight:850}.tyLiteTwo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.tyExcel .tyLiteField input,.tyExcel .tyLiteField select{height:38px;padding:6px 10px;font-size:13px;text-align:left}.tyExcel .tyLiteField input[type=number]{text-align:right}
-.tyLitePanel details>summary{cursor:pointer;font-size:11px;color:#4d7a5b;font-weight:800;margin-top:12px}.tyLiteHelp{margin:8px 0 12px;color:#819386;font-size:11px;line-height:1.5}
-.tyLitePartList{display:flex;flex-direction:column;gap:8px}.tyLitePart{display:grid;grid-template-columns:minmax(0,1.3fr) 85px 85px 25px;gap:7px;align-items:end}.tyLitePart label{display:flex;flex-direction:column;gap:5px;min-width:0;color:#738775;font-size:10px;font-weight:850}.tyExcel .tyLitePart input{height:36px;font-size:12px}.tyLitePart button{border:0;background:none;color:#b87971;font-size:21px;height:36px;cursor:pointer}
-.tyLitePrintTotal{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:11px;border-top:1px solid #e7eee8;color:#5a7461;font-size:12px}.tyLitePrintTotal strong{font-size:17px;color:#2d7750}.tyLitePrintTotal small{color:#819587;font-size:11px}
-.tyLiteFees{margin-top:12px;border:1px solid #dfeadf;border-radius:11px;overflow:hidden}.tyLiteFees>summary{cursor:pointer;padding:14px 16px;background:#f5faf6;font-weight:900;font-size:13px;color:#3b6245}.tyLiteFees>summary small{color:#87998b;font-weight:500;margin-left:9px}.tyLiteFeesInner{padding:12px 16px}.tyLiteChecks{display:flex;gap:18px;flex-wrap:wrap}.tyLiteCheck{display:flex;align-items:center;gap:6px;font-weight:800;font-size:12px;color:#526d58}.tyLiteCheck input{accent-color:#2c7a50}#tyLiteShipping{font-size:12px;color:#506955}
-.tyLiteAdvanced{margin:0 19px 15px;border:1px solid #e2eae3;border-radius:9px;overflow:hidden}.tyLiteAdvanced>summary{padding:12px 15px;background:#f9fbf9;color:#54745a;font-size:12px;font-weight:800;cursor:pointer}
-@media(max-width:920px){#tySimSection{display:block!important}.tyLitePanels{grid-template-columns:1fr}.tyLiteKPIs{grid-template-columns:repeat(2,minmax(0,1fr))}}body.forceMobile #tySimSection{display:block!important}
-@media(max-width:760px){.tyLiteKPIs{padding:12px;gap:7px}.tyLiteKPIs>div{padding:10px}.tyLiteKPIs strong{font-size:20px}.tyLiteForm{padding:10px 12px}.tyLitePanel{padding:12px}.tyLitePart{grid-template-columns:minmax(0,1.4fr) minmax(63px,.7fr) minmax(63px,.7fr) 22px;gap:5px}.tyLiteAdvanced{margin:0 12px 12px}.tyExcel .tyExcelNav>select{width:140px}}
 
 
 /* Fortuna V5R2 : économies sur une ligne ; gains et dépenses futures sur la suivante. */
@@ -818,7 +733,7 @@ body.forceMobile #tySimSection{display:none!important}
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V5R3</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
+<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V5R4</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
 <section id="mobileHome" class="mobileSimple">
   <div class="mobilePeriodTabs">
     <button id="mpDay" class="mobilePeriodBtn active" onclick="setMobilePeriod('day')">Jour</button>
@@ -891,33 +806,6 @@ body.forceMobile #tySimSection{display:none!important}
 <section class="tyliceSection card" aria-label="Suivi des dépenses Tylice"><div class="cardHead"><div><h2>🟣 Tylice · dépenses professionnelles</h2><small id="tyliceCount"></small></div><div class="tyliceHeadActions"><strong id="tyliceTotal">0 €</strong><button type="button" class="btn primary" onclick="addTylice()">+ Dépense</button></div></div><div id="tyliceItems" class="tyliceItems"></div></section>
 
 
-
-
-<section class="tyExcel card" id="tySimSection" aria-label="Calculateur de bénéfice des projets Tylice">
- <header class="tyExcelHead">
-  <div><h2>🟣 Tylice · rentabilité</h2><small>Commande, impression et bénéfice en un coup d’œil</small></div>
-  <nav class="tyExcelNav" aria-label="Gestion des projets">
-   <select id="tySel" aria-label="Choisir un projet" onchange="tySelect(this.value)"></select>
-   <button type="button" class="btn primary" onclick="tyNew()">+ Projet</button>
-   
-   <button type="button" class="btn" onclick="tyCopy()">Copier le bilan</button>
-   <button type="button" class="btn danger" onclick="tyDelete()">Supprimer</button>
-  </nav>
- </header>
- <div class="tyLiteKPIs" aria-label="Bilan rentabilité">
-  <div><span>Chiffre d’affaires</span><strong id="tyLiteRevenue">0 €</strong></div>
-  <div><span>Coûts</span><strong id="tyLiteCost">0 €</strong></div>
-  <div class="tyLiteProfit"><span>Bénéfice estimé</span><strong id="tyLiteProfit">0 €</strong></div>
-  <div><span>Marge</span><strong id="tyLiteMargin">—</strong></div>
- </div>
- <div class="tyLiteForm" id="tySimpleUI"></div>
- <details class="tyLiteAdvanced" ontoggle="if(this.open){tyPartsRender();tyTotals()}">
-  <summary>Afficher le tableau de calcul complet</summary>
-  <div id="tyParts" class="tyExcelScroll" aria-label="Tableau détaillé de calcul"></div>
- </details>
- <div id="tyWarning" class="tyExcelWarning hidden"></div>
- <div class="tyExcelBottom"><span id="tyAutoSave">Les projets sont enregistrés automatiquement dans Fortuna.</span><span class="tyExcelFormula">Tarifs conservés : 0,08 €/h, 0,014 €/g · amortissement = électricité + matière</span></div>
-</section>
 
 
 <section class="apartmentBudget card" id="apartmentBudget" aria-label="Budget de l'appartement">
@@ -1065,7 +953,7 @@ body.forceMobile #tySimSection{display:none!important}
 </div>
 <script>
 const CATEGORIES=["Travail","Course","Création","Tylice","Soirée","Weekend","Autre"],COLORS={Travail:"#2563EB",Course:"#16A34A",Création:"#9333EA",Tylice:"#8052c8",Soirée:"#EA580C",Weekend:"#0891B2",Autre:"#64748B"},STORAGE_KEY="fortunaV1",DIRTY_KEY="fortunaV1Dirty";let data=loadData(),selectedMonth=new Date(),weekStart=startOfWeek(new Date()),trendComparisonMonths=0,entryType="expense",selectedEntryDate=localDate(),firebaseUser=null,syncTimer=null,syncInProgress=false,detailContext=null,mobilePeriod="day",mobileAnchor=new Date(),mobileDetailCategory=null;selectedMonth.setDate(1);
-function freshData(){return{version:503,updatedAt:new Date(0).toISOString(),expenses:[],futureExpenses:[],tyliceExpenses:[],tyliceProjects:[],tyliceResetV4R6:true,incomes:[]}}
+function freshData(){return{version:504,updatedAt:new Date(0).toISOString(),expenses:[],futureExpenses:[],tyliceExpenses:[],tyliceProjects:[],tyliceResetV4R6:true,incomes:[]}}
 function normalizeTylice(d){
  if(!d||!Array.isArray(d.expenses))return d;
  d.tyliceExpenses=Array.isArray(d.tyliceExpenses)?d.tyliceExpenses:[];d.tyliceProjects=Array.isArray(d.tyliceProjects)?d.tyliceProjects:[];
@@ -1096,7 +984,7 @@ function renderTylice(){
  el.innerHTML=list.length?list.map(x=>'<div class="tyliceRow"><span class="tyliceDesc">'+esc(x.label)+'<small>'+esc(x.date)+'</small></span><button type="button" class="mobileExpenseEdit" title="Modifier" aria-label="Modifier '+esc(x.label)+'" data-id="'+esc(x.id)+'" onclick="editItem(\'expense\',this.dataset.id)">✏️</button><strong>'+money(x.amount)+'</strong></div>').join(""):'<div class="empty">Aucune dépense Tylice.</div>';
 }
 function addTylice(){if(document.body.classList.contains("forceMobile")||window.matchMedia("(max-width:620px)").matches){openMobileAdd(localDate());chooseCategory("mobile","Tylice")}else{openExpenseModal(localDate());chooseCategory("entry","Tylice")}}
-function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)){const migrated=!x.tyliceResetV4R6;const result=normalizeTylice(x);if(migrated){localStorage.setItem(STORAGE_KEY,JSON.stringify(result));localStorage.setItem(DIRTY_KEY,"1")}return result}}catch(e){}return freshData()}function markAndSave(){normalizeTylice(data);data.version=503;data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud()}function saveRemoteCopy(remote){data=normalizeTylice(remote);data.version=503;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.removeItem(DIRTY_KEY);renderAll();tyRender()}function money(n){return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(Number(n)||0)}function localDate(d=new Date()){const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)}function parseLocal(s){const[a,b,c]=String(s).split("-").map(Number);return new Date(a,b-1,c)}function uid(){return crypto?.randomUUID?.()||("f"+Date.now()+Math.random().toString(16).slice(2))}function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}function monthKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}function itemMonth(x){return String(x.date||"").slice(0,7)}function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1800)}function setSync(text,state=""){const el=document.getElementById("syncStatus");el.className=`sync ${state}`;el.querySelector("span:last-child").textContent=text}function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()),day=x.getDay()||7;x.setDate(x.getDate()-day+1);x.setHours(0,0,0,0);return x}function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}function sum(a){return a.reduce((s,x)=>s+Number(x.amount||0),0)}
+function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)){const migrated=!x.tyliceResetV4R6;const result=normalizeTylice(x);if(migrated){localStorage.setItem(STORAGE_KEY,JSON.stringify(result));localStorage.setItem(DIRTY_KEY,"1")}return result}}catch(e){}return freshData()}function markAndSave(){normalizeTylice(data);data.version=504;data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud()}function saveRemoteCopy(remote){data=normalizeTylice(remote);data.version=504;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.removeItem(DIRTY_KEY);renderAll()}function money(n){return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(Number(n)||0)}function localDate(d=new Date()){const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)}function parseLocal(s){const[a,b,c]=String(s).split("-").map(Number);return new Date(a,b-1,c)}function uid(){return crypto?.randomUUID?.()||("f"+Date.now()+Math.random().toString(16).slice(2))}function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}function monthKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}function itemMonth(x){return String(x.date||"").slice(0,7)}function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1800)}function setSync(text,state=""){const el=document.getElementById("syncStatus");el.className=`sync ${state}`;el.querySelector("span:last-child").textContent=text}function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()),day=x.getDay()||7;x.setDate(x.getDate()-day+1);x.setHours(0,0,0,0);return x}function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}function sum(a){return a.reduce((s,x)=>s+Number(x.amount||0),0)}
 function openDatePicker(id){const el=document.getElementById(id);if(!el)return;try{el.showPicker?el.showPicker():el.focus()}catch(_){el.focus()}}
 function chooseCategory(target,category){const select=document.getElementById(target==="mobile"?"mobileCategory":"entryCategory");if(select)select.value=category;syncCategoryPicker(target,category)}
 function syncCategoryPicker(target,category){const box=document.getElementById(target==="mobile"?"mobileCategoryPictos":"entryCategoryPictos");if(!box)return;box.querySelectorAll(".categoryPicto").forEach(b=>b.classList.toggle("active",b.dataset.cat===category))}
@@ -1105,7 +993,7 @@ const icons={Travail:"💼",Course:"🛒",Tylice:"🎨",Soirée:"🍸",Weekend:"
 CATEGORIES.forEach(c=>{cats.add(new Option(c,c));mc.add(new Option(c,c));qc.add(new Option(c,c))});
 document.getElementById("quickCategoryPictos").innerHTML=CATEGORIES.map(c=>`<button type="button" class="categoryPicto" style="--cat:${COLORS[c]}" data-cat="${c}"><span class="categoryPictoIcon">${icons[c]}</span><span class="categoryPictoName">${c}</span></button>`).join("");
 document.querySelectorAll("#quickCategoryPictos .categoryPicto").forEach(button=>button.addEventListener("click",()=>syncQuickCategory(button.dataset.cat)));
-cats.value="Travail";mc.value="Travail";qc.value="Travail";syncCategoryPicker("entry","Travail");syncCategoryPicker("mobile","Travail");syncQuickCategory("Travail");renderAll();tyRender()}function shiftMonth(n){selectedMonth=new Date(selectedMonth.getFullYear(),selectedMonth.getMonth()+n,1);renderDashboard();renderCategory();renderWeightedTrend()}function shiftWeek(n){weekStart=addDays(weekStart,n*7);renderWeek()}function goCurrentWeek(){weekStart=startOfWeek(new Date());renderWeek()}function setEntryType(){
+cats.value="Travail";mc.value="Travail";qc.value="Travail";syncCategoryPicker("entry","Travail");syncCategoryPicker("mobile","Travail");syncQuickCategory("Travail");renderAll()}function shiftMonth(n){selectedMonth=new Date(selectedMonth.getFullYear(),selectedMonth.getMonth()+n,1);renderDashboard();renderCategory();renderWeightedTrend()}function shiftWeek(n){weekStart=addDays(weekStart,n*7);renderWeek()}function goCurrentWeek(){weekStart=startOfWeek(new Date());renderWeek()}function setEntryType(){
   entryType="expense";
   document.getElementById("categoryField").classList.remove("hidden");
   document.getElementById("labelCaption").textContent="Libellé";
@@ -1633,253 +1521,6 @@ function saveMobileExpense(){
 }
 
 
-/* Fortuna V4R9 : coûts par pièce + assemblage par objet */
-const TY_RATES=[[.25,5.25],[.5,7.35],[.75,8.65],[1,9.4],[2,10.7],[5,16.6],[10,24.2],[15,30.55]];
-let tyActive=null,tyDraft=null;
-function tyNumber(v){const n=Number(String(v??"").replace(",","."));return Number.isFinite(n)?Math.max(0,n):0}
-function tyWhole(v,min=0){return Math.min(10000,Math.max(min,Math.floor(tyNumber(v))))}
-function tyPart(name="Pièce"){return{name,hours:0,grams:0}}
-function tyBlank(){return{id:uid(),name:"",source:"",format:"In",quantity:1,ca:0,
- parts:[tyPart("Topographie"),tyPart("Cadre"),tyPart("Titre / dos")],assembly:{bubble:0,nfc:0,glue:0},
- smallBoxes:0,bigBoxes:0,other:0,tax:false,sumup:false,ship:false,shipMode:"table",shipWeight:"",shipCustom:0}}
-function tyNormalize(p){
- if(!Array.isArray(p.parts))p.parts=[];
- if(!p.assembly||typeof p.assembly!=="object"){
-  const assembly={bubble:0,nfc:0,glue:0};
-  p.parts=p.parts.map(part=>{
-   const qty=tyWhole(part.qty,1);
-   for(const k of ["bubble","nfc","glue"])assembly[k]+=tyNumber(part[k])*qty;
-   return{name:String(part.name||"Pièce"),hours:tyNumber(part.hours)*qty,grams:tyNumber(part.grams)*qty};
-  });
-  p.assembly=assembly;
- }
- return p;
-}
-function tyCurrent(){
- const p=(data.tyliceProjects||[]).find(x=>x.id===tyActive);
- if(p)return tyNormalize(p);
- if(!tyDraft)tyDraft=tyBlank();
- return tyNormalize(tyDraft);
-}
-function tyCompute(project){
- const p=tyNormalize(project),units=tyWhole(p.quantity,1),ca=tyNumber(p.ca);
- let hours=0,grams=0,elec=0,matter=0,amort=0;
- const parts=p.parts.map(x=>{
-  const h=tyNumber(x.hours),g=tyNumber(x.grams),e=h*.08,m=g*.014,a=e+m;
-  hours+=h*units;grams+=g*units;elec+=e*units;matter+=m*units;amort+=a*units;
-  return{h,g,e,m,a,total:e+m+a};
- });
- const bubble=tyNumber(p.assembly.bubble)*units,nfc=tyNumber(p.assembly.nfc)*units,glue=tyNumber(p.assembly.glue)*units;
- const boxes=tyWhole(p.smallBoxes)*1.5+tyWhole(p.bigBoxes)*2.6,other=tyNumber(p.other);
- const tax=p.tax?ca*.134:0,sumup=p.sumup?ca*.025:0;
- const weight=tyNumber(p.shipWeight)>0?tyNumber(p.shipWeight):grams/1000;
- const tier=weight>0?TY_RATES.find(t=>weight<=t[0]+1e-9):null;
- const missing=!!p.ship&&p.shipMode!=="custom"&&!tier;
- const shipping=!p.ship?0:p.shipMode==="custom"?tyNumber(p.shipCustom):tier?tier[1]:0;
- const cost=elec+matter+amort+bubble+nfc+glue+boxes+other+tax+sumup+shipping,profit=ca-cost;
- return{units,ca,parts,hours,grams,elec,matter,amort,bubble,nfc,glue,assemblyUnit:tyNumber(p.assembly.bubble)+tyNumber(p.assembly.nfc)+tyNumber(p.assembly.glue),boxes,other,tax,sumup,weight,tier,missing,shipping,cost,profit,margin:ca?100*profit/ca:null};
-}
-function tySelector(){
- const el=document.getElementById("tySel");if(!el)return;
- el.innerHTML='<option value="">— Nouveau projet —</option>'+(data.tyliceProjects||[]).map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name||"Projet sans nom")+' · '+esc(p.format||"In")+'</option>').join("");
- el.value=tyActive||"";
-}
-function tyRender(){
- if(!document.getElementById("tySimSection"))return;
- if(tyActive&&!(data.tyliceProjects||[]).some(p=>p.id===tyActive))tyActive=null;
- if(!tyActive&&!tyDraft&&data.tyliceProjects?.length)tyActive=data.tyliceProjects[0].id;
- tyCurrent();tySelector();tyPartsRender();tySimpleRender();tyTotals();
-}
-
-function tySimpleRender(){
- const target=document.getElementById("tySimpleUI");if(!target)return;const p=tyCurrent();
- const field=(label,k,val,opt="")=>`<label class="tyLiteField"><span>${label}</span><input ${opt} value="${esc(val??"")}" oninput="tyField('${k}',this.value)"></label>`;
- const checkbox=(k,label)=>`<label class="tyLiteCheck"><input type="checkbox" ${p[k]?"checked":""} onchange="tyField('${k}',this.checked)">${label}</label>`;
- const pieces=p.parts.map((x,i)=>`<div class="tyLitePart">
-  <input type="text" maxlength="90" aria-label="Nom de la pièce" value="${esc(x.name)}" placeholder="Pièce" oninput="tyPartField(${i},'name',this.value)">
-  <label><span>Heures</span><input type="number" min="0" step="0.01" value="${esc(x.hours)}" oninput="tyPartField(${i},'hours',this.value)"></label>
-  <label><span>Grammes</span><input type="number" min="0" step="0.1" value="${esc(x.grams)}" oninput="tyPartField(${i},'grams',this.value)"></label>
-  <button type="button" title="Retirer cette pièce" aria-label="Retirer cette pièce" onclick="tyRemovePart(${i})">×</button>
- </div>`).join("");
- target.innerHTML=`<div class="tyLitePanels">
-  <section class="tyLitePanel"><h3>1 · Commande</h3>
-   ${field("Nom du projet / client","name",p.name,'type="text" maxlength="130" placeholder="Ex. Trophées trail"')}
-   <div class="tyLiteTwo">${field("Vente totale (€)","ca",p.ca,'type="number" min="0" step="0.01"')}
-   ${field("Quantité","quantity",p.quantity,'type="number" min="1" step="1"')}</div>
-   <details><summary>Source et format (facultatif)</summary>
-    <div class="tyLiteTwo">${field("Canal de vente","source",p.source,'type="text" maxlength="90" placeholder="Direct, SumUp..."')}
-     <label class="tyLiteField"><span>Format</span><select onchange="tyField('format',this.value)">${["Tr","In","Ex","Autre"].map(x=>`<option value="${x}"${p.format===x?" selected":""}>${x}</option>`).join("")}</select></label>
-    </div></details>
-  </section>
-  <section class="tyLitePanel"><div class="tyLitePanelHead"><h3>2 · Fabrication 3D</h3><button type="button" class="btn small" onclick="tyAddPart()">+ Pièce</button></div>
-   <p class="tyLiteHelp">Heures et filament <b>par objet</b> : la quantité est appliquée automatiquement.</p>
-   <div class="tyLitePartList">${pieces||'<p class="tyLiteHelp">Aucune pièce.</p>'}</div>
-   <div class="tyLitePrintTotal">Coût fabrication <strong id="tyLiteManufacturing">0 €</strong><small id="tyLiteHours"></small></div>
-  </section></div>
-  <details class="tyLiteFees"><summary>3 · Frais et livraison <small>Facultatif</small></summary>
-   <div class="tyLiteFeesInner">
-    <div class="tyLiteChecks">${checkbox("tax","Impôt 13,4 %")}${checkbox("sumup","SumUp 2,5 %")}${checkbox("ship","Livraison")}</div>
-    <div class="tyLiteTwo">
-     ${field("Papier bulle / objet (€)","bubble",p.assembly.bubble,'type="number" min="0" step="0.01" data-assembly="bubble"')}
-     ${field("NFC / objet (€)","nfc",p.assembly.nfc,'type="number" min="0" step="0.01" data-assembly="nfc"')}
-     ${field("Colle / objet (€)","glue",p.assembly.glue,'type="number" min="0" step="0.01" data-assembly="glue"')}
-     ${field("Petits cartons (nb)","smallBoxes",p.smallBoxes,'type="number" min="0" step="1"')}
-     ${field("Grands cartons (nb)","bigBoxes",p.bigBoxes,'type="number" min="0" step="1"')}
-     ${field("Autres frais (€)","other",p.other,'type="number" min="0" step="0.01"')}
-    </div>
-    <p class="tyLiteHelp">Pour renseigner un tarif ou un poids de livraison particulier, ouvrir le tableau complet ci-dessous.</p>
-    <strong id="tyLiteShipping">Livraison non comptée</strong>
-   </div>
-  </details>`;
- target.querySelectorAll("input[data-assembly]").forEach(input=>input.oninput=()=>tyAssembly(input.dataset.assembly,input.value));
-}
-function tyPartsRender(){
- const out=document.getElementById("tyParts");if(!out)return;
- const p=tyCurrent(),parts=p.parts,slots=Math.max(3,parts.length),unitCols=slots-2,totalCols=slots+4;
- const field=(id,type,val,handler,opts="")=>'<input id="'+id+'" type="'+type+'" '+opts+' value="'+esc(val??"")+'" oninput="'+handler+'">';
- const price=tyNumber;
- const partName=i=>i<parts.length?
-  '<div class="tyExcelPartEntry"><input maxlength="90" aria-label="Nom de la pièce '+(i+1)+'" value="'+esc(parts[i].name||"")+'" oninput="tyPartField('+i+',\'name\',this.value)"><button type="button" title="Retirer la pièce" aria-label="Retirer la pièce '+(i+1)+'" onclick="tyRemovePart('+i+')">×</button></div>':
-  '<span class="tyExcelCellEmpty">—</span>';
- const makeRight=(key,kind)=>Array.from({length:slots},(_,i)=>{
-  if(i>=parts.length)return '<td class="tyExcelCellEmpty">—</td>';
-  if(kind==="input")return '<td class="tyExcelInputCell">'+field("","number",price(parts[i][key]),"tyPartField("+i+",'"+key+"',this.value)",'min="0" step="'+(key==="hours"?"0.01":"0.1")+'" aria-label="'+(key==="hours"?"Temps en heures":"Poids en grammes")+' de '+esc(parts[i].name)+'"')+'</td>';
-  return '<td class="tyExcelNum" id="ty'+({e:"El",m:"Ma",a:"Am",total:"Pc"}[key])+i+'">0 €</td>';
- }).join("");
- const totalCell=(id)=>'<td class="tyExcelSum" id="'+id+'">—</td>';
- const row=(left,key,kind,id)=>'<tr><th class="tyExcelRowLabel">'+left+'</th>'+makeRight(key,kind)+totalCell(id)+'</tr>';
- const header='<tr class="tyExcelTableHeader"><th class="tyExcelSourceLabel">Source</th><td class="tyExcelInputCell">'+
- field("tySource","text",p.source,"tyField('source',this.value)",'maxlength="90" list="tySources" placeholder="Shopify, direct…"')+
- '<datalist id="tySources"><option value="Shopify"></option><option value="SumUp"></option><option value="Direct"></option></datalist></td>'+
- '<th class="tyExcelFabric">Fabrication</th>'+
- Array.from({length:slots},(_,i)=>'<th class="tyExcelPartHead">'+partName(i)+'</th>').join("")+
- '<th class="tyExcelTotalHead">Total</th></tr>';
- const project='<tr><td class="tyExcelIdentity" colspan="2"><input id="tyName" maxlength="130" aria-label="Nom du projet" placeholder="Nom du projet" value="'+esc(p.name)+'" oninput="tyField(\'name\',this.value)"></td>'+
- '<th class="tyExcelRowLabel">Temps (h)</th>'+makeRight("hours","input")+totalCell("tyTh")+'</tr>';
- const format='<tr><th class="tyExcelMetricLabel">Format</th><td class="tyExcelInputCell"><select id="tyFormat" onchange="tyField(\'format\',this.value)">'+
- ["Tr","In","Ex","Autre"].map(v=>'<option value="'+v+'"'+(v===p.format?" selected":"")+'>'+v+'</option>').join("")+
- '</select></td><th class="tyExcelRowLabel">Poids (g)</th>'+makeRight("grams","input")+totalCell("tyTg")+'</tr>';
- const ca='<tr><th class="tyExcelMetricLabel">Prix / CA</th><td class="tyExcelGreen tyExcelInputCell">'+
- field("tyCA","number",price(p.ca),"tyField('ca',this.value)",'min="0" step="0.01" aria-label="Chiffre d’affaires en euros"')+
- '</td><th class="tyExcelRowLabel">Électricité</th>'+makeRight("e","result")+totalCell("tyTe")+'</tr>';
- const profit='<tr><th class="tyExcelMetricLabel">Bénéfice</th><td class="tyExcelBlue" id="tyProfitCard"><strong id="tyRProfit">0 €</strong></td>'+
- '<th class="tyExcelRowLabel">Matière</th>'+makeRight("m","result")+totalCell("tyTm")+'</tr>';
- const ratio='<tr><th class="tyExcelMetricLabel">Rentabilité</th><td class="tyExcelPct"><strong id="tyRMargin">—</strong></td>'+
- '<th class="tyExcelRowLabel">Amortissement</th>'+makeRight("a","result")+totalCell("tyTa")+'</tr>';
- const qty='<tr class="tyExcelProductionTotal"><th class="tyExcelMetricLabel">Quantité</th><td class="tyExcelQty tyExcelInputCell">'+
- field("tyQuantity","number",price(p.quantity),"tyField('quantity',this.value)",'min="1" step="1" aria-label="Nombre d’objets à fabriquer"')+
- '</td><th class="tyExcelRowLabel">Total / objet</th>'+makeRight("total","result")+'<td class="tyExcelSumStrong tyExcelNum" id="tyTc">0 €</td></tr>';
- const assemblyHeaders='<tr class="tyExcelGroupStart"><th class="tyExcelGroupTitle" colspan="2">ASSEMBLAGE</th>'+
- '<th class="tyExcelSubhead">Papier bulle</th><th class="tyExcelSubhead">NFC</th><th class="tyExcelSubhead">Colle</th>'+
- '<th class="tyExcelSubhead" colspan="'+unitCols+'">Par objet</th><th class="tyExcelTotalHead">Commande</th></tr>';
- const assembly='<tr><td colspan="2" class="tyExcelLeftSubtotal" id="tyAssemblyTotal">0 €</td>'+
- '<td class="tyExcelInputCell">'+field("tyBubble","number",price(p.assembly.bubble),"tyAssembly('bubble',this.value)",'min="0" step="0.01" aria-label="Papier bulle par objet"')+'</td>'+
- '<td class="tyExcelInputCell">'+field("tyNfc","number",price(p.assembly.nfc),"tyAssembly('nfc',this.value)",'min="0" step="0.01" aria-label="NFC par objet"')+'</td>'+
- '<td class="tyExcelInputCell">'+field("tyGlue","number",price(p.assembly.glue),"tyAssembly('glue',this.value)",'min="0" step="0.01" aria-label="Colle par objet"')+'</td>'+
- '<td class="tyExcelSubValue" colspan="'+unitCols+'" id="tyAssemblyUnit">0 €</td><td class="tyExcelSumStrong tyExcelNum" id="tyAssemblyCost">0 €</td></tr>';
- const packingHeaders='<tr class="tyExcelGroupStart"><th class="tyExcelGroupTitle pack" colspan="2">EXPÉDITION</th>'+
- '<th class="tyExcelSubhead">Petit carton · 1,50 €</th><th class="tyExcelSubhead">Grand carton · 2,60 €</th>'+
- '<th class="tyExcelSubhead">Autres frais</th><th class="tyExcelSubhead" colspan="'+unitCols+'">Cartons</th>'+
- '<th class="tyExcelTotalHead">Total</th></tr>';
- const packing='<tr><td colspan="2" class="tyExcelLeftSubtotal pack" id="tyPackingTotal">0 €</td>'+
- '<td class="tyExcelInputCell">'+field("tySmallBoxes","number",price(p.smallBoxes),"tyField('smallBoxes',this.value)",'min="0" step="1" aria-label="Nombre de petits cartons"')+'</td>'+
- '<td class="tyExcelInputCell">'+field("tyBigBoxes","number",price(p.bigBoxes),"tyField('bigBoxes',this.value)",'min="0" step="1" aria-label="Nombre de grands cartons"')+'</td>'+
- '<td class="tyExcelInputCell">'+field("tyOther","number",price(p.other),"tyField('other',this.value)",'min="0" step="0.01" aria-label="Autres frais globaux"')+'</td>'+
- '<td class="tyExcelSubValue" colspan="'+unitCols+'" id="tyBoxesOnly">0 €</td><td class="tyExcelSumStrong tyExcelNum" id="tyPackingCost">0 €</td></tr>';
- const otherHeaders='<tr class="tyExcelGroupStart"><th class="tyExcelGroupTitle other" colspan="2">AUTRE</th>'+
- '<th class="tyExcelSubhead">Impôt · 13,4 %</th><th class="tyExcelSubhead">SumUp · 2,5 %</th>'+
- '<th class="tyExcelSubhead">Livraison</th><th class="tyExcelSubhead" colspan="'+unitCols+'">Total des coûts</th>'+
- '<th class="tyExcelTotalHead">Coût global</th></tr>';
- const costCheck=(id,k,amount)=>'<div class="tyExcelSmallCheck"><input id="'+id+'" type="checkbox" aria-label="'+k+'"'+(p[k]?" checked":"")+' onchange="tyField(\''+k+'\',this.checked)"><strong id="'+amount+'">0 €</strong></div>';
- const other='<tr><td colspan="2" class="tyExcelLeftSubtotal other" id="tyOtherTotal">0 €</td>'+
- '<td>'+costCheck("tyTax","tax","tyTaxCost")+'</td><td>'+costCheck("tySumup","sumup","tySumupCost")+'</td>'+
- '<td>'+costCheck("tyShip","ship","tyShipCost")+'</td>'+
- '<td class="tyExcelFooterSum" colspan="'+unitCols+'" id="tyCostLabel">Coûts</td>'+
- '<td class="tyExcelRed" id="tyRCost">0 €</td></tr>';
- const shipping='<tr id="tyShipFields" class="tyShippingOptions'+(p.ship?"":" hidden")+'"><td colspan="'+totalCols+'">'+
- '<div class="tyShipOptions"><label>Livraison <select id="tyShipMode" onchange="tyField(\'shipMode\',this.value)">'+
- '<option value="table"'+(p.shipMode!=="custom"?" selected":"")+'>Barème au poids</option>'+
- '<option value="custom"'+(p.shipMode==="custom"?" selected":"")+'>Tarif particulier</option></select></label>'+
- '<label id="tyWeightBox">Poids du colis (kg)'+field("tyShipWeight","number",p.shipWeight??"","tyField('shipWeight',this.value)",'min="0" step="0.001" placeholder="Auto"')+'</label>'+
- '<label id="tyCustomBox" class="'+(p.shipMode==="custom"?"":"hidden")+'">Prix de livraison (€)'+field("tyShipCustom","number",price(p.shipCustom),"tyField('shipCustom',this.value)",'min="0" step="0.01"')+'</label>'+
- '<span id="tyShipInfo"></span></div></td></tr>';
- const width=132+155+155+slots*150+155;
- out.innerHTML='<table class="tySheet" style="min-width:'+width+'px" aria-label="Tableau de calcul Tylice">'+
- '<colgroup><col style="width:132px"><col style="width:155px"><col style="width:155px">'+
- Array.from({length:slots},()=>'<col style="width:150px">').join('')+'<col style="width:155px"></colgroup>'+
- '<thead>'+header+'</thead><tbody>'+project+format+ca+profit+ratio+qty+
- assemblyHeaders+assembly+packingHeaders+packing+otherHeaders+other+shipping+'</tbody></table>';
-}
-
-function tySave(){
- const p=tyCurrent();
- if(!tyActive){data.tyliceProjects=data.tyliceProjects||[];data.tyliceProjects.unshift(p);tyActive=p.id;tyDraft=null}
- p.updatedAt=new Date().toISOString();data.updatedAt=new Date().toISOString();
- localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");
- tySelector();tyTotals();scheduleCloud();
-}
-function tyField(k,v){
- const p=tyCurrent();
- if(["tax","sumup","ship"].includes(k))p[k]=!!v;
- else if(["name","source","format","shipMode"].includes(k))p[k]=String(v);
- else if(k==="shipWeight")p[k]=v===""?"":tyNumber(v);
- else if(["quantity","smallBoxes","bigBoxes"].includes(k))p[k]=tyWhole(v,k==="quantity"?1:0);
- else p[k]=tyNumber(v);
- tySave();
-}
-function tyAssembly(k,v){if(!["bubble","nfc","glue"].includes(k))return;tyCurrent().assembly[k]=tyNumber(v);tySave()}
-function tyPartField(i,k,v){const p=tyCurrent().parts?.[i];if(!p||!["name","hours","grams"].includes(k))return;p[k]=k==="name"?String(v):tyNumber(v);tySave()}
-function tyAddPart(){tyCurrent().parts.push(tyPart("Nouvelle pièce"));tySave();tyPartsRender();tySimpleRender();tyTotals()}
-function tyRemovePart(i){tyCurrent().parts.splice(i,1);tySave();tyPartsRender();tySimpleRender();tyTotals()}
-function tyNew(){tyActive=null;tyDraft=tyBlank();tyRender();document.getElementById("tyName")?.focus()}
-function tySelect(id){tyActive=id||null;tyDraft=tyActive?null:tyBlank();tyRender()}
-function tyDelete(){
- if(!tyActive){tyNew();return}
- if(!confirm("Supprimer définitivement ce projet Tylice ?"))return;
- data.tyliceProjects=(data.tyliceProjects||[]).filter(p=>p.id!==tyActive);
- tyActive=data.tyliceProjects[0]?.id||null;tyDraft=tyActive?null:tyBlank();
- data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
- localStorage.setItem(DIRTY_KEY,"1");scheduleCloud();tyRender();toast("Projet supprimé");
-}
-function tyTotals(){
- const p=tyCurrent(),r=tyCompute(p),put=(id,s)=>{const e=document.getElementById(id);if(e)e.textContent=s};
- put("tyLiteRevenue",money(r.ca));put("tyLiteCost",r.missing?"À compléter":money(r.cost));put("tyLiteProfit",r.missing?"À compléter":money(r.profit));put("tyLiteMargin",r.missing||r.margin===null?"—":r.margin.toLocaleString("fr-FR",{maximumFractionDigits:1})+" %");document.querySelector(".tyLiteProfit")?.classList.toggle("negative",r.profit<0&&!r.missing);put("tyLiteManufacturing",money(r.elec+r.matter+r.amort));put("tyLiteHours",r.hours.toLocaleString("fr-FR",{maximumFractionDigits:2})+" h · "+r.grams.toLocaleString("fr-FR",{maximumFractionDigits:1})+" g");put("tyLiteShipping",!p.ship?"Livraison non comptée":r.missing?"Livraison à compléter":"Livraison : "+money(r.shipping));put("tyRCA",money(r.ca));put("tyRCost",r.missing?"À compléter":money(r.cost));put("tyRProfit",r.missing?"À compléter":money(r.profit));
- put("tyRMargin",r.missing||r.margin===null?"—":r.margin.toLocaleString("fr-FR",{maximumFractionDigits:1})+" %");
- document.getElementById("tyProfitCard").classList.toggle("negative",r.profit<0&&!r.missing);
- document.getElementById("tyRCost").classList.toggle("needsValue",r.missing);
- put("tyAssemblyTotal",money(r.bubble+r.nfc+r.glue));
- put("tyAssemblyCost",money(r.bubble+r.nfc+r.glue));put("tyAssemblyUnit",money(r.assemblyUnit));
- put("tyBoxesOnly",money(r.boxes));put("tyPackingTotal",money(r.boxes+r.other));put("tyPackingCost",money(r.boxes+r.other));
- put("tyTaxCost",money(r.tax));put("tySumupCost",money(r.sumup));put("tyShipCost",r.missing?"—":money(r.shipping));
- put("tyOtherTotal",r.missing?"À compléter":money(r.tax+r.sumup+r.shipping));
- document.getElementById("tyShipFields").classList.toggle("hidden",!p.ship);
- const custom=p.shipMode==="custom";
- document.getElementById("tyWeightBox").classList.toggle("hidden",custom);
- document.getElementById("tyCustomBox").classList.toggle("hidden",!custom);
- put("tyShipInfo",!p.ship?"":custom?"Tarif libre pour un envoi particulier.":r.missing?(r.weight>15?"Au-delà de 15 kg : choisir un tarif particulier.":"Poids du colis requis."):"Poids retenu "+r.weight.toLocaleString("fr-FR",{maximumFractionDigits:3})+" kg · palier "+r.tier[0]+" kg · "+money(r.shipping)+(tyNumber(p.shipWeight)?"":" (poids du filament uniquement)"));
- r.parts.forEach((x,i)=>{put("tyEl"+i,money(x.e));put("tyMa"+i,money(x.m));put("tyAm"+i,money(x.a));put("tyPc"+i,money(x.total))});
- const per=k=>r[k]/r.units;
- put("tyTh",per("hours").toLocaleString("fr-FR",{maximumFractionDigits:2}));
- put("tyTg",per("grams").toLocaleString("fr-FR",{maximumFractionDigits:1}));
- put("tyTe",money(per("elec")));put("tyTm",money(per("matter")));put("tyTa",money(per("amort")));
- put("tyTc",money(per("elec")+per("matter")+per("amort")));
- put("tyWarning",r.missing?"Livraison activée : indiquez un tarif valide pour obtenir le bénéfice final.":"");
- document.getElementById("tyWarning").classList.toggle("hidden",!r.missing);
- put("tyAutoSave",tyActive?"Enregistrement automatique dans Fortuna · synchronisation Google si connectée.":"Nouveau projet : commencez la saisie pour l’enregistrer.");
-}
-
-function tyCopy(){
- const p=tyCurrent(),r=tyCompute(p);
- const v=['Projet : '+(p.name||"Sans nom"),'Source : '+(p.source||"—"),'Format : '+p.format,'Quantité : '+r.units,
- 'CA : '+money(r.ca),'Électricité : '+money(r.elec),'Matière : '+money(r.matter),'Amortissement : '+money(r.amort),
- 'Assemblage : '+money(r.bubble+r.nfc+r.glue),'Cartons : '+money(r.boxes),'Autres : '+money(r.other),
- 'Impôt : '+money(r.tax),'SumUp : '+money(r.sumup),'Livraison : '+(r.missing?"À compléter":money(r.shipping)),
- 'Coût : '+(r.missing?"À compléter":money(r.cost)),'Bénéfice : '+(r.missing?"À compléter":money(r.profit)),
- 'Rentabilité : '+(r.missing||r.margin===null?"—":r.margin.toFixed(1)+" %")].join("\n");
- if(navigator.clipboard?.writeText)navigator.clipboard.writeText(v).then(()=>toast("Bilan copié")).catch(()=>toast("Copie refusée"));
- else{const t=document.createElement("textarea");t.value=v;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();toast("Bilan copié")}
-}
-
 function download(name,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}function exportJSON(){download(`fortuna-${localDate()}.json`,JSON.stringify(data,null,2),"application/json")}function exportCSV(){
  const rows=[["Date","Type","Libellé","Catégorie","Montant"],
   ...data.expenses.map(x=>[x.date,"Dépense",x.label,x.category||"Autre",x.amount]),
@@ -1887,7 +1528,7 @@ function download(name,content,type){const a=document.createElement("a");a.href=
   ...futureItems().map(x=>["","Dépense future",x.label,"",x.amount])];
  const head=rows.shift();rows.sort((a,b)=>String(b[0]).localeCompare(String(a[0])));rows.unshift(head);
  download(`fortuna-${localDate()}.csv`,"\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\n"),"text/csv;charset=utf-8");
-}function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.expenses)||!Array.isArray(x.incomes))throw 0;if(confirm(`Importer ${x.expenses.length} dépenses ?`)){data={version:503,updatedAt:new Date().toISOString(),expenses:x.expenses,tyliceExpenses:Array.isArray(x.tyliceExpenses)?x.tyliceExpenses:[],tyliceResetV4R6:true,tyliceProjects:Array.isArray(x.tyliceProjects)?x.tyliceProjects:[],futureExpenses:Array.isArray(x.futureExpenses)?x.futureExpenses:[],incomes:x.incomes,apartmentBudget:x.apartmentBudget&&Array.isArray(x.apartmentBudget.items)?x.apartmentBudget:undefined,savings:x.savings&&typeof x.savings==="object"?x.savings:undefined,expectedPayments:Array.isArray(x.expectedPayments)?x.expectedPayments:[]};normalizeTylice(data);localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();tyRender();scheduleCloud(0);toast("Import enregistré")}}catch(_){alert("Fichier Fortuna invalide.")}e.target.value=""};r.readAsText(f)}function updateAuthUI(){document.getElementById("googleBtn").classList.toggle("hidden",!!firebaseUser);document.getElementById("logoutBtn").classList.toggle("hidden",!firebaseUser)}async function googleLogin(){if(window.firebaseBackend)try{await window.firebaseBackend.login()}catch(e){console.error(e);setSync("Erreur connexion","err")}}async function googleLogout(){if(window.firebaseBackend)await window.firebaseBackend.logout()}function validRemote(x){return x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)}async function handleFirebaseUser(user){firebaseUser=user||null;updateAuthUI();if(!user){setSync("Local");return}setSync("Comparaison…","work");try{const snap=await window.firebaseBackend.read(user.uid),remote=snap.exists()?snap.data().fortuna:null;if(!validRemote(remote)){await pushCloud();return}normalizeTylice(remote);const localHas=data.expenses.length||(data.futureExpenses||[]).length||(data.tyliceExpenses||[]).length||(data.tyliceProjects||[]).length||data.incomes.length,remoteHas=remote.expenses.length||(remote.futureExpenses||[]).length||(remote.tyliceExpenses||[]).length||(remote.tyliceProjects||[]).length||remote.incomes.length;if(!localHas&&remoteHas){saveRemoteCopy(remote);setSync("Synchronisé","ok");return}if(localHas&&!remoteHas){await pushCloud();return}const lt=Date.parse(data.updatedAt||0)||0,rt=Date.parse(remote.updatedAt||0)||0,dirty=localStorage.getItem(DIRTY_KEY)==="1";if(rt>lt+1000){saveRemoteCopy(remote);setSync("Synchronisé","ok");toast("Version en ligne récupérée")}else if(lt>rt+1000||dirty){await pushCloud()}else if(JSON.stringify(remote)!==JSON.stringify(data)){saveRemoteCopy(remote);setSync("Synchronisé","ok")}else{localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}}catch(e){console.error(e);setSync("Sync indisponible","err")}}async function pushCloud(){if(!firebaseUser||!window.firebaseBackend||syncInProgress)return;syncInProgress=true;setSync("Enregistrement…","work");try{await window.firebaseBackend.write(firebaseUser.uid,data);localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}catch(e){console.error(e);setSync("Erreur sync","err");throw e}finally{syncInProgress=false}}function scheduleCloud(delay=600){if(!firebaseUser||!window.firebaseBackend)return;setSync("Enregistrement…","work");clearTimeout(syncTimer);syncTimer=setTimeout(()=>pushCloud().catch(()=>{}),delay)}async function manualSync(){if(!firebaseUser){setSync("Connexion Google…","work");await googleLogin();return}await pushCloud();toast("Synchronisation terminée")}window.handleFirebaseUser=handleFirebaseUser;init();
+}function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.expenses)||!Array.isArray(x.incomes))throw 0;if(confirm(`Importer ${x.expenses.length} dépenses ?`)){data={version:504,updatedAt:new Date().toISOString(),expenses:x.expenses,tyliceExpenses:Array.isArray(x.tyliceExpenses)?x.tyliceExpenses:[],tyliceResetV4R6:true,tyliceProjects:Array.isArray(x.tyliceProjects)?x.tyliceProjects:[],futureExpenses:Array.isArray(x.futureExpenses)?x.futureExpenses:[],incomes:x.incomes,apartmentBudget:x.apartmentBudget&&Array.isArray(x.apartmentBudget.items)?x.apartmentBudget:undefined,savings:x.savings&&typeof x.savings==="object"?x.savings:undefined,expectedPayments:Array.isArray(x.expectedPayments)?x.expectedPayments:[]};normalizeTylice(data);localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud(0);toast("Import enregistré")}}catch(_){alert("Fichier Fortuna invalide.")}e.target.value=""};r.readAsText(f)}function updateAuthUI(){document.getElementById("googleBtn").classList.toggle("hidden",!!firebaseUser);document.getElementById("logoutBtn").classList.toggle("hidden",!firebaseUser)}async function googleLogin(){if(window.firebaseBackend)try{await window.firebaseBackend.login()}catch(e){console.error(e);setSync("Erreur connexion","err")}}async function googleLogout(){if(window.firebaseBackend)await window.firebaseBackend.logout()}function validRemote(x){return x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)}async function handleFirebaseUser(user){firebaseUser=user||null;updateAuthUI();if(!user){setSync("Local");return}setSync("Comparaison…","work");try{const snap=await window.firebaseBackend.read(user.uid),remote=snap.exists()?snap.data().fortuna:null;if(!validRemote(remote)){await pushCloud();return}normalizeTylice(remote);const localHas=data.expenses.length||(data.futureExpenses||[]).length||(data.tyliceExpenses||[]).length||(data.tyliceProjects||[]).length||data.incomes.length,remoteHas=remote.expenses.length||(remote.futureExpenses||[]).length||(remote.tyliceExpenses||[]).length||(remote.tyliceProjects||[]).length||remote.incomes.length;if(!localHas&&remoteHas){saveRemoteCopy(remote);setSync("Synchronisé","ok");return}if(localHas&&!remoteHas){await pushCloud();return}const lt=Date.parse(data.updatedAt||0)||0,rt=Date.parse(remote.updatedAt||0)||0,dirty=localStorage.getItem(DIRTY_KEY)==="1";if(rt>lt+1000){saveRemoteCopy(remote);setSync("Synchronisé","ok");toast("Version en ligne récupérée")}else if(lt>rt+1000||dirty){await pushCloud()}else if(JSON.stringify(remote)!==JSON.stringify(data)){saveRemoteCopy(remote);setSync("Synchronisé","ok")}else{localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}}catch(e){console.error(e);setSync("Sync indisponible","err")}}async function pushCloud(){if(!firebaseUser||!window.firebaseBackend||syncInProgress)return;syncInProgress=true;setSync("Enregistrement…","work");try{await window.firebaseBackend.write(firebaseUser.uid,data);localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}catch(e){console.error(e);setSync("Erreur sync","err");throw e}finally{syncInProgress=false}}function scheduleCloud(delay=600){if(!firebaseUser||!window.firebaseBackend)return;setSync("Enregistrement…","work");clearTimeout(syncTimer);syncTimer=setTimeout(()=>pushCloud().catch(()=>{}),delay)}async function manualSync(){if(!firebaseUser){setSync("Connexion Google…","work");await googleLogin();return}await pushCloud();toast("Synchronisation terminée")}window.handleFirebaseUser=handleFirebaseUser;init();
 </script>
 <script type="module">import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";const firebaseConfig={apiKey:"AIzaSyCExYF7ivk5gJ8vcQpktPs2QV-Z1g-hkSM",authDomain:"budget-travaux-4993c.firebaseapp.com",projectId:"budget-travaux-4993c",storageBucket:"budget-travaux-4993c.firebasestorage.app",messagingSenderId:"875990842282",appId:"1:875990842282:web:827e4b96895a7efab949d3"};try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),budgetDoc=uid=>doc(db,"users",uid,"budgets","main");window.firebaseBackend={login:()=>signInWithPopup(auth,new GoogleAuthProvider()),logout:()=>signOut(auth),read:uid=>getDoc(budgetDoc(uid)),write:(uid,fortuna)=>setDoc(budgetDoc(uid),{fortuna},{merge:true})};onAuthStateChanged(auth,user=>window.handleFirebaseUser?.(user))}catch(e){console.error(e);document.getElementById("syncStatus")?.classList.add("err")}</script>
 </body></html>
