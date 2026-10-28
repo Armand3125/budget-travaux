@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#13231c">
-<title>Fortuna V5R2</title>
+<title>Fortuna V5R3</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#f3f5f0;--card:#fff;--ink:#17221d;--muted:#728078;--line:#dfe5df;--green:#285c46;--green2:#3e7b5f;--soft:#e8efe9;--gold:#c89c45;--red:#bb4c4c;--shadow:0 12px 36px rgba(36,58,46,.08);--radius:18px}
@@ -787,11 +787,38 @@ body.forceMobile #tySimSection{display:none!important}
  .futureRowControls .futureDelete{grid-column:2;justify-self:end}
 }
 
+
+/* Fortuna V5R3 : économies nettes de dépenses futures et prévisions sans catégorie */
+.financeGrid>#economies .financeTotals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.financeTotal.netFuture{background:#eef6ee;border-color:#d2e7d7}
+.financeTotal.netFuture strong{color:#246c43}
+.financeTotal.netFuture strong.negative{color:#bd3f38}
+.financeTotal.netFuture small{color:#69826f}
+#futureExpensesSection .futureRowControls{grid-template-columns:minmax(95px,1fr) auto 27px}
+#futureExpensesSection .futureFormGrid{grid-template-columns:minmax(0,1fr) minmax(100px,120px) auto}
+#futureExpensesSection .futureFormGrid>.btn{grid-column:auto}
+@media(max-width:1250px){
+ #futureExpensesSection .futureRowControls{grid-template-columns:minmax(90px,1fr) auto 27px}
+ #futureExpensesSection .futureFormGrid{grid-template-columns:minmax(0,1fr) 110px auto}
+}
+@media(max-width:980px){
+ .financeGrid>#economies .financeTotals{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .financeGrid>#economies .financeTotals{grid-template-columns:1fr}
+ #futureExpensesSection .futureFormGrid{grid-template-columns:minmax(0,1fr) 105px}
+ #futureExpensesSection .futureFormGrid>input:first-child{grid-column:1/-1}
+ #futureExpensesSection .futureFormGrid>.btn{grid-column:1/-1}
+ #futureExpensesSection .futureRowControls{grid-template-columns:minmax(90px,1fr) auto 27px}
+ #futureExpensesSection .futureRowControls .futurePay,
+ #futureExpensesSection .futureRowControls .futureDelete{grid-column:auto;justify-self:stretch}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V5R2</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
+<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V5R3</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
 <section id="mobileHome" class="mobileSimple">
   <div class="mobilePeriodTabs">
     <button id="mpDay" class="mobilePeriodBtn active" onclick="setMobilePeriod('day')">Jour</button>
@@ -915,6 +942,7 @@ body.forceMobile #tySimSection{display:none!important}
     <div class="financeTotals">
       <div class="financeTotal"><span>Comptes et épargne</span><strong id="savingsBankTotal">0 €</strong><small>Qonto + Courant + Jeune + Livret + Logement</small></div>
       <div class="financeTotal secondary"><span>Avec espèces et autre</span><strong id="savingsFullTotal">0 €</strong><small>Autre = à percevoir · hors tickets restaurant</small></div>
+       <div class="financeTotal netFuture"><span>Après dépenses futures</span><strong id="savingsAfterFutureTotal">0 €</strong><small>Avec espèces et autre − dépenses futures</small></div>
     </div>
     <div id="savingsInputs" class="savingsInputs"></div>
   </section>
@@ -940,7 +968,6 @@ body.forceMobile #tySimSection{display:none!important}
     <div class="futureFormGrid">
      <input id="futureLabel" type="text" maxlength="120" required placeholder="Ex. Facture, matériaux…" autocomplete="off">
      <input id="futureAmount" type="number" min="0.01" step="0.01" required placeholder="Montant (€)">
-     <select id="futureCategory" aria-label="Catégorie"><option value="Autre">Autre</option><option value="Travail">Travail</option><option value="Course">Course</option><option value="Création">Création</option><option value="Tylice">Tylice</option><option value="Soirée">Soirée</option><option value="Weekend">Weekend</option></select>
      <button type="submit" class="btn primary">+ Prévoir</button>
     </div>
     <p class="futureHint">Les montants prévus restent séparés des dépenses réelles. « Payée » les transfère au jour du règlement.</p>
@@ -1038,7 +1065,7 @@ body.forceMobile #tySimSection{display:none!important}
 </div>
 <script>
 const CATEGORIES=["Travail","Course","Création","Tylice","Soirée","Weekend","Autre"],COLORS={Travail:"#2563EB",Course:"#16A34A",Création:"#9333EA",Tylice:"#8052c8",Soirée:"#EA580C",Weekend:"#0891B2",Autre:"#64748B"},STORAGE_KEY="fortunaV1",DIRTY_KEY="fortunaV1Dirty";let data=loadData(),selectedMonth=new Date(),weekStart=startOfWeek(new Date()),trendComparisonMonths=0,entryType="expense",selectedEntryDate=localDate(),firebaseUser=null,syncTimer=null,syncInProgress=false,detailContext=null,mobilePeriod="day",mobileAnchor=new Date(),mobileDetailCategory=null;selectedMonth.setDate(1);
-function freshData(){return{version:502,updatedAt:new Date(0).toISOString(),expenses:[],futureExpenses:[],tyliceExpenses:[],tyliceProjects:[],tyliceResetV4R6:true,incomes:[]}}
+function freshData(){return{version:503,updatedAt:new Date(0).toISOString(),expenses:[],futureExpenses:[],tyliceExpenses:[],tyliceProjects:[],tyliceResetV4R6:true,incomes:[]}}
 function normalizeTylice(d){
  if(!d||!Array.isArray(d.expenses))return d;
  d.tyliceExpenses=Array.isArray(d.tyliceExpenses)?d.tyliceExpenses:[];d.tyliceProjects=Array.isArray(d.tyliceProjects)?d.tyliceProjects:[];
@@ -1069,7 +1096,7 @@ function renderTylice(){
  el.innerHTML=list.length?list.map(x=>'<div class="tyliceRow"><span class="tyliceDesc">'+esc(x.label)+'<small>'+esc(x.date)+'</small></span><button type="button" class="mobileExpenseEdit" title="Modifier" aria-label="Modifier '+esc(x.label)+'" data-id="'+esc(x.id)+'" onclick="editItem(\'expense\',this.dataset.id)">✏️</button><strong>'+money(x.amount)+'</strong></div>').join(""):'<div class="empty">Aucune dépense Tylice.</div>';
 }
 function addTylice(){if(document.body.classList.contains("forceMobile")||window.matchMedia("(max-width:620px)").matches){openMobileAdd(localDate());chooseCategory("mobile","Tylice")}else{openExpenseModal(localDate());chooseCategory("entry","Tylice")}}
-function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)){const migrated=!x.tyliceResetV4R6;const result=normalizeTylice(x);if(migrated){localStorage.setItem(STORAGE_KEY,JSON.stringify(result));localStorage.setItem(DIRTY_KEY,"1")}return result}}catch(e){}return freshData()}function markAndSave(){normalizeTylice(data);data.version=502;data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud()}function saveRemoteCopy(remote){data=normalizeTylice(remote);data.version=502;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.removeItem(DIRTY_KEY);renderAll();tyRender()}function money(n){return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(Number(n)||0)}function localDate(d=new Date()){const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)}function parseLocal(s){const[a,b,c]=String(s).split("-").map(Number);return new Date(a,b-1,c)}function uid(){return crypto?.randomUUID?.()||("f"+Date.now()+Math.random().toString(16).slice(2))}function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}function monthKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}function itemMonth(x){return String(x.date||"").slice(0,7)}function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1800)}function setSync(text,state=""){const el=document.getElementById("syncStatus");el.className=`sync ${state}`;el.querySelector("span:last-child").textContent=text}function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()),day=x.getDay()||7;x.setDate(x.getDate()-day+1);x.setHours(0,0,0,0);return x}function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}function sum(a){return a.reduce((s,x)=>s+Number(x.amount||0),0)}
+function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)){const migrated=!x.tyliceResetV4R6;const result=normalizeTylice(x);if(migrated){localStorage.setItem(STORAGE_KEY,JSON.stringify(result));localStorage.setItem(DIRTY_KEY,"1")}return result}}catch(e){}return freshData()}function markAndSave(){normalizeTylice(data);data.version=503;data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();scheduleCloud()}function saveRemoteCopy(remote){data=normalizeTylice(remote);data.version=503;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.removeItem(DIRTY_KEY);renderAll();tyRender()}function money(n){return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(Number(n)||0)}function localDate(d=new Date()){const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)}function parseLocal(s){const[a,b,c]=String(s).split("-").map(Number);return new Date(a,b-1,c)}function uid(){return crypto?.randomUUID?.()||("f"+Date.now()+Math.random().toString(16).slice(2))}function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}function monthKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}function itemMonth(x){return String(x.date||"").slice(0,7)}function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1800)}function setSync(text,state=""){const el=document.getElementById("syncStatus");el.className=`sync ${state}`;el.querySelector("span:last-child").textContent=text}function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()),day=x.getDay()||7;x.setDate(x.getDate()-day+1);x.setHours(0,0,0,0);return x}function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}function sum(a){return a.reduce((s,x)=>s+Number(x.amount||0),0)}
 function openDatePicker(id){const el=document.getElementById(id);if(!el)return;try{el.showPicker?el.showPicker():el.focus()}catch(_){el.focus()}}
 function chooseCategory(target,category){const select=document.getElementById(target==="mobile"?"mobileCategory":"entryCategory");if(select)select.value=category;syncCategoryPicker(target,category)}
 function syncCategoryPicker(target,category){const box=document.getElementById(target==="mobile"?"mobileCategoryPictos":"entryCategoryPictos");if(!box)return;box.querySelectorAll(".categoryPicto").forEach(b=>b.classList.toggle("active",b.dataset.cat===category))}
@@ -1230,7 +1257,11 @@ function updateSavingTotals(){
  const a=BANK_KEYS.reduce((sum,k)=>sum+savingAmount(k),0);
  document.getElementById("savingsBankTotal").textContent=money(a);
  // La ligne « Autre » est calculée à partir des sommes À percevoir.
- document.getElementById("savingsFullTotal").textContent=money(a+savingAmount("cash")+expectedAmountSum());
+ const full=a+savingAmount("cash")+expectedAmountSum();
+ document.getElementById("savingsFullTotal").textContent=money(full);
+ const after=full-sum(futureItems());
+ const net=document.getElementById("savingsAfterFutureTotal");
+ if(net){net.textContent=money(after);net.classList.toggle("negative",after<0)}
 }
 function renderSavings(){
  const area=document.getElementById("savingsInputs");if(!area)return;
@@ -1293,30 +1324,28 @@ function renderFuture(){
   <input class="futureName" data-id="${esc(p.id)}" type="text" maxlength="120" aria-label="Intitulé" value="${esc(p.label)}" onchange="updateFuture(this.dataset.id,'label',this.value)">
   <div class="futureRowControls">
   <input data-id="${esc(p.id)}" type="number" min="0.01" step="0.01" value="${esc(p.amount)}" aria-label="Montant à payer" onchange="updateFuture(this.dataset.id,'amount',this.value)">
-  <select data-id="${esc(p.id)}" aria-label="Catégorie" onchange="updateFuture(this.dataset.id,'category',this.value)">${CATEGORIES.map(c=>`<option value="${esc(c)}"${p.category===c?" selected":""}>${esc(c)}</option>`).join("")}</select>
   <button type="button" class="futurePay" data-id="${esc(p.id)}" onclick="payFuture(this.dataset.id)">✓ Payée</button>
   <button type="button" class="futureDelete" data-id="${esc(p.id)}" onclick="deleteFuture(this.dataset.id)" aria-label="Supprimer">×</button>
   </div></div>`).join(""):'<div class="expectedEmpty">Aucune dépense future pour le moment.</div>';
 }
 function createFuture(){
- const l=document.getElementById("futureLabel"),a=document.getElementById("futureAmount"),c=document.getElementById("futureCategory");
+ const l=document.getElementById("futureLabel"),a=document.getElementById("futureAmount");
  const label=l.value.trim(),amount=Number(a.value);
  if(!label||!Number.isFinite(amount)||amount<=0){toast("Libellé et montant positif requis");return}
- data.futureExpenses=[...futureItems(),{id:uid(),label,amount:Math.round(amount*100)/100,category:c.value||"Autre"}];
+ data.futureExpenses=[...futureItems(),{id:uid(),label,amount:Math.round(amount*100)/100}];
  markAndSave();l.value="";a.value="";l.focus();toast("Dépense prévue ajoutée");
 }
 function updateFuture(id,k,v){
  const arr=futureItems().map(x=>({...x})),p=arr.find(x=>String(x.id)===String(id));if(!p)return;
  if(k==="label"){if(!String(v).trim()){toast("Libellé obligatoire");renderFuture();return}p.label=String(v).trim()}
  else if(k==="amount"){const n=Number(v);if(!String(v).trim()||!Number.isFinite(n)||n<=0){toast("Montant invalide");renderFuture();return}p.amount=Math.round(n*100)/100}
- else if(k==="category"){if(!CATEGORIES.includes(v))return;p.category=v}
  else return;data.futureExpenses=arr;markAndSave();
 }
 function deleteFuture(id){if(!confirm("Supprimer cette prévision ?"))return;data.futureExpenses=futureItems().filter(x=>String(x.id)!==String(id));markAndSave();toast("Prévision supprimée")}
 function payFuture(id){
  const p=futureItems().find(x=>String(x.id)===String(id));if(!p)return;
  if(!confirm("Marquer « "+p.label+" » comme payée ? Elle sera enregistrée aujourd’hui."))return;
- storeExpense({id:uid(),label:p.label,amount:p.amount,date:localDate(),category:CATEGORIES.includes(p.category)?p.category:"Autre"});
+ storeExpense({id:uid(),label:p.label,amount:p.amount,date:localDate(),category:"Autre"});
  data.futureExpenses=futureItems().filter(x=>String(x.id)!==String(id));markAndSave();toast("Dépense comptabilisée");
 }
 function renderAll(){renderTylice();renderDashboard();renderCategory();renderWeek();renderWeightedTrend();renderApartmentBudget();renderSavings();renderExpected();renderFuture();renderMobileSimple();if(mobileDetailCategory)renderMobileCategoryDetails()}function monthData(offset=0){const d=new Date(selectedMonth.getFullYear(),selectedMonth.getMonth()+offset,1),k=monthKey(d);return{expenses:data.expenses.filter(x=>itemMonth(x)===k),incomes:data.incomes.filter(x=>itemMonth(x)===k)}}function monthBudget(year,month,lastDay=null){const days=new Date(year,month+1,0).getDate(),end=lastDay===null?days:Math.max(0,Math.min(days,lastDay));let total=0;for(let d=1;d<=end;d++){const date=new Date(year,month,d),weekend=date.getDay()===0||date.getDay()===6;total+=weekend?20:30}return total}
@@ -1855,10 +1884,10 @@ function download(name,content,type){const a=document.createElement("a");a.href=
  const rows=[["Date","Type","Libellé","Catégorie","Montant"],
   ...data.expenses.map(x=>[x.date,"Dépense",x.label,x.category||"Autre",x.amount]),
   ...(data.tyliceExpenses||[]).map(x=>[x.date,"Dépense Tylice",x.label,"Tylice",x.amount]),
-  ...futureItems().map(x=>[x.date,"Dépense future",x.label,x.category||"Autre",x.amount])];
+  ...futureItems().map(x=>["","Dépense future",x.label,"",x.amount])];
  const head=rows.shift();rows.sort((a,b)=>String(b[0]).localeCompare(String(a[0])));rows.unshift(head);
  download(`fortuna-${localDate()}.csv`,"\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\n"),"text/csv;charset=utf-8");
-}function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.expenses)||!Array.isArray(x.incomes))throw 0;if(confirm(`Importer ${x.expenses.length} dépenses ?`)){data={version:502,updatedAt:new Date().toISOString(),expenses:x.expenses,tyliceExpenses:Array.isArray(x.tyliceExpenses)?x.tyliceExpenses:[],tyliceResetV4R6:true,tyliceProjects:Array.isArray(x.tyliceProjects)?x.tyliceProjects:[],futureExpenses:Array.isArray(x.futureExpenses)?x.futureExpenses:[],incomes:x.incomes,apartmentBudget:x.apartmentBudget&&Array.isArray(x.apartmentBudget.items)?x.apartmentBudget:undefined,savings:x.savings&&typeof x.savings==="object"?x.savings:undefined,expectedPayments:Array.isArray(x.expectedPayments)?x.expectedPayments:[]};normalizeTylice(data);localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();tyRender();scheduleCloud(0);toast("Import enregistré")}}catch(_){alert("Fichier Fortuna invalide.")}e.target.value=""};r.readAsText(f)}function updateAuthUI(){document.getElementById("googleBtn").classList.toggle("hidden",!!firebaseUser);document.getElementById("logoutBtn").classList.toggle("hidden",!firebaseUser)}async function googleLogin(){if(window.firebaseBackend)try{await window.firebaseBackend.login()}catch(e){console.error(e);setSync("Erreur connexion","err")}}async function googleLogout(){if(window.firebaseBackend)await window.firebaseBackend.logout()}function validRemote(x){return x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)}async function handleFirebaseUser(user){firebaseUser=user||null;updateAuthUI();if(!user){setSync("Local");return}setSync("Comparaison…","work");try{const snap=await window.firebaseBackend.read(user.uid),remote=snap.exists()?snap.data().fortuna:null;if(!validRemote(remote)){await pushCloud();return}normalizeTylice(remote);const localHas=data.expenses.length||(data.futureExpenses||[]).length||(data.tyliceExpenses||[]).length||(data.tyliceProjects||[]).length||data.incomes.length,remoteHas=remote.expenses.length||(remote.futureExpenses||[]).length||(remote.tyliceExpenses||[]).length||(remote.tyliceProjects||[]).length||remote.incomes.length;if(!localHas&&remoteHas){saveRemoteCopy(remote);setSync("Synchronisé","ok");return}if(localHas&&!remoteHas){await pushCloud();return}const lt=Date.parse(data.updatedAt||0)||0,rt=Date.parse(remote.updatedAt||0)||0,dirty=localStorage.getItem(DIRTY_KEY)==="1";if(rt>lt+1000){saveRemoteCopy(remote);setSync("Synchronisé","ok");toast("Version en ligne récupérée")}else if(lt>rt+1000||dirty){await pushCloud()}else if(JSON.stringify(remote)!==JSON.stringify(data)){saveRemoteCopy(remote);setSync("Synchronisé","ok")}else{localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}}catch(e){console.error(e);setSync("Sync indisponible","err")}}async function pushCloud(){if(!firebaseUser||!window.firebaseBackend||syncInProgress)return;syncInProgress=true;setSync("Enregistrement…","work");try{await window.firebaseBackend.write(firebaseUser.uid,data);localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}catch(e){console.error(e);setSync("Erreur sync","err");throw e}finally{syncInProgress=false}}function scheduleCloud(delay=600){if(!firebaseUser||!window.firebaseBackend)return;setSync("Enregistrement…","work");clearTimeout(syncTimer);syncTimer=setTimeout(()=>pushCloud().catch(()=>{}),delay)}async function manualSync(){if(!firebaseUser){setSync("Connexion Google…","work");await googleLogin();return}await pushCloud();toast("Synchronisation terminée")}window.handleFirebaseUser=handleFirebaseUser;init();
+}function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.expenses)||!Array.isArray(x.incomes))throw 0;if(confirm(`Importer ${x.expenses.length} dépenses ?`)){data={version:503,updatedAt:new Date().toISOString(),expenses:x.expenses,tyliceExpenses:Array.isArray(x.tyliceExpenses)?x.tyliceExpenses:[],tyliceResetV4R6:true,tyliceProjects:Array.isArray(x.tyliceProjects)?x.tyliceProjects:[],futureExpenses:Array.isArray(x.futureExpenses)?x.futureExpenses:[],incomes:x.incomes,apartmentBudget:x.apartmentBudget&&Array.isArray(x.apartmentBudget.items)?x.apartmentBudget:undefined,savings:x.savings&&typeof x.savings==="object"?x.savings:undefined,expectedPayments:Array.isArray(x.expectedPayments)?x.expectedPayments:[]};normalizeTylice(data);localStorage.setItem(STORAGE_KEY,JSON.stringify(data));localStorage.setItem(DIRTY_KEY,"1");renderAll();tyRender();scheduleCloud(0);toast("Import enregistré")}}catch(_){alert("Fichier Fortuna invalide.")}e.target.value=""};r.readAsText(f)}function updateAuthUI(){document.getElementById("googleBtn").classList.toggle("hidden",!!firebaseUser);document.getElementById("logoutBtn").classList.toggle("hidden",!firebaseUser)}async function googleLogin(){if(window.firebaseBackend)try{await window.firebaseBackend.login()}catch(e){console.error(e);setSync("Erreur connexion","err")}}async function googleLogout(){if(window.firebaseBackend)await window.firebaseBackend.logout()}function validRemote(x){return x&&Array.isArray(x.expenses)&&Array.isArray(x.incomes)}async function handleFirebaseUser(user){firebaseUser=user||null;updateAuthUI();if(!user){setSync("Local");return}setSync("Comparaison…","work");try{const snap=await window.firebaseBackend.read(user.uid),remote=snap.exists()?snap.data().fortuna:null;if(!validRemote(remote)){await pushCloud();return}normalizeTylice(remote);const localHas=data.expenses.length||(data.futureExpenses||[]).length||(data.tyliceExpenses||[]).length||(data.tyliceProjects||[]).length||data.incomes.length,remoteHas=remote.expenses.length||(remote.futureExpenses||[]).length||(remote.tyliceExpenses||[]).length||(remote.tyliceProjects||[]).length||remote.incomes.length;if(!localHas&&remoteHas){saveRemoteCopy(remote);setSync("Synchronisé","ok");return}if(localHas&&!remoteHas){await pushCloud();return}const lt=Date.parse(data.updatedAt||0)||0,rt=Date.parse(remote.updatedAt||0)||0,dirty=localStorage.getItem(DIRTY_KEY)==="1";if(rt>lt+1000){saveRemoteCopy(remote);setSync("Synchronisé","ok");toast("Version en ligne récupérée")}else if(lt>rt+1000||dirty){await pushCloud()}else if(JSON.stringify(remote)!==JSON.stringify(data)){saveRemoteCopy(remote);setSync("Synchronisé","ok")}else{localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}}catch(e){console.error(e);setSync("Sync indisponible","err")}}async function pushCloud(){if(!firebaseUser||!window.firebaseBackend||syncInProgress)return;syncInProgress=true;setSync("Enregistrement…","work");try{await window.firebaseBackend.write(firebaseUser.uid,data);localStorage.removeItem(DIRTY_KEY);setSync("Synchronisé","ok")}catch(e){console.error(e);setSync("Erreur sync","err");throw e}finally{syncInProgress=false}}function scheduleCloud(delay=600){if(!firebaseUser||!window.firebaseBackend)return;setSync("Enregistrement…","work");clearTimeout(syncTimer);syncTimer=setTimeout(()=>pushCloud().catch(()=>{}),delay)}async function manualSync(){if(!firebaseUser){setSync("Connexion Google…","work");await googleLogin();return}await pushCloud();toast("Synchronisation terminée")}window.handleFirebaseUser=handleFirebaseUser;init();
 </script>
 <script type="module">import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";const firebaseConfig={apiKey:"AIzaSyCExYF7ivk5gJ8vcQpktPs2QV-Z1g-hkSM",authDomain:"budget-travaux-4993c.firebaseapp.com",projectId:"budget-travaux-4993c",storageBucket:"budget-travaux-4993c.firebasestorage.app",messagingSenderId:"875990842282",appId:"1:875990842282:web:827e4b96895a7efab949d3"};try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),budgetDoc=uid=>doc(db,"users",uid,"budgets","main");window.firebaseBackend={login:()=>signInWithPopup(auth,new GoogleAuthProvider()),logout:()=>signOut(auth),read:uid=>getDoc(budgetDoc(uid)),write:(uid,fortuna)=>setDoc(budgetDoc(uid),{fortuna},{merge:true})};onAuthStateChanged(auth,user=>window.handleFirebaseUser?.(user))}catch(e){console.error(e);document.getElementById("syncStatus")?.classList.add("err")}</script>
 </body></html>
