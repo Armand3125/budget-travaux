@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#13231c">
-<title>Fortuna V5R1</title>
+<title>Fortuna V5R2</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#f3f5f0;--card:#fff;--ink:#17221d;--muted:#728078;--line:#dfe5df;--green:#285c46;--green2:#3e7b5f;--soft:#e8efe9;--gold:#c89c45;--red:#bb4c4c;--shadow:0 12px 36px rgba(36,58,46,.08);--radius:18px}
@@ -751,11 +751,47 @@ body.forceMobile #tySimSection{display:none!important}
 @media(max-width:920px){#tySimSection{display:block!important}.tyLitePanels{grid-template-columns:1fr}.tyLiteKPIs{grid-template-columns:repeat(2,minmax(0,1fr))}}body.forceMobile #tySimSection{display:block!important}
 @media(max-width:760px){.tyLiteKPIs{padding:12px;gap:7px}.tyLiteKPIs>div{padding:10px}.tyLiteKPIs strong{font-size:20px}.tyLiteForm{padding:10px 12px}.tyLitePanel{padding:12px}.tyLitePart{grid-template-columns:minmax(0,1.4fr) minmax(63px,.7fr) minmax(63px,.7fr) 22px;gap:5px}.tyLiteAdvanced{margin:0 12px 12px}.tyExcel .tyExcelNav>select{width:140px}}
 
+
+/* Fortuna V5R2 : économies sur une ligne ; gains et dépenses futures sur la suivante. */
+.financeGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:16px}
+.financeGrid>#economies{grid-column:1/-1;grid-row:1}
+.financeGrid>#receivables{grid-column:1;grid-row:2}
+.financeGrid>#futureExpensesSection{grid-column:2;grid-row:2}
+.financeGrid>#economies .savingsInputs{grid-template-columns:repeat(3,minmax(0,1fr))}
+.futureCard{grid-column:auto}
+.futureRow{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.futureRowControls{grid-template-columns:90px 108px auto 24px;gap:6px}
+.futureFormGrid{grid-template-columns:minmax(0,1fr) 100px 110px auto;gap:7px}
+.futureFormGrid>.btn{min-height:36px;padding:7px 10px;white-space:nowrap}
+@media(max-width:1250px){
+ .futureRow{grid-template-columns:1fr;gap:3px}
+ .futureRowControls{grid-template-columns:90px minmax(100px,1fr) auto 25px}
+ .futureFormGrid{grid-template-columns:minmax(0,1fr) 105px}
+ .futureFormGrid>select{grid-column:1}
+ .futureFormGrid>.btn{grid-column:2}
+}
+@media(max-width:980px){
+ .financeGrid{grid-template-columns:minmax(0,1fr)}
+ .financeGrid>#economies,.financeGrid>#receivables,.financeGrid>#futureExpensesSection{grid-column:1;grid-row:auto}
+ .financeGrid>#economies .savingsInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .futureFormGrid{grid-template-columns:minmax(0,1fr) 110px 125px auto}
+ .futureFormGrid>select,.futureFormGrid>.btn{grid-column:auto}
+}
+@media(max-width:700px){
+ .financeGrid>#economies .savingsInputs{grid-template-columns:1fr}
+ .futureFormGrid{grid-template-columns:minmax(0,1fr) 110px}
+ .futureFormGrid>input:first-child{grid-column:1/-1}
+ .futureFormGrid>select,.futureFormGrid>.btn{grid-column:auto}
+ .futureRowControls{grid-template-columns:minmax(80px,1fr) minmax(100px,1fr)}
+ .futureRowControls .futurePay{grid-column:1}
+ .futureRowControls .futureDelete{grid-column:2;justify-self:end}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V5R1</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
+<header class="topbar"><div class="brand"><div class="brandIcon">🏛️</div><div><h1>Fortuna</h1><div class="version">V5R2</div></div></div><div class="topActions"><div id="syncStatus" class="sync"><span class="dot"></span><span>Local</span></div><button id="syncBtn" class="btn small" onclick="manualSync()" title="Synchroniser">↻</button><button id="phoneViewBtn" class="btn small" onclick="togglePhoneView()">Vue téléphone</button><button id="googleBtn" class="btn small" onclick="googleLogin()">Google</button><button id="logoutBtn" class="btn small hidden" onclick="googleLogout()">Déconnexion</button><button class="btn small exportBtn" onclick="exportJSON()">JSON</button><button class="btn small exportBtn" onclick="exportCSV()">CSV</button></div></header>
 <section id="mobileHome" class="mobileSimple">
   <div class="mobilePeriodTabs">
     <button id="mpDay" class="mobilePeriodBtn active" onclick="setMobilePeriod('day')">Jour</button>
@@ -873,7 +909,7 @@ body.forceMobile #tySimSection{display:none!important}
   </div>
 </section>
 
-<section class="financeGrid" aria-label="Économies et montants à percevoir">
+<section class="financeGrid" aria-label="Économies, gains futurs et dépenses futures">
   <section class="financeCard card" id="economies">
     <header class="financeHead"><div><span class="financeEyebrow">SOLDES ACTUELS</span><h2>Économies</h2></div><span class="financeHeadIcon" aria-hidden="true">◈</span></header>
     <div class="financeTotals">
@@ -904,11 +940,10 @@ body.forceMobile #tySimSection{display:none!important}
     <div class="futureFormGrid">
      <input id="futureLabel" type="text" maxlength="120" required placeholder="Ex. Facture, matériaux…" autocomplete="off">
      <input id="futureAmount" type="number" min="0.01" step="0.01" required placeholder="Montant (€)">
-     <input id="futureDate" type="date" required aria-label="Échéance">
      <select id="futureCategory" aria-label="Catégorie"><option value="Autre">Autre</option><option value="Travail">Travail</option><option value="Course">Course</option><option value="Création">Création</option><option value="Tylice">Tylice</option><option value="Soirée">Soirée</option><option value="Weekend">Weekend</option></select>
      <button type="submit" class="btn primary">+ Prévoir</button>
     </div>
-    <p class="futureHint">Les prévisions ne sont pas comptabilisées dans les dépenses réalisées. « Payée » transfère la dépense au jour du paiement.</p>
+    <p class="futureHint">Les montants prévus restent séparés des dépenses réelles. « Payée » les transfère au jour du règlement.</p>
    </form>
   </section>
 </section>
@@ -1038,7 +1073,7 @@ function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"n
 function openDatePicker(id){const el=document.getElementById(id);if(!el)return;try{el.showPicker?el.showPicker():el.focus()}catch(_){el.focus()}}
 function chooseCategory(target,category){const select=document.getElementById(target==="mobile"?"mobileCategory":"entryCategory");if(select)select.value=category;syncCategoryPicker(target,category)}
 function syncCategoryPicker(target,category){const box=document.getElementById(target==="mobile"?"mobileCategoryPictos":"entryCategoryPictos");if(!box)return;box.querySelectorAll(".categoryPicto").forEach(b=>b.classList.toggle("active",b.dataset.cat===category))}
-function init(){document.getElementById("futureDate").value=localDate();document.getElementById("entryDate").value=localDate();document.getElementById("mobileDate").value=localDate();document.addEventListener("keydown",expenseModalEscape);document.getElementById("entryDate").addEventListener("change",e=>{selectedEntryDate=e.target.value;renderWeek()});const cats=document.getElementById("entryCategory"),mc=document.getElementById("mobileCategory"),qc=document.getElementById("quickCategory");
+function init(){document.getElementById("entryDate").value=localDate();document.getElementById("mobileDate").value=localDate();document.addEventListener("keydown",expenseModalEscape);document.getElementById("entryDate").addEventListener("change",e=>{selectedEntryDate=e.target.value;renderWeek()});const cats=document.getElementById("entryCategory"),mc=document.getElementById("mobileCategory"),qc=document.getElementById("quickCategory");
 const icons={Travail:"💼",Course:"🛒",Tylice:"🎨",Soirée:"🍸",Weekend:"🏕️",Autre:"•••"};
 CATEGORIES.forEach(c=>{cats.add(new Option(c,c));mc.add(new Option(c,c));qc.add(new Option(c,c))});
 document.getElementById("quickCategoryPictos").innerHTML=CATEGORIES.map(c=>`<button type="button" class="categoryPicto" style="--cat:${COLORS[c]}" data-cat="${c}"><span class="categoryPictoIcon">${icons[c]}</span><span class="categoryPictoName">${c}</span></button>`).join("");
@@ -1251,32 +1286,29 @@ function deleteExpected(id){
 function futureItems(){return Array.isArray(data.futureExpenses)?data.futureExpenses:[]}
 function renderFuture(){
  const el=document.getElementById("futureRows");if(!el)return;
- const arr=futureItems().slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ const arr=futureItems().slice();
  document.getElementById("futureTotalAmount").textContent=money(sum(arr));
- document.getElementById("futureCount").textContent=arr.length+" dépense"+(arr.length>1?"s":"")+" prévue"+(arr.length>1?"s":"")+(arr.some(x=>x.date<localDate())?" · échéance(s) dépassée(s)":"");
- el.innerHTML=arr.length?arr.map(p=>`<div class="futureRow${p.date<localDate()?" late":""}">
+ document.getElementById("futureCount").textContent=arr.length+" dépense"+(arr.length>1?"s":"")+" prévue"+(arr.length>1?"s":"");
+ el.innerHTML=arr.length?arr.map(p=>`<div class="futureRow">
   <input class="futureName" data-id="${esc(p.id)}" type="text" maxlength="120" aria-label="Intitulé" value="${esc(p.label)}" onchange="updateFuture(this.dataset.id,'label',this.value)">
   <div class="futureRowControls">
   <input data-id="${esc(p.id)}" type="number" min="0.01" step="0.01" value="${esc(p.amount)}" aria-label="Montant à payer" onchange="updateFuture(this.dataset.id,'amount',this.value)">
-  <input data-id="${esc(p.id)}" type="date" value="${esc(p.date)}" aria-label="Échéance" onchange="updateFuture(this.dataset.id,'date',this.value)">
   <select data-id="${esc(p.id)}" aria-label="Catégorie" onchange="updateFuture(this.dataset.id,'category',this.value)">${CATEGORIES.map(c=>`<option value="${esc(c)}"${p.category===c?" selected":""}>${esc(c)}</option>`).join("")}</select>
   <button type="button" class="futurePay" data-id="${esc(p.id)}" onclick="payFuture(this.dataset.id)">✓ Payée</button>
   <button type="button" class="futureDelete" data-id="${esc(p.id)}" onclick="deleteFuture(this.dataset.id)" aria-label="Supprimer">×</button>
   </div></div>`).join(""):'<div class="expectedEmpty">Aucune dépense future pour le moment.</div>';
 }
 function createFuture(){
- const l=document.getElementById("futureLabel"),a=document.getElementById("futureAmount"),d=document.getElementById("futureDate"),c=document.getElementById("futureCategory");
- const label=l.value.trim(),amount=Number(a.value),date=d.value;
- if(!label||!Number.isFinite(amount)||amount<=0||!validFutureDate(date)){toast("Libellé, montant et date requis");return}
- data.futureExpenses=[...futureItems(),{id:uid(),label,amount:Math.round(amount*100)/100,date,category:c.value||"Autre"}];
+ const l=document.getElementById("futureLabel"),a=document.getElementById("futureAmount"),c=document.getElementById("futureCategory");
+ const label=l.value.trim(),amount=Number(a.value);
+ if(!label||!Number.isFinite(amount)||amount<=0){toast("Libellé et montant positif requis");return}
+ data.futureExpenses=[...futureItems(),{id:uid(),label,amount:Math.round(amount*100)/100,category:c.value||"Autre"}];
  markAndSave();l.value="";a.value="";l.focus();toast("Dépense prévue ajoutée");
 }
-function validFutureDate(d){return /^\d{4}-\d{2}-\d{2}$/.test(String(d))&&!Number.isNaN(parseLocal(d).getTime())}
 function updateFuture(id,k,v){
  const arr=futureItems().map(x=>({...x})),p=arr.find(x=>String(x.id)===String(id));if(!p)return;
  if(k==="label"){if(!String(v).trim()){toast("Libellé obligatoire");renderFuture();return}p.label=String(v).trim()}
  else if(k==="amount"){const n=Number(v);if(!String(v).trim()||!Number.isFinite(n)||n<=0){toast("Montant invalide");renderFuture();return}p.amount=Math.round(n*100)/100}
- else if(k==="date"){if(!validFutureDate(v)){toast("Date invalide");renderFuture();return}p.date=v}
  else if(k==="category"){if(!CATEGORIES.includes(v))return;p.category=v}
  else return;data.futureExpenses=arr;markAndSave();
 }
